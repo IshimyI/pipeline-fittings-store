@@ -7,22 +7,30 @@
     <link rel="stylesheet" href="./css/styles.css" />
     <script src="./js/script.js" defer></script>
   </head>
-  <body class="bg-zinc-800">
-    <header class="bg-zinc-900 flex justify-center">
+  <!-- ! был bg-zinc-800 -->
+  <body class="bg-zinc-800 text-white z-10">
+    <header class="bg-zinc-900 flex justify-center sticky top-0 text-center">
       <div
         class="container header-container flex justify-between max-w-3xl relative"
       >
         <!-- ! Лого добавить -->
-        <div class="header-logo flex justify-center self-center">
-          <img src="" alt="Лого" />
+        <div class="header-logo flex justify-center self-center cursor-pointer">
+          <a href="index.html"><img src="" alt="Лого" /></a>
         </div>
-        <nav class="hidden"></nav>
-        <div class="header-menu w-8 h-8 relative self-center">
+        <nav>
+          <ul class="flex gap-3">
+            <li><a href="index.html">О нас</a></li>
+            <li><a href="index.html">Контакты</a></li>
+            <li><a href="index.html">Лицензия</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-menu w-8 h-8 relative self-center cursor-pointer">
           <span
-            class="span1 absolute top-0 w-full h-1.5 bg-white transition-transform ease-in-out duration-300"
+            class="span1 absolute top-0 w-full h-1.5 bg-white transition-transform ease-in-out duration-300 rotate-0"
           ></span>
           <span
-            class="span2 absolute top-1/2 -translate-y-1/2 w-full h-1.5 bg-white transition-opacity ease-in-out duration-300"
+            class="span2 absolute top-1/2 -translate-y-1/2 w-full h-1.5 bg-white opacity-100 transition-opacity ease-in-out duration-300"
           >
           </span>
           <span
@@ -31,16 +39,60 @@
           </span>
         </div>
         <div class="header-basket">
-          <div class="search">
+          <!-- <div class="search">
             <img src="" alt="Поиск" />
-          </div>
-          <div class="basket">
-            <img src="" alt="Корзина" />
+          </div> -->
+          <div class="basket cursor-pointer">
+            <img src="./img/basket.png" alt="Корзина" />
           </div>
         </div>
       </div>
+      <div
+        class="burger-menu absolute bg-red-900 z-50 -left-96 transition-transform"
+      >
+        <nav>
+          <ul class="nav-list">
+            <li><a href="#products-section">Каталог</a></li>
+            <li><a href="#bio-section">О нас</a></li>
+            <li><a href="#quiz-section">Подбор товара</a></li>
+            <li><a href="#team-section">Наша команда</a></li>
+            <li><a href="#contacts-section">Контакты</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
-    <main></main>
-    <footer class="bg-zinc-900 flex justify-center"></footer>
+    <main class="flex justify-center h-auto w-full">
+      <div
+        class="container products-container flex-col justify-between max-w-3xl relative"
+      >
+        <h2 class="z-0">Каталог</h2>
+        <div class="grid grid-cols-2 gap-4 w-full">
+          <div class="product-card"><p>pipe</p></div>
+          <div class="product-card"><p>pipe</p></div>
+          <div class="product-card"><p>pipe</p></div>
+          <div class="product-card"><p>pipe</p></div>
+        </div>
+      </div>
+    </main>
+    <footer class="bg-zinc-900 flex justify-center">
+      <div
+        class="footer-container container flex justify-between max-w-3xl relative"
+      >
+        <div class="footer-logo flex justify-center self-center cursor-pointer">
+          <a href="index.html">
+            <!-- ! Лого добавить -->
+            <img src="" alt="Лого" />
+          </a>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">О нас</a></li>
+            <li><a href="index.html">Контакты</a></li>
+            <li><a href="index.html">Подписка</a></li>
+            <li><a href="selection_of_fittings.html">Лицензия</a></li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>
