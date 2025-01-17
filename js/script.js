@@ -1,15 +1,14 @@
 // # region burger
 
-const burger = document.querySelector(".header-menu");
-const menuBurger = document.querySelector(".burger-menu");
+const burger = document.querySelector(".burger-menu");
+const lines = document.querySelectorAll(".burger-line");
+const part = document.querySelector(".burger-part");
 
 burger.addEventListener("click", () => {
-  document.querySelector(".span1").classList.toggle("rotate-45");
-  document.querySelector(".span1").classList.toggle("translate-y-3");
-  document.querySelector(".span2").classList.toggle("opacity-0");
-  document.querySelector(".span3").classList.toggle("-rotate-45");
-  document.querySelector(".span3").classList.toggle("-translate-y-3");
-  menuBurger.classList.toggle("translate-x-96");
+  lines[0].classList.toggle("div1");
+  lines[1].classList.toggle("div2");
+  lines[2].classList.toggle("div3");
+  part.classList.toggle("part1");
 });
 
 // # endregion
