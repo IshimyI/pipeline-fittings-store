@@ -43,7 +43,7 @@
   top: 76px;
   left: -300px;
   transition: transform 0.3s;
-  background-color: red;
+  background-color: #939393;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -92,8 +92,8 @@ main {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.5),
-    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0.1),
     transparent
   );
 }
