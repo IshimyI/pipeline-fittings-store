@@ -11,6 +11,21 @@ burger.addEventListener("click", () => {
   part.classList.toggle("part1");
 });
 
+document.querySelector(".burger-menu").addEventListener("click", () => {
+  document.querySelector(".burger-part").classList.toggle("active");
+});
+
 // # endregion
 
 // # region
+
+const products = document.querySelectorAll(".product-card");
+console.log(products);
+
+products.forEach((product) => {
+  product.addEventListener("click", () => {
+    console.log(`Clicked ${product.innerText}`);
+  });
+});
+
+// #endregion

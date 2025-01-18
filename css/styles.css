@@ -39,13 +39,59 @@
 
 .burger-part {
   position: fixed;
-  width: 300px;
-  top: 76px;
+  width: 250px;
+  top: 0;
   left: -300px;
-  transition: transform 0.3s;
-  background-color: #939393;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+  height: 100vh;
+  transition: transform 0.3s ease-in-out;
+  background-color: #2d3748;
+  color: #ffffff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow-y: auto;
+  padding-top: 20px;
+}
+
+.burger-part ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.burger-part li {
+  margin: 10px 0;
+}
+
+.burger-part a {
+  display: block;
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.burger-part a:hover {
+  background-color: #4a5568;
+  color: #e6fffa;
+}
+
+.burger-line {
+  width: 30px;
+  height: 4px;
+  background-color: #ffffff;
+  margin: 6px 0;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.burger-menu.active + .burger-part {
+  transform: translateX(0);
+}
+
+.burger-part .close:hover {
+  transform: scale(1.1);
+  color: #e6fffa;
 }
 
 .burger-line {
@@ -270,21 +316,21 @@ footer .nav a:hover {
 }
 
 #contacts {
-  background-color: #6b7280; /* Тёмный фон секции для контраста */
+  background-color: #6b7280;
   padding: 40px 0;
   color: #ffffff;
   text-align: center;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  max-width: 1200px; /* Ограничиваем максимальную ширину секции */
-  margin: 40px auto; /* Центрируем секцию на экране */
+  max-width: 1200px;
+  margin: 40px auto;
 }
 
 #contacts h2 {
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #d1fae5; /* Мягкий акцент на заголовке */
+  color: #d1fae5;
 }
 
 #contacts p {
@@ -307,13 +353,13 @@ footer .nav a:hover {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #333333;
-  width: 250px; /* Устанавливаем фиксированную ширину для карточек */
+  width: 250px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .contact-card:hover {
-  transform: translateY(-10px); /* Легкое поднятие карточки */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ярче тень при наведении */
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .contact-card h3 {
@@ -336,10 +382,9 @@ footer .nav a:hover {
 }
 
 .contact-card a:hover {
-  color: #d1fae5; /* Эффект при наведении на ссылки */
+  color: #d1fae5;
 }
 
-/* Адаптивность для маленьких экранов */
 @media (max-width: 768px) {
   #contacts {
     padding: 30px 10px;
@@ -359,7 +404,7 @@ footer .nav a:hover {
 
   .contact-card {
     padding: 15px;
-    width: 200px; /* Меньшая ширина на мобильных */
+    width: 200px;
   }
 
   .contact-card h3 {
