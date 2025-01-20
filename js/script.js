@@ -20,12 +20,19 @@ document.querySelector(".burger-menu").addEventListener("click", () => {
 // # region
 
 const products = document.querySelectorAll(".product-card");
-console.log(products);
 
 products.forEach((product) => {
   product.addEventListener("click", () => {
     console.log(`Clicked ${product.innerText}`);
+    window.location.href = "products-category.html";
+    let a = product.innerText;
   });
 });
 
 // #endregion
+
+console.log(a);
+
+if (document.title === "Криоарматура - Товары") {
+  document.title = `Криоарматура - ${a}`;
+}
