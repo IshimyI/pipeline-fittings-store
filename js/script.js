@@ -1,4 +1,7 @@
-// # region burger
+document.addEventListener("DOMContentLoaded", () => {
+  initializeProductCards();
+  initializeCategoryFiltering();
+});
 
 const burger = document.querySelector(".burger-menu");
 const lines = document.querySelectorAll(".burger-line");
@@ -15,24 +18,68 @@ document.querySelector(".burger-menu").addEventListener("click", () => {
   document.querySelector(".burger-part").classList.toggle("active");
 });
 
-// # endregion
+// Логика для обработки кликов по карточкам товаров
+function initializeProductCards() {
+  const productCards = document.querySelectorAll(".product-card");
 
-// # region
+  if (productCards.length === 0) return;
 
-const products = document.querySelectorAll(".product-card");
-
-products.forEach((product) => {
-  product.addEventListener("click", () => {
-    console.log(`Clicked ${product.innerText}`);
-    window.location.href = "products-category.html";
-    let a = product.innerText;
+  productCards.forEach((productCard) => {
+    productCard.addEventListener("click", () =>
+      handleProductCardClick(productCard)
+    );
   });
-});
+}
 
-// #endregion
+function handleProductCardClick(productCard) {
+  const category = productCard.dataset.category;
 
-console.log(a);
+  if (!category) {
+    console.warn("Категория не указана для этой карточки:", productCard);
+    return;
+  }
 
-if (document.title === "Криоарматура - Товары") {
-  document.title = `Криоарматура - ${a}`;
+  // Перенаправление на страницу категории
+  window.location.href = `products-category.html?category=${encodeURIComponent(
+    category
+  )}`;
+}
+
+// Логика фильтрации товаров по категории
+function initializeCategoryFiltering() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = urlParams.get("category");
+
+  if (!category) return;
+
+  const products = document.querySelectorAll(".product-card");
+  const categoryTitle = document.querySelector(".category-title");
+
+  if (products.length === 0) {
+    console.warn("Карточки товаров отсутствуют на странице.");
+    return;
+  }
+
+  // Обновляем видимость товаров
+  filterProductsByCategory(products, category);
+
+  // Обновляем заголовок страницы
+  updateCategoryTitle(categoryTitle, category);
+}
+
+function filterProductsByCategory(products, category) {
+  products.forEach((product) => {
+    const productCategory = product.dataset.category;
+
+    product.style.display = productCategory === category ? "block" : "none";
+  });
+}
+
+function updateCategoryTitle(categoryTitle, category) {
+  if (!categoryTitle) {
+    console.warn("Элемент с классом .category-title не найден.");
+    return;
+  }
+
+  categoryTitle.innerText = `Криоарматура - ${category}`;
 }
