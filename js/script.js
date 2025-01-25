@@ -18,7 +18,6 @@ document.querySelector(".burger-menu").addEventListener("click", () => {
   document.querySelector(".burger-part").classList.toggle("active");
 });
 
-// Логика для обработки кликов по карточкам товаров
 function initializeProductCards() {
   const productCards = document.querySelectorAll(".product-card");
 
@@ -39,13 +38,11 @@ function handleProductCardClick(productCard) {
     return;
   }
 
-  // Перенаправление на страницу категории
   window.location.href = `products-category.html?category=${encodeURIComponent(
     category
   )}`;
 }
 
-// Логика фильтрации товаров по категории
 function initializeCategoryFiltering() {
   const urlParams = new URLSearchParams(window.location.search);
   const category = urlParams.get("category");
@@ -60,10 +57,8 @@ function initializeCategoryFiltering() {
     return;
   }
 
-  // Обновляем видимость товаров
   filterProductsByCategory(products, category);
 
-  // Обновляем заголовок страницы
   updateCategoryTitle(categoryTitle, category);
 }
 
@@ -83,3 +78,24 @@ function updateCategoryTitle(categoryTitle, category) {
 
   categoryTitle.innerText = `Криоарматура - ${category}`;
 }
+
+// #region contacts
+
+document
+  .getElementById("feedbackForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+
+    console.log("Имя:", name);
+    console.log("Email:", email);
+    console.log("Сообщение:", message);
+
+    document.getElementById("feedbackForm").reset();
+    alert("Спасибо! Ваше сообщение отправлено.");
+  });
+
+// #endregion
