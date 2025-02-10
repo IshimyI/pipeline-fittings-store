@@ -46,20 +46,15 @@ try {
 
   function initializeCategoryFiltering() {
     const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get("category");
+    let category = urlParams.get("category");
 
     if (!category) return;
 
-    const products = document.querySelectorAll(".product-card");
+    category = decodeURIComponent(category).trim();
+
+    renderProducts(category);
+
     const categoryTitle = document.querySelector(".category-title");
-
-    if (products.length === 0) {
-      console.warn("Карточки товаров отсутствуют на странице.");
-      return;
-    }
-
-    filterProductsByCategory(products, category);
-
     updateCategoryTitle(categoryTitle, category);
   }
 
@@ -220,86 +215,86 @@ const products = [
 
   // #endregion
 
-  // #region Вентиль Т
+  // #region Вентили T
 
   {
     name: "Вентиль Т100",
     img: "img/Valves T/t-100.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т102",
     img: "img/Valves T/t-102.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т106",
     img: "img/Valves T/t-106.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т114",
     img: "img/Valves T/t-114.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т122",
     img: "img/Valves T/t-122.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т124",
     img: "img/Valves T/t-124.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т126",
     img: "img/Valves T/t-126.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т130",
     img: "img/Valves T/t-130.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т134",
     img: "img/Valves T/t-134.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т136",
     img: "img/Valves T/t-136.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т140",
     img: "img/Valves T/t-140.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т144",
     img: "img/Valves T/t-144.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
-  { name: "Вентиль Т146", img: "img/no-photo.jpg", category: "Вентили Т" },
-  { name: "Вентиль Т150", img: "img/no-photo.jpg", category: "Вентили Т" },
-  { name: "Вентиль Т154", img: "img/no-photo.jpg", category: "Вентили Т" },
+  { name: "Вентиль Т146", img: "img/no-photo.jpg", category: "Вентили T" },
+  { name: "Вентиль Т150", img: "img/no-photo.jpg", category: "Вентили T" },
+  { name: "Вентиль Т154", img: "img/no-photo.jpg", category: "Вентили T" },
   {
     name: "Вентиль Т158",
     img: "img/Valves T/t-158.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
   {
     name: "Вентиль Т160",
     img: "img/Valves T/t-160.jpg",
-    category: "Вентили Т",
+    category: "Вентили T",
   },
-  { name: "Вентиль Т164", img: "img/no-photo.jpg", category: "Вентили Т" },
-  { name: "Вентиль Т168", img: "img/no-photo.jpg", category: "Вентили Т" },
-  { name: "Вентиль Т174", img: "img/no-photo.jpg", category: "Вентили Т" },
-  { name: "Вентиль Т180", img: "img/no-photo.jpg", category: "Вентили Т" },
-  { name: "Вентиль Т184", img: "img/no-photo.jpg", category: "Вентили Т" },
+  { name: "Вентиль Т164", img: "img/no-photo.jpg", category: "Вентили T" },
+  { name: "Вентиль Т168", img: "img/no-photo.jpg", category: "Вентили T" },
+  { name: "Вентиль Т174", img: "img/no-photo.jpg", category: "Вентили T" },
+  { name: "Вентиль Т180", img: "img/no-photo.jpg", category: "Вентили T" },
+  { name: "Вентиль Т184", img: "img/no-photo.jpg", category: "Вентили T" },
 
   // #endregion
 
@@ -1610,151 +1605,6 @@ const products = [
 
   // #endregion
 
-  // #region Клапан отсечный
-
-  {
-    name: "Клапан отсечной Т210",
-    img: "img/off-valves/t-210.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т212",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т216",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т218",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т220",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т222",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т224",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т226",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т228",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т230",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т232",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т236",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т238",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т240",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т242",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т246",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т248",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т250",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т252",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т254",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т260",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т262",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т264",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т266",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т268",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т274",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т282",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-  {
-    name: "Клапан отсечной Т286",
-    img: "img/no-photo.jpg",
-    category: "Клапаны отсечные",
-  },
-
-  // #endregion
-
   // #region Пневмоэлектроклапан ПЭКДД
 
   {
@@ -1766,6 +1616,151 @@ const products = [
     name: "Пневмоэлектроклапан ПЭКДД М2",
     img: "img/Valves pneumoelectric PAKDD/PAKDD M2.jpg",
     category: "Пневмоэлектроклапаны ПЭКДД",
+  },
+
+  // #endregion
+
+  // #region Клапан отсечный Т
+
+  {
+    name: "Клапан отсечной Т210",
+    img: "img/off-valves/t-210.jpg",
+    category: "Клапаны отсечные Т ",
+  },
+  {
+    name: "Клапан отсечной Т212",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т216",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т218",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т220",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т222",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т224",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т226",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т228",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т230",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т232",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т236",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т238",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т240",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т242",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т246",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т248",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т250",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т252",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т254",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т260",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т262",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т264",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т266",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т268",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т274",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т282",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
+  },
+  {
+    name: "Клапан отсечной Т286",
+    img: "img/no-photo.jpg",
+    category: "Клапаны отсечные Т",
   },
 
   // #endregion
@@ -1787,28 +1782,53 @@ const products = [
 ];
 
 function renderProducts(category) {
-  // Проверяем, существует ли контейнер product-container
+  console.log("Категория из URL:", category);
   const container = document.getElementById("product-container");
   if (!container) {
     console.error("Элемент с ID 'product-container' не найден!");
     return;
   }
 
-  // Очищаем содержимое контейнера
   container.innerHTML = "";
 
-  // Фильтруем продукты по категории
-  const filteredProducts = products.filter(
-    (product) => !category || product.category === category
-  );
+  console.log("Категория для фильтрации:", category);
+  console.log("Все товары:", products);
 
-  // Если продуктов нет, выводим сообщение об отсутствии товаров
+  const uniqueCategories = [...new Set(products.map((p) => p.category))];
+  console.log("Все уникальные категории в products:", uniqueCategories);
+
+  function normalizeCategory(category) {
+    return category.replace(/А/g, "A").replace(/В/g, "B");
+  }
+
+  let filteredProducts = [];
+  if (
+    normalizeCategory(category) === normalizeCategory("Запорная арматура БАМЗ")
+  ) {
+    filteredProducts = products.filter(
+      (product) =>
+        normalizeCategory(product.category) ===
+          normalizeCategory("Клапаны BAMZ") ||
+        normalizeCategory(product.category) ===
+          normalizeCategory("Редукторы BAMZ")
+    );
+  } else {
+    filteredProducts = products.filter(
+      (product) =>
+        normalizeCategory(category) === normalizeCategory(product.category)
+    );
+  }
+
+  console.log("Отфильтрованные товары:", filteredProducts);
+
   if (filteredProducts.length === 0) {
     container.innerHTML = "<p>Товары не найдены.</p>";
     return;
   }
 
-  // Создаем карточки для каждого продукта
+  const catalogGrid = document.createElement("div");
+  catalogGrid.className = "catalog grid";
+
   filteredProducts.forEach((product) => {
     const card = document.createElement("div");
     card.className = "product-card";
@@ -1817,19 +1837,14 @@ function renderProducts(category) {
       <div class="gradient"></div>
       <div class="text"><p>${product.name}</p></div>
     `;
-    container.appendChild(card);
+    catalogGrid.appendChild(card);
   });
+
+  container.appendChild(catalogGrid);
 }
 
-// При загрузке документа
 document.addEventListener("DOMContentLoaded", () => {
-  // Получаем параметр category из URL
   const urlParams = new URLSearchParams(window.location.search);
   const category = urlParams.get("category");
-
-  // Логируем выбранную категорию для отладки
-  console.log("Выбранная категория:", category);
-
-  // Рендерим продукты
   renderProducts(category);
 });
