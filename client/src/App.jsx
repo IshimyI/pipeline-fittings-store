@@ -5,6 +5,7 @@ import axiosInstance, { setAccessToken } from "./axiosInstance";
 import { useEffect, useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import { useNavigate } from "react-router-dom";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   const [user, setUser] = useState();
@@ -71,6 +72,7 @@ function App() {
           path="/login"
           element={<LoginPage handleLogin={handleLogin} />}
         ></Route>
+        <Route path="*" element={<ErrorPage user={user} />}></Route>
       </Route>
     </Routes>
   );
