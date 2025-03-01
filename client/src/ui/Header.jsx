@@ -3,30 +3,41 @@ import React from "react";
 
 export default function Header({ user, handleLogout }) {
   return (
-    <header>
-      <div>
-        <div>
-          <NavLink to="/">Криоарматура</NavLink>
-        </div>
-        <nav>
-          <NavLink to="/about">О нас</NavLink>
-          <NavLink to="/contacts">Контакты</NavLink>
-          <NavLink to="/selector">Подбор арматуры высокого давления</NavLink>
-        </nav>
+    <header className="flex justify-between items-center p-4 bg-gray-900 text-white border-b border-gray-700">
+      <div className="text-xl font-bold">
+        <NavLink to="/" className="hover:text-blue-400">
+          Криоарматура
+        </NavLink>
       </div>
-      <div>
-        <NavLink to="/profile">{user ? user.name : "Гость"}</NavLink>
-        <span> Тут пробел </span>
-        {!user && <NavLink to="/signup">Регистрация</NavLink>}
-        <span> Тут пробел </span>
-        {!user && <NavLink to="/login">Вход</NavLink>}
-        {user && (
+      <nav className="space-x-6 text-sm font-medium">
+        <NavLink to="/about" className="hover:text-blue-400">
+          О нас
+        </NavLink>
+        <NavLink to="/contacts" className="hover:text-blue-400">
+          Контакты
+        </NavLink>
+        <NavLink to="/selector" className="hover:text-blue-400">
+          Подбор арматуры высокого давления
+        </NavLink>
+      </nav>
+      <div className="flex items-center space-x-4">
+        <NavLink to="/profile" className="hover:text-blue-400">
+          {user ? user.name : "Гость"}
+        </NavLink>
+        {!user ? (
           <>
-            <span> </span>
-            <button onClick={handleLogout} type="button">
-              Выйти
-            </button>
+            <NavLink to="/login" className="hover:text-blue-400">
+              Вход
+            </NavLink>
           </>
+        ) : (
+          <button
+            onClick={handleLogout}
+            type="button"
+            className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded-lg text-white"
+          >
+            Выйти
+          </button>
         )}
       </div>
     </header>

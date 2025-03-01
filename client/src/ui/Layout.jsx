@@ -6,7 +6,9 @@ export default function Layout({ user, handleLogout }) {
   return (
     <>
       <Header user={user} handleLogout={handleLogout} />
-      <Outlet />
+      <div className="min-h-screen bg-gray-900">
+        <Outlet />
+      </div>
       <Footer />
     </>
   );

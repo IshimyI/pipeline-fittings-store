@@ -6,20 +6,62 @@ module.exports = {
     await queryInterface.bulkInsert(
       "Categories",
       [
-        { name: "Вентили АВ" },
-        { name: "Вентили Т" },
-        { name: "Клапаны обратные АО" },
-        { name: "Клапаны обратные Т" },
-        { name: "Редукторы АР" },
-        { name: "Редукторы Т" },
-        { name: "Клапаны предохранительные АП" },
-        { name: "Клапаны предохранительные Т" },
-        { name: "Фильтры АФ" },
-        { name: "Фильтры Т" },
-        { name: "Пневмоэлектроклапаны АЭ" },
-        { name: "Клапаны отсечные Т" },
-        { name: "Пневмоэлектроклапаны ПЭКДД" },
-        { name: "Запорная арматура БАМЗ" },
+        {
+          name: "Вентили АВ",
+          img: "valves-AB",
+        },
+        {
+          name: "Вентили Т",
+          img: "valves-T",
+        },
+        {
+          name: "Клапаны обратные АО",
+          img: "valves-check-AO",
+        },
+        {
+          name: "Клапаны обратные Т",
+          img: "valves-check-T",
+        },
+        {
+          name: "Редукторы АР",
+          img: "gearboxes-AP",
+        },
+        {
+          name: "Редукторы Т",
+          img: "gearboxes-T",
+        },
+        {
+          name: "Клапаны предохранительные АП",
+          img: "valves-safety-AP",
+        },
+        {
+          name: "Клапаны предохранительные Т",
+          img: "valves-safety-T",
+        },
+        {
+          name: "Фильтры АФ",
+          img: "filters-AF",
+        },
+        {
+          name: "Фильтры Т",
+          img: "filters-T",
+        },
+        {
+          name: "Пневмоэлектроклапаны АЭ",
+          img: "valves-pneumoelectric",
+        },
+        {
+          name: "Клапаны отсечные Т",
+          img: "off-valves",
+        },
+        {
+          name: "Пневмоэлектроклапаны ПЭКДД",
+          img: "valves-pneumoelectric-PAKDD",
+        },
+        {
+          name: "Запорная арматура БАМЗ",
+          img: "off-valves-bamz",
+        },
       ],
       {}
     );

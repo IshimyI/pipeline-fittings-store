@@ -1,15 +1,15 @@
 import { Routes, Route } from "react-router";
-import SignUpPage from "./pages/SignUpPage";
 import Layout from "./ui/Layout";
 import axiosInstance, { setAccessToken } from "./axiosInstance";
 import { useEffect, useState } from "react";
-import LoginPage from "./pages/LoginPage";
 import { useNavigate } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import MainPage from "./pages/MainPage";
 import ContactsPage from "./pages/ContactsPage";
 import AboutPage from "./pages/AboutPage";
 import SelectorPage from "./pages/SelectorPage";
+import AuthPage from "./pages/AuthPage";
+import ProductsPage from "./pages/ProductsPage";
 
 function App() {
   const [user, setUser] = useState();
@@ -25,7 +25,7 @@ function App() {
       .catch(() => {
         setUser(null);
         setAccessToken("");
-        navigate("/signup");
+        navigate("/login");
       })
       .finally(() => {
         setLoadingUser(false);
@@ -38,10 +38,17 @@ function App() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    const res = await axiosInstance.post("/auth/signup", data);
-    if (res.status === 200) {
-      setUser(res.data.user);
-      setAccessToken(res.data.accessToken);
+
+    try {
+      const res = await axiosInstance.post("/auth/signup", data);
+      if (res && res.status === 200) {
+        setUser(res.data.user);
+        setAccessToken(res.data.accessToken);
+      } else {
+        console.error("Ошибка при регистрации:", res);
+      }
+    } catch (error) {
+      console.error("Ошибка при запросе:", error);
     }
   };
 
@@ -68,20 +75,19 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout user={user} handleLogout={handleLogout} />}>
-        <Route path="/" element={<MainPage />}></Route>
-        <Route path="/contacts" element={<ContactsPage />}></Route>
-        <Route path="/about" element={<AboutPage />}></Route>
-        <Route path="/selector" element={<SelectorPage />}></Route>
-        <Route
-          path="/signup"
-          element={<SignUpPage handleSignUp={handleSignUp} />}
-        ></Route>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/contacts" element={<ContactsPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/selector" element={<SelectorPage />} />
         <Route
           path="/login"
-          element={<LoginPage handleLogin={handleLogin} />}
-        ></Route>
-
-        <Route path="*" element={<ErrorPage user={user} />}></Route>
+          element={
+            <AuthPage handleLogin={handleLogin} handleSignUp={handleSignUp} />
+          }
+        />
+        <Route path="/category/:categoryId" element={<ProductsPage />} />
+        <Route path="/category" element={<ProductsPage />} />
+        <Route path="*" element={<ErrorPage user={user} />} />
       </Route>
     </Routes>
   );

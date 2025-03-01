@@ -2,102 +2,84 @@ import React from "react";
 
 export default function ContactsPage() {
   return (
-    <div>
-      <main>
-        <section id="contacts">
+    <div className="flex items-center justify-center bg-gray-900 text-white">
+      <main className="w-full max-w-4xl p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg border border-gray-700 my-8">
+        <section id="contacts" className="space-y-6">
           <div>
-            <h2>Свяжитесь с нами</h2>
+            <h2 className="text-2xl font-bold text-center text-gray-200">
+              Свяжитесь с нами
+            </h2>
           </div>
-          <p>Мы всегда рады помочь! Вы можете связаться с нами через:</p>
+          <p className="text-gray-300 text-center">
+            Мы всегда рады помочь! Вы можете связаться с нами через:
+          </p>
 
-          <div>
-            <div>
-              <div>
-                <i className="fas fa-map-marker-alt"></i>
-              </div>
-              <h3>Адрес</h3>
-              <p>Москва, ул. Инновационная, д. 10</p>
-              <div id="map">
-                <div style={{ position: "relative", overflow: "hidden" }}>
-                  <a
-                    href="https://yandex.ru/maps/org/kolledzh_avtomatizatsii_i_informatsionnykh_tekhnologiy_20_uchebnoye_otdeleniye_didzhital/1011075765/?utm_medium=mapframe&utm_source=maps"
-                    style={{
-                      color: "#eee",
-                      fontSize: "12px",
-                      position: "absolute",
-                      top: "0px",
-                    }}
-                  >
-                    Колледж автоматизации и информационных технологий № 20,
-                    учебное отделение Диджитал
-                  </a>
-                  <a
-                    href="https://yandex.ru/maps/213/moscow/category/college/184106236/?utm_medium=mapframe&utm_source=maps"
-                    style={{
-                      color: "#eee",
-                      fontSize: "12px",
-                      position: "absolute",
-                      top: "14px",
-                    }}
-                  >
-                    Колледж в Москве
-                  </a>
-                  <iframe
-                    src="https://yandex.ru/map-widget/v1/?from=mapframe&ll=37.707774%2C55.816179&mode=search&oid=1011075765&ol=biz&z=17.85"
-                    width="560"
-                    height="400"
-                    frameborder="1"
-                    allowfullscreen="true"
-                    style={{ position: "relative" }}
-                  ></iframe>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-4 bg-gray-700 rounded-lg shadow-md">
+              <h3 className="text-lg font-semibold text-gray-200">Адрес</h3>
+              <p className="text-gray-400">Москва, ул. Инновационная, д. 10</p>
+              <div id="map" className="mt-4">
+                <iframe
+                  src="https://yandex.ru/map-widget/v1/?from=mapframe&ll=37.707774%2C55.816179&mode=search&oid=1011075765&ol=biz&z=17.85"
+                  width="100%"
+                  height="300"
+                  className="rounded-lg border border-gray-600"
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
 
-            <div>
-              <div>
-                <i className="fas fa-phone"></i>
-              </div>
-              <h3>Телефон</h3>
-              <p>
-                <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+            <div className="p-4 bg-gray-700 rounded-lg shadow-md">
+              <h3 className="text-lg font-semibold text-gray-200">Телефон</h3>
+              <p className="text-gray-400">
+                <a
+                  href="tel:+74951234567"
+                  className="text-blue-400 hover:underline"
+                >
+                  +7 (495) 123-45-67
+                </a>
               </p>
             </div>
 
-            <div>
-              <div>
-                <i className="fas fa-envelope"></i>
-              </div>
-              <h3>Email</h3>
-              <p>
-                <a href="mailto:info@krioarmatura.ru">info@krioarmatura.ru</a>
+            <div className="p-4 bg-gray-700 rounded-lg shadow-md">
+              <h3 className="text-lg font-semibold text-gray-200">Email</h3>
+              <p className="text-gray-400">
+                <a
+                  href="mailto:info@krioarmatura.ru"
+                  className="text-blue-400 hover:underline"
+                >
+                  info@krioarmatura.ru
+                </a>
               </p>
             </div>
 
-            <div>
-              <div>
-                <i className="fas fa-share-alt"></i>
-              </div>
-              <h3>Социальные сети</h3>
-              <p>
-                <a href="#" target="_blank">
+            <div className="p-4 bg-gray-700 rounded-lg shadow-md">
+              <h3 className="text-lg font-semibold text-gray-200">
+                Социальные сети
+              </h3>
+              <p className="text-gray-400">
+                <a href="#" className="text-blue-400 hover:underline">
                   ВКонтакте
                 </a>{" "}
                 |
-                <a href="#" target="_blank">
+                <a href="#" className="text-blue-400 hover:underline">
+                  {" "}
                   Facebook
                 </a>{" "}
                 |
-                <a href="#" target="_blank">
+                <a href="#" className="text-blue-400 hover:underline">
+                  {" "}
                   Instagram
                 </a>
               </p>
             </div>
           </div>
 
-          <div>
-            <h3>Обратная связь</h3>
-            <form id="feedbackForm">
+          <div className="p-6 bg-gray-700 rounded-lg shadow-md">
+            <h3 className="text-lg font-semibold text-gray-200 text-center">
+              Обратная связь
+            </h3>
+            <form id="feedbackForm" className="space-y-4">
               <div>
                 <input
                   type="text"
@@ -105,6 +87,7 @@ export default function ContactsPage() {
                   name="name"
                   placeholder="Ваше имя"
                   required
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
               <div>
@@ -114,6 +97,7 @@ export default function ContactsPage() {
                   name="email"
                   placeholder="Ваш email"
                   required
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
               <div>
@@ -123,9 +107,15 @@ export default function ContactsPage() {
                   placeholder="Ваше сообщение"
                   rows="5"
                   required
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 ></textarea>
               </div>
-              <button type="submit">Отправить</button>
+              <button
+                type="submit"
+                className="w-full py-2 font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              >
+                Отправить
+              </button>
             </form>
           </div>
         </section>
