@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import { useNavigate } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
+import MainPage from "./pages/MainPage";
+import ContactsPage from "./pages/ContactsPage";
+import AboutPage from "./pages/AboutPage";
+import SelectorPage from "./pages/SelectorPage";
 
 function App() {
   const [user, setUser] = useState();
@@ -64,6 +68,10 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout user={user} handleLogout={handleLogout} />}>
+        <Route path="/" element={<MainPage />}></Route>
+        <Route path="/contacts" element={<ContactsPage />}></Route>
+        <Route path="/about" element={<AboutPage />}></Route>
+        <Route path="/selector" element={<SelectorPage />}></Route>
         <Route
           path="/signup"
           element={<SignUpPage handleSignUp={handleSignUp} />}
@@ -72,6 +80,7 @@ function App() {
           path="/login"
           element={<LoginPage handleLogin={handleLogin} />}
         ></Route>
+
         <Route path="*" element={<ErrorPage user={user} />}></Route>
       </Route>
     </Routes>

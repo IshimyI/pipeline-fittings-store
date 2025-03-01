@@ -1,11 +1,13 @@
 import { Outlet } from "react-router";
-import NavBar from "./NavBar";
+import Header from "./Header";
+import Footer from "./Footer";
 
 export default function Layout({ user, handleLogout }) {
   return (
     <>
-      <NavBar user={user} handleLogout={handleLogout} />
+      <Header user={user} handleLogout={handleLogout} />
       <Outlet />
+      <Footer />
     </>
   );
 }
