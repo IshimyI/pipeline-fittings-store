@@ -4,10 +4,14 @@ export default function Category({ category }) {
     return pattern.test(str);
   };
 
-  const imageUrl = isValidUrl(category.img)
-    ? category.img
-    : category.img && category.img !== "alt"
-    ? `/img/categories/${category.img}.png`
+  const handleImageError = (e) => {
+    e.target.src = "/img/no-photo.png";
+  };
+
+  const imageUrl = isValidUrl(category.image)
+    ? category.image
+    : category.image && category.image !== "alt"
+    ? `/img/categories/${category.image}.png`
     : "/img/no-photo.png";
 
   return (
@@ -16,6 +20,7 @@ export default function Category({ category }) {
         src={imageUrl}
         alt={category.name}
         className="w-full h-full object-cover rounded-lg mb-4"
+        onError={handleImageError}
       />
       <p className="text-center text-xl font-semibold">{category.name}</p>
     </div>

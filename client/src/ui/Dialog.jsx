@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import axiosInstance from "../axiosInstance";
 
-export default function Dialog({ isOpen, onClose, product, user }) {
+export default function Dialog({ isOpen, onClose, product, user, category }) {
   const dialogRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -115,7 +115,7 @@ export default function Dialog({ isOpen, onClose, product, user }) {
   const renderParams = (params) => {
     if (typeof params === "string") {
       try {
-        params = JSON.parse(params); // пытаемся распарсить строку
+        params = JSON.parse(params);
       } catch (e) {
         console.error("Ошибка парсинга параметров:", e);
         return null;
@@ -123,8 +123,14 @@ export default function Dialog({ isOpen, onClose, product, user }) {
     }
 
     return Object.entries(params).map(([key, value]) => (
-      <div key={key} className="text-gray-300">
-        <strong>{key}:</strong> {value}
+      <div
+        key={key}
+        className="flex justify-between items-center py-1 px-1.5 text-xs"
+      >
+        <span className="text-gray-400 truncate">{key}</span>
+        <span className="text-blue-300 ml-2 max-w-[60%] text-right truncate">
+          {value}
+        </span>
       </div>
     ));
   };
@@ -181,51 +187,77 @@ export default function Dialog({ isOpen, onClose, product, user }) {
         </button>
         {product ? (
           <>
-            <h3
+            <h4
               id="dialog-title"
-              className="text-4xl font-semibold mb-6 text-center"
+              className="text-3xl font-semibold mb-6 text-center"
             >
               {product.name}
-            </h3>
+            </h4>
             {!bool ? (
-              <div>
-                <div className="flex flex-col lg:flex-row gap-8">
-                  <div className="flex-1 flex justify-center items-center">
+              <div className="space-y-4">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="md:w-1/3 flex items-center justify-center">
                     <img
                       src={getImageUrl(product.image)}
                       alt={product.name}
-                      className="w-128 max-w-[600px] object-cover rounded-lg shadow-xl border-2 border-gray-600"
+                      className="w-auto object-contain rounded-lg"
                       onError={handleImageError}
                     />
                   </div>
-                  <div>
-                    <div className="flex-1">
-                      <p className="text-xl text-gray-300 mb-3">
-                        <strong>Цена:</strong> {product.price}
-                      </p>
-                      <p className="text-xl text-gray-300 mb-3">
-                        <strong>Категория:</strong>{" "}
-                        {product.categoryId || "Не указана"}
-                      </p>
-                      <p className="text-xl text-gray-300 mb-3">
-                        <strong>Наличие:</strong> {product.availability}
-                      </p>
-                      <div className="mt-6">
-                        <h4 className="text-2xl font-semibold text-gray-300 mb-4">
-                          Характеристики:
-                        </h4>
-                        <div className="space-y-3">
-                          {renderParams(product.params)}
+
+                  <div className="md:w-2/3 space-y-3 overflow-y-auto pr-2">
+                    <div className="space-y-3">
+                      <div className="bg-gray-700 p-3 rounded-lg">
+                        <p className="text-sm text-gray-400 mb-1">Цена</p>
+                        <p className="text-xl text-white font-mono">
+                          {product.price} ₽
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-gray-700 p-2 rounded-lg">
+                          <p className="text-xs text-gray-400 mb-1">
+                            Категория
+                          </p>
+                          <p className="text-sm text-white truncate">
+                            {category[product.categoryId].name || "Не указана"}
+                          </p>
+                        </div>
+
+                        <div className="bg-gray-700 p-2 rounded-lg">
+                          <p className="text-xs text-gray-400 mb-1">Наличие</p>
+                          <p className="text-sm text-white">
+                            {product.availability}
+                          </p>
                         </div>
                       </div>
-                      {user && user?.isAdmin ? (
-                        <button onClick={() => setBool(true)}>
-                          Редактировать карточку товара
-                        </button>
-                      ) : (
-                        ""
-                      )}
                     </div>
+
+                    <div className="bg-gray-700 p-3 rounded-lg">
+                      <h4 className="text-sm font-semibold text-white mb-2 border-b border-gray-600 pb-1">
+                        Характеристики
+                      </h4>
+                      <div className="space-y-1.5">
+                        {renderParams(product.params)}
+                      </div>
+                    </div>
+
+                    {user?.isAdmin && (
+                      <button
+                        onClick={() => setBool(true)}
+                        className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-sm rounded-lg 
+                   transition-all duration-300 flex items-center justify-center gap-1.5"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                        Редактировать
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -260,6 +292,21 @@ export default function Dialog({ isOpen, onClose, product, user }) {
                       />
                     </div>
 
+                    <label className="block text-gray-300 mb-2">
+                      Список категорий
+                    </label>
+                    <div className="flex flex-col gap-1 overflow-scroll max-h-60">
+                      {category.map((el, index) => (
+                        <p
+                          key={el.name}
+                          className="text-white bg-gray-700 px-1.5 rounded"
+                        >
+                          {index + 1}. {el.name}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="space-y-4">
                     <div>
                       <label className="block text-gray-300 mb-2">Цена</label>
                       <input
@@ -269,16 +316,6 @@ export default function Dialog({ isOpen, onClose, product, user }) {
                         className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
-
-                    <div>
-                      <label className="block text-gray-300 mb-2">
-                        Категории с их айди
-                      </label>
-                      <p className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"> <
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
                     <div>
                       <label className="block text-gray-300 mb-2">
                         Изображение (URL или имя файла)

@@ -15,6 +15,8 @@ function App() {
   const [user, setUser] = useState();
   const [loadingUser, setLoadingUser] = useState(true);
   const navigate = useNavigate();
+  const [category, setCategory] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     axiosInstance("/tokens/refresh")
@@ -30,6 +32,19 @@ function App() {
       .finally(() => {
         setLoadingUser(false);
       });
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axiosInstance.get("/listCategories");
+        setCategory(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке категорий:", error);
+        setError("Не удалось загрузить категории");
+      }
+    };
+    fetchCategories();
   }, []);
 
   if (loadingUser) return <p>Загрузка пользователя...</p>;
@@ -75,7 +90,10 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout user={user} handleLogout={handleLogout} />}>
-        <Route path="/" element={<MainPage />} />
+        <Route
+          path="/"
+          element={<MainPage user={user} category={category} />}
+        />
         <Route path="/contacts" element={<ContactsPage user={user} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/selector" element={<SelectorPage />} />
@@ -87,9 +105,13 @@ function App() {
         />
         <Route
           path="/category/:categoryId"
-          element={<ProductsPage user={user} />}
+          element={<ProductsPage user={user} category={category} />}
         />
-        <Route path="/category" element={<ProductsPage user={user} />} />
+        <Route
+          path="/category"
+          element={<ProductsPage user={user} category={category} />}
+        />
+
         <Route path="*" element={<ErrorPage user={user} />} />
       </Route>
     </Routes>

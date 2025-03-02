@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import Dialog from "../ui/Dialog";
 
-export default function ProductsPage({ user }) {
+export default function ProductsPage({ user, category }) {
   const { categoryId } = useParams();
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -194,6 +194,7 @@ export default function ProductsPage({ user }) {
         isOpen={isOpen}
         onClose={closeModal}
         product={selectedProduct}
+        category={category}
       />
     </div>
   );

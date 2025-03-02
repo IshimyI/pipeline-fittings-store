@@ -18,59 +18,59 @@ module.exports = {
       [
         {
           name: "Вентили АВ",
-          img: "valves-AB",
+          image: "valves-AB",
         },
         {
           name: "Вентили Т",
-          img: "valves-T",
+          image: "valves-T",
         },
         {
           name: "Клапаны обратные АО",
-          img: "valves-check-AO",
+          image: "valves-check-AO",
         },
         {
           name: "Клапаны обратные Т",
-          img: "valves-check-T",
+          image: "valves-check-T",
         },
         {
           name: "Редукторы АР",
-          img: "gearboxes-AP",
+          image: "gearboxes-AP",
         },
         {
           name: "Редукторы Т",
-          img: "gearboxes-T",
+          image: "gearboxes-T",
         },
         {
           name: "Клапаны предохранительные АП",
-          img: "valves-safety-AP",
+          image: "valves-safety-AP",
         },
         {
           name: "Клапаны предохранительные Т",
-          img: "valves-safety-T",
+          image: "valves-safety-T",
         },
         {
           name: "Фильтры АФ",
-          img: "filters-AF",
+          image: "filters-AF",
         },
         {
           name: "Фильтры Т",
-          img: "filters-T",
+          image: "filters-T",
         },
         {
           name: "Пневмоэлектроклапаны АЭ",
-          img: "valves-pneumoelectric",
+          image: "valves-pneumoelectric",
         },
         {
           name: "Клапаны отсечные Т",
-          img: "off-valves",
+          image: "off-valves",
         },
         {
           name: "Пневмоэлектроклапаны ПЭКДД",
-          img: "valves-pneumoelectric-PAKDD",
+          image: "valves-pneumoelectric-PAKDD",
         },
         {
           name: "Запорная арматура БАМЗ",
-          img: "off-valves-bamz",
+          image: "off-valves-bamz",
         },
       ],
       {}
