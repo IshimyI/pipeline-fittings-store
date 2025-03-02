@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function ContactsPage() {
+export default function ContactsPage({ user }) {
   return (
     <div className="flex items-center justify-center bg-gray-900 text-white">
       <main className="w-full max-w-4xl p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg border border-gray-700 my-8">
@@ -86,6 +86,7 @@ export default function ContactsPage() {
                   id="name"
                   name="name"
                   placeholder="Ваше имя"
+                  value={user.name}
                   required
                   className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
@@ -96,6 +97,7 @@ export default function ContactsPage() {
                   id="email"
                   name="email"
                   placeholder="Ваш email"
+                  value={user.email}
                   required
                   className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />

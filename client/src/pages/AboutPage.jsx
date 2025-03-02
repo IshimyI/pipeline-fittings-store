@@ -31,65 +31,65 @@ export default function AboutPage() {
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
               <p className="text-gray-400">Роскосмос</p>
               <img
-                src="./img/companies/Roscosmos.png"
+                src="/img/companies/Roscosmos.png"
                 alt="Лого Роскосмоса"
-                className="w-32 h-auto object-contain"
+                className="w-32 h-32 object-cover rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
               <p className="text-gray-400">Алмаз-Антей</p>
               <img
-                src="./img/companies/Almaz-Antey.jpg"
+                src="/img/companies/Almaz-Antey.jpg"
                 alt="Лого Алмаз-Антея"
-                className="w-32 h-auto object-contain"
+                className="w-32 h-32 object-cover rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
               <p className="text-gray-400">Прогресс</p>
               <img
-                src="./img/companies/Progress.jpg"
+                src="/img/companies/Progress.jpg"
                 alt="Лого Прогресса"
-                className="w-32 h-auto object-contain"
+                className="w-32 h-32 object-cover rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
               <p className="text-gray-400">Криогенмаш</p>
               <img
-                src="./img/companies/Kriogenmash.jpg"
+                src="/img/companies/Kriogenmash.jpg"
                 alt="Лого Криогенмаша"
-                className="w-32 h-auto object-contain"
+                className="w-32 h-32 object-cover rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
               <p className="text-gray-400">Техгаз</p>
               <img
-                src="./img/companies/tech-gas.png"
+                src="/img/companies/tech-gas.png"
                 alt="Лого Техгаза"
-                className="w-32 h-auto object-contain"
+                className="w-32 h-32 object-cover rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
               <p className="text-gray-400">ООО ЗИД</p>
               <img
-                src="./img/companies/zid.png"
+                src="/img/companies/zid.png"
                 alt="Лого ООО ЗИД"
-                className="w-32 h-auto object-contain"
+                className="w-32 h-32 object-cover rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
               <p className="text-gray-400">НИИМАШ</p>
               <img
-                src="./img/companies/niimash.jpg"
+                src="/img/companies/niimash.jpg"
                 alt="Лого НИИМАШа"
-                className="w-32 h-auto object-contain"
+                className="w-32 h-32 object-cover rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
               <p className="text-gray-400">СЭГЗ</p>
               <img
-                src="./img/companies/segs.png"
+                src="/img/companies/segs.png"
                 alt="Лого СЭГЗа"
-                className="w-32 h-auto object-contain"
+                className="w-32 h-32 object-cover rounded-md"
               />
             </div>
           </div>

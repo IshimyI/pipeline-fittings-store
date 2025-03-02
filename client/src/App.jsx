@@ -76,7 +76,7 @@ function App() {
     <Routes>
       <Route element={<Layout user={user} handleLogout={handleLogout} />}>
         <Route path="/" element={<MainPage />} />
-        <Route path="/contacts" element={<ContactsPage />} />
+        <Route path="/contacts" element={<ContactsPage user={user} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/selector" element={<SelectorPage />} />
         <Route
@@ -85,8 +85,11 @@ function App() {
             <AuthPage handleLogin={handleLogin} handleSignUp={handleSignUp} />
           }
         />
-        <Route path="/category/:categoryId" element={<ProductsPage />} />
-        <Route path="/category" element={<ProductsPage />} />
+        <Route
+          path="/category/:categoryId"
+          element={<ProductsPage user={user} />}
+        />
+        <Route path="/category" element={<ProductsPage user={user} />} />
         <Route path="*" element={<ErrorPage user={user} />} />
       </Route>
     </Routes>
