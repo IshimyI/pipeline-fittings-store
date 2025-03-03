@@ -1,5 +1,5 @@
 const express = require("express");
-const { User } = require("../../db/models");
+const { User, Inventory, User_selected_items } = require("../../db/models");
 const bcrypt = require("bcrypt");
 const cookieConfig = require("../configs/cookieConfig");
 const jwt = require("jsonwebtoken");
@@ -8,7 +8,7 @@ const generateTokens = require("../utils/generateTokens");
 const authRouter = express.Router();
 
 authRouter.post("/signup", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { email, name, password } = req.body;
   if (!email || !name || !password) return res.sendStatus(401);
 
   const hashpass = await bcrypt.hash(password, 10);

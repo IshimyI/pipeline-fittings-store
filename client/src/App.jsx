@@ -10,9 +10,10 @@ import AboutPage from "./pages/AboutPage";
 import SelectorPage from "./pages/SelectorPage";
 import AuthPage from "./pages/AuthPage";
 import ProductsPage from "./pages/ProductsPage";
+import BasketPage from "./pages/BasketPage";
 
 function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const navigate = useNavigate();
   const [category, setCategory] = useState([]);
@@ -97,6 +98,7 @@ function App() {
         <Route path="/contacts" element={<ContactsPage user={user} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/selector" element={<SelectorPage />} />
+        <Route path="/basket" element={<BasketPage user={user} />} />
         <Route
           path="/login"
           element={

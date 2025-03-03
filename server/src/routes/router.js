@@ -1,15 +1,9 @@
 const express = require("express");
-const { User, Category, Product } = require("../../db/models");
+const { User, Category, Product, Basket } = require("../../db/models");
 const { where } = require("sequelize");
+const verifyRefreshToken = require("../middlewares/verifyRefreshToken");
 
 const router = express.Router();
-
-const checkAdmin = (req, res, next) => {
-  if (!req.body.user?.isAdmin) {
-    return res.status(403).send({ message: "Доступ запрещен" });
-  }
-  next();
-};
 
 router.get("/users", async (req, res) => {
   try {
@@ -68,7 +62,7 @@ router.post("/cta", async (req, res) => {
   }
 });
 
-router.post("/changeProduct/:id", checkAdmin, async (req, res) => {
+router.post("/changeProduct/:id", verifyRefreshToken, async (req, res) => {
   const { id } = req.params;
   const { categoryId, name, image, price, availability, params, user } =
     req.body;
@@ -98,7 +92,7 @@ router.post("/changeProduct/:id", checkAdmin, async (req, res) => {
   }
 });
 
-router.post("/createProduct", checkAdmin, async (req, res) => {
+router.post("/createProduct", verifyRefreshToken, async (req, res) => {
   const {
     name,
     categoryId,
@@ -110,6 +104,10 @@ router.post("/createProduct", checkAdmin, async (req, res) => {
   } = req.body;
 
   try {
+    if (!user?.isAdmin) {
+      return res.status(403).send({ message: "Доступ запрещен" });
+    }
+
     const errors = [];
     if (!name) errors.push("name");
     if (!categoryId) errors.push("categoryId");
@@ -146,11 +144,11 @@ router.post("/createProduct", checkAdmin, async (req, res) => {
   }
 });
 
-router.post("/createCategory", checkAdmin, async (req, res) => {
+router.post("/createCategory", verifyRefreshToken, async (req, res) => {
   const { name, image, user } = req.body;
 
   try {
-    if (!user?.isAdmin) {
+    if (!user.isAdmin) {
       return res.status(403).send({ message: "Доступ запрещен" });
     }
 
@@ -175,28 +173,189 @@ router.post("/createCategory", checkAdmin, async (req, res) => {
   }
 });
 
-router.delete("/deleteCategory/:id", async (req, res) => {
-  const { id } = req.params;
+router.put(
+  "/updateCategory/:id/:userId",
+  verifyRefreshToken,
+  async (req, res) => {
+    const { id, userId } = req.params;
+    const { name, img } = req.body;
+    try {
+      const user = await User.findByPk(userId);
+      if (!user.isAdmin) {
+        return res.status(403).send({ message: "Доступ запрещен" });
+      }
+
+      if (!name || name.trim() === "") {
+        return res
+          .status(400)
+          .send({ message: "Название категории обязательно" });
+      }
+
+      const category = await Category.findByPk(id);
+      if (!category) {
+        return res.status(404).send({ message: "Категория не найдена" });
+      }
+
+      const updatedCategory = await category.update({
+        name: name.trim(),
+        img: img || "default-category.jpg",
+        updatedAt: new Date(),
+      });
+
+      res.status(200).send(updatedCategory);
+    } catch (error) {
+      console.error("Ошибка редактирования категории:", error);
+      res.status(500).send({
+        message: error.message || "Ошибка при обновлении категории",
+      });
+    }
+  }
+);
+
+router.delete(
+  "/deleteCategory/:id/:userId",
+  verifyRefreshToken,
+  async (req, res) => {
+    const { id, userId } = req.params;
+
+    try {
+      const user = await User.findByPk(userId);
+
+      if (!user.isAdmin) {
+        return res.status(403).send({ message: "Доступ запрещен" });
+      }
+
+      const category = await Category.findByPk(id);
+      if (!category) {
+        return res.status(404).json({ message: "Категория не найдена" });
+      }
+      await category.destroy();
+      res.status(200).json({ message: "Категория успешно удалена" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: "Ошибка при удалении категории",
+        error: error.message,
+      });
+    }
+  }
+);
+
+router.delete(
+  "/deleteProduct/:id/:userId",
+  verifyRefreshToken,
+  async (req, res) => {
+    const { id, userId } = req.params;
+
+    try {
+      const user = await User.findByPk(userId);
+
+      if (!user.isAdmin) {
+        return res.status(403).send({ message: "Доступ запрещен" });
+      }
+
+      const product = await Product.findByPk(id);
+      if (!product) {
+        return res.status(404).json({ message: "Товар не найден" });
+      }
+      await product.destroy();
+      res.status(200).json({ message: "Товар успешно удален" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: "Ошибка при удалении товара",
+        error: error.message,
+      });
+    }
+  }
+);
+
+router.get("/basket", async (req, res) => {
+  const { userId } = req.query;
+  if (!userId) {
+    return res.status(400).json({ message: "Не указан userId" });
+  }
+
   try {
-    const category = await Category.findByPk(id);
-    category.destroy();
-    res.status(204).send({ message: "Удаление категории прошло успешно" });
+    const basket = await Basket.findAll({
+      where: { userId },
+      include: [{ model: Product, as: "product" }],
+    });
+    res.status(200).json(basket);
   } catch (error) {
-    console.log(error);
-    res.status(500).send(error.message);
+    console.error(error);
+    res.status(500).json({ message: "Ошибка получения корзины" });
   }
 });
 
-router.delete("/deleteProduct/:id", async (req, res) => {
-  const { id } = req.params;
+router.post("/basket", async (req, res) => {
+  const { userId, productId, quantity = 1 } = req.body;
+
+  if (!userId || !productId) {
+    return res.status(400).json({ message: "Не указаны userId или productId" });
+  }
+
   try {
-    const product = await Product.findByPk(id);
-    product.destroy();
-    res.status(204).send({ message: "Удаление продукты прошло успешно" });
+    let basketItem = await Basket.findOne({
+      where: { userId, productId },
+    });
+
+    if (basketItem) {
+      basketItem.quantity += quantity;
+      await basketItem.save();
+    } else {
+      basketItem = await Basket.create({
+        userId,
+        productId,
+        quantity,
+      });
+    }
+
+    res.status(201).json(basketItem);
   } catch (error) {
-    console.log(error);
-    res.status(500).send(error.message);
+    console.error(error);
+    res.status(500).json({ message: "Ошибка добавления товара в корзину" });
   }
 });
+
+router.delete("/basket", async (req, res) => {
+  const { userId, productId } = req.body;
+
+  if (!userId || !productId) {
+    return res.status(400).json({ message: "Не указаны userId или productId" });
+  }
+
+  try {
+    const deleted = await Basket.destroy({
+      where: { userId, productId },
+    });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Товар в корзине не найден" });
+    }
+
+    res.json({ message: "Товар удален из корзины" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Ошибка удаления товара" });
+  }
+});
+
+router.delete("/basket/clear", async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    await Basket.destroy({
+      where: { userId },
+    });
+
+    res.json({ message: "Корзина очищена" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Ошибка очистки корзины" });
+  }
+});
+
+
 
 module.exports = router;
