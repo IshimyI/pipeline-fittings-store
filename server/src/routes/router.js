@@ -1,5 +1,5 @@
 const express = require("express");
-const { User, Category, Product, Basket } = require("../../db/models");
+const { User, Category, Product, Basket, Order } = require("../../db/models");
 const { where } = require("sequelize");
 const verifyRefreshToken = require("../middlewares/verifyRefreshToken");
 
@@ -356,6 +356,80 @@ router.delete("/basket/clear", async (req, res) => {
   }
 });
 
+router.post("/createOrder", async (req, res) => {
+  const { userId, items, total } = req.body;
+  try {
+    const order = await Order.create({
+      userId,
+      items: JSON.stringify(items),
+      total,
+    });
 
+    res.status(201).json({
+      message: "Заказ успешно создан",
+      order: {
+        id: order.id,
+        total: order.total,
+        items: JSON.parse(order.items),
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Ошибка создания заказа" });
+  }
+});
+
+router.get("/allOrders", async (req, res) => {
+  try {
+    const orders = await Order.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ["name", "email"],
+          as: "user",
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+
+    const formattedOrders = await Promise.all(
+      orders.map(async (order) => {
+        const items = JSON.parse(order.items);
+
+        const itemsWithNames = await Promise.all(
+          items.map(async (item) => {
+            const product = await Product.findByPk(item.productId, {
+              attributes: ["name", "price"],
+            });
+            return {
+              productName: product?.name || "Товар удален",
+              quantity: item.quantity,
+              price: product?.price || 0,
+            };
+          })
+        );
+
+        return {
+          id: order.id,
+          total: order.total,
+          createdAt: order.createdAt,
+          user: {
+            name: order.user?.name || "Неизвестный пользователь",
+            email: order.user?.email || "Нет email",
+          },
+          items: itemsWithNames,
+        };
+      })
+    );
+
+    res.status(200).json(formattedOrders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Ошибка получения заказов",
+      error: error.message,
+    });
+  }
+});
 
 module.exports = router;

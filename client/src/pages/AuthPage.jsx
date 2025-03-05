@@ -4,12 +4,12 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
   const [log, setLog] = useState(true);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [name, setName] = useState(""); // Добавлено состояние для имени
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
 
   const toggleForm = () => {
     setLog(!log);
-    setError(""); // Сброс ошибки при переключении форм
+    setError("");
   };
 
   const handleSubmit = (e) => {
@@ -26,8 +26,8 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-950 text-white">
-      <div className="w-full max-w-md p-8 space-y-6 bg-gray-900 rounded-lg shadow-xl border border-gray-700">
+    <div className="flex items-center justify-center pt-10 text-white">
+      <div className="w-full max-w-md p-8 space-y-6 bg-gray-700 rounded-lg shadow-xl border border-gray-700">
         <h2 className="text-2xl font-semibold text-center text-gray-300 uppercase tracking-wide">
           {log ? "Вход" : "Регистрация"}
         </h2>

@@ -63,7 +63,7 @@ export default function Cart({ items = [], onClose, onCheckout, onRemove }) {
             <button
               onClick={onCheckout}
               className="w-full bg-green-600 hover:bg-green-700 py-2 rounded-lg"
-              disabled={items.length === 0 || hasAnyRequestPrice}
+              disabled={items.length === 0}
             >
               Оформить заказ
             </button>

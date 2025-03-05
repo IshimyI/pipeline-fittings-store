@@ -86,7 +86,7 @@ export default function ContactsPage({ user }) {
                   id="name"
                   name="name"
                   placeholder="Ваше имя"
-                  value={user.name}
+                  value={user ? user.name : ""}
                   required
                   className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
@@ -97,8 +97,17 @@ export default function ContactsPage({ user }) {
                   id="email"
                   name="email"
                   placeholder="Ваш email"
-                  value={user.email}
+                  value={user ? user.email : ""}
                   required
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+              <div>
+                <input
+                  type="tel"
+                  id="tel"
+                  name="tel"
+                  placeholder="Ваш телефон"
                   className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>

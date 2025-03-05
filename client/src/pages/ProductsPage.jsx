@@ -69,7 +69,7 @@ export default function ProductsPage({ user, category }) {
 
   const handleCheckout = async () => {
     try {
-      const response = await axiosInstance.post("/createOrder", {
+      const orderData = {
         userId: user.id,
         items: cartItems.map((item) => ({
           productId: item.id,
@@ -79,18 +79,20 @@ export default function ProductsPage({ user, category }) {
           (sum, item) => sum + item.price * item.quantity,
           0
         ),
-      });
+      };
 
-      if (response.status === 201) {
+      const orderResponse = await axiosInstance.post("/createOrder", orderData);
+
+      if (orderResponse.data.message === "Заказ успешно создан") {
         await axiosInstance.delete("/basket/clear", {
           data: { userId: user.id },
         });
 
         setCartItems([]);
-        alert("Заказ успешно оформлен!");
+        alert(`Заказ принят! Менеджер свяжется для уточнения деталей.`);
       }
     } catch (error) {
-      console.error("Ошибка оформления заказа:", error);
+      console.error("Ошибка оформления:", error);
       setError("Не удалось оформить заказ");
     }
   };
