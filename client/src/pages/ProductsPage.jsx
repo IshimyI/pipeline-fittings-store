@@ -18,40 +18,45 @@ export default function ProductsPage({ user, category }) {
   const [priceFilter, setPriceFilter] = useState("all");
   const [cartVisible, setCartVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [loadingCart, setLoadingCart] = useState(false);
 
   useEffect(() => {
     const fetchCart = async () => {
-      if (user?.id) {
-        try {
-          const response = await axiosInstance.get("/basket", {
-            params: { userId: user.id },
-          });
+      if (!user?.id) return;
 
-          const cartProducts = response.data.map((item) => ({
-            ...item.product,
-            quantity: item.quantity,
-          }));
-
-          setCartItems(cartProducts);
-        } catch (error) {
-          console.error("Ошибка загрузки корзины:", error);
-        }
+      setLoadingCart(true);
+      try {
+        const response = await axiosInstance.get("/basket", {
+          params: { userId: user.id },
+        });
+        const cartProducts = response.data.map((item) => ({
+          ...item.product,
+          quantity: item.quantity,
+        }));
+        setCartItems(cartProducts);
+      } catch (error) {
+        console.error("Ошибка загрузки корзины:", error);
+        setError("Не удалось загрузить корзину");
+      } finally {
+        setLoadingCart(false);
       }
     };
-
-    const timer = setTimeout(fetchCart, 100);
-    return () => clearTimeout(timer);
+    fetchCart();
   }, [user]);
 
   const addToCart = async (product) => {
-    if (!user?.id) return;
-
+    if (!user?.id) {
+      setError(
+        "Пожалуйста, войдите в систему для добавления товаров в корзину"
+      );
+      return;
+    }
+    setLoadingCart(true);
     try {
       await axiosInstance.post("/basket", {
         userId: user.id,
         productId: product.id,
       });
-
       setCartItems((prev) => {
         const existing = prev.find((item) => item.id === product.id);
         return existing
@@ -64,6 +69,9 @@ export default function ProductsPage({ user, category }) {
       });
     } catch (error) {
       console.error("Ошибка добавления в корзину:", error);
+      setError("Не удалось добавить товар в корзину");
+    } finally {
+      setLoadingCart(false);
     }
   };
 

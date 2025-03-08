@@ -33,7 +33,7 @@ export default function AboutPage() {
               <img
                 src="/img/companies/Roscosmos.png"
                 alt="Лого Роскосмоса"
-                className="w-32 h-32 object-cover rounded-md"
+                className="w-32 h-32 object-contain rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
@@ -41,7 +41,7 @@ export default function AboutPage() {
               <img
                 src="/img/companies/Almaz-Antey.jpg"
                 alt="Лого Алмаз-Антея"
-                className="w-32 h-32 object-cover rounded-md"
+                className="w-32 h-32 object-contain rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
@@ -49,7 +49,7 @@ export default function AboutPage() {
               <img
                 src="/img/companies/Progress.jpg"
                 alt="Лого Прогресса"
-                className="w-32 h-32 object-cover rounded-md"
+                className="w-32 h-32 object-contain rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
@@ -57,7 +57,7 @@ export default function AboutPage() {
               <img
                 src="/img/companies/Kriogenmash.jpg"
                 alt="Лого Криогенмаша"
-                className="w-32 h-32 object-cover rounded-md"
+                className="w-32 h-32 object-contain rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
@@ -65,7 +65,7 @@ export default function AboutPage() {
               <img
                 src="/img/companies/tech-gas.png"
                 alt="Лого Техгаза"
-                className="w-32 h-32 object-cover rounded-md"
+                className="w-32 h-32 object-contain rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
@@ -73,7 +73,7 @@ export default function AboutPage() {
               <img
                 src="/img/companies/zid.png"
                 alt="Лого ООО ЗИД"
-                className="w-32 h-32 object-cover rounded-md"
+                className="w-32 h-32 object-contain rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
@@ -81,7 +81,7 @@ export default function AboutPage() {
               <img
                 src="/img/companies/niimash.jpg"
                 alt="Лого НИИМАШа"
-                className="w-32 h-32 object-cover rounded-md"
+                className="w-32 h-32 object-contain rounded-md"
               />
             </div>
             <div className="flex flex-col items-center bg-white p-4 rounded-md">
@@ -89,7 +89,7 @@ export default function AboutPage() {
               <img
                 src="/img/companies/segs.png"
                 alt="Лого СЭГЗа"
-                className="w-32 h-32 object-cover rounded-md"
+                className="w-32 h-32 object-contain rounded-md"
               />
             </div>
           </div>

@@ -5,7 +5,8 @@ export default function Cart({ items = [], onClose, onCheckout, onRemove }) {
 
   const totalSum = items.reduce((sum, item) => {
     const price = parseFloat(String(item.price).replace(/[^0-9.]/g, ""));
-    return isNaN(price) ? sum : sum + price * (item.quantity || 1);
+    const quantity = item.quantity || 1;
+    return isNaN(price) ? sum : sum + price * quantity;
   }, 0);
 
   const formattedTotal = hasAnyRequestPrice

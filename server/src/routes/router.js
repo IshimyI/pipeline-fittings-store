@@ -1,5 +1,12 @@
 const express = require("express");
-const { User, Category, Product, Basket, Order } = require("../../db/models");
+const {
+  User,
+  Category,
+  Product,
+  Basket,
+  Order,
+  Feedback,
+} = require("../../db/models");
 const { where } = require("sequelize");
 const verifyRefreshToken = require("../middlewares/verifyRefreshToken");
 
@@ -99,7 +106,7 @@ router.post("/createProduct", verifyRefreshToken, async (req, res) => {
     price,
     image = "default-product.jpg",
     availability = "",
-    params = {},
+    params = { Размер: "M", Цвет: "Красный" },
     user,
   } = req.body;
 
@@ -428,6 +435,75 @@ router.get("/allOrders", async (req, res) => {
     res.status(500).json({
       message: "Ошибка получения заказов",
       error: error.message,
+    });
+  }
+});
+
+router.get("/feedback", async (req, res) => {
+  try {
+    const feedback = await Feedback.findAll({});
+    res.status(200).send(feedback);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+});
+
+router.delete("/feedback/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const feedback = await Feedback.findByPk(id);
+    feedback.destroy();
+    res.status(200).send({ message: "Сообщение успешно удалено" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+});
+
+router.post("/feedback", async (req, res) => {
+  try {
+    // Валидация обязательных полей
+    const { name, email, phone, message } = req.body;
+
+    if (!email || !email.trim()) {
+      return res.status(400).json({
+        error: "Validation Error",
+        message: "Email обязателен",
+      });
+    }
+    if (!message || !message.trim()) {
+      return res.status(400).json({
+        error: "Validation Error",
+        message: "Сообщение обязательно",
+      });
+    }
+    // Создание записи в БД
+    const feedback = await Feedback.create({
+      name: name?.trim() || null,
+      email: email.trim(),
+      phone: phone?.trim() || null,
+      message: message.trim(),
+    });
+    // Успешный ответ
+    return res.status(201).json({
+      message: "Сообщение успешно отправлено",
+      feedback,
+    });
+  } catch (error) {
+    console.error("Feedback creation error:", error);
+
+    // Обработка ошибок БД
+    if (error.name === "SequelizeValidationError") {
+      return res.status(400).json({
+        error: "Validation Error",
+        message: error.message,
+      });
+    }
+    // Общая ошибка сервера
+    return res.status(500).json({
+      error: "Server Error",
+      message: "Внутренняя ошибка сервера",
     });
   }
 });

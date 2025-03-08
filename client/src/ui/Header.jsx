@@ -21,8 +21,15 @@ export default function Header({ user, handleLogout }) {
         </NavLink>
       </nav>
       <div className="flex items-center space-x-4">
+        {user?.isAdmin && (
+          <NavLink to="/admin" className="hover:text-blue-400">
+            Список обращений
+          </NavLink>
+        )}
+      </div>
+      <div className="flex items-center space-x-4">
         <NavLink to="/basket" className="hover:text-blue-400">
-          {user ? "Корзина" : "Гость"}
+          {user ? (user?.isAdmin ? "Список заказов" : "Корзина") : ""}
         </NavLink>
         {!user ? (
           <>

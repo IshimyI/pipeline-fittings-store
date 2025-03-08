@@ -1,21 +1,5 @@
-// import axios from "axios";
-
-// const axiosInstance = axios.create({
-//   baseURL: `${import.meta.env.VITE_TARGET}/api`,
-//   headers: { "Content-Type": "application/json" },
-// });
-
-// let accessToken = "";
-
-// export function setAccessToken(newToken) {
-//   accessToken = newToken;
-// }
-
-// export default axiosInstance;
-
 import axios from "axios";
 
-// * поменяй все axios на axiosInstance
 const axiosInstance = axios.create({
   baseURL: `${import.meta.env.VITE_TARGET}/api`,
   withCredentials: true,
@@ -27,15 +11,16 @@ export function setAccessToken(newToken) {
   accessToken = newToken;
 }
 
-// * Пишем перехватчик для приклеивания accessToken  к каждому запросу
-axiosInstance.interceptors.request.use((config) => {
-  if (!config.headers.Authorization) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-  return config;
-});
+axiosInstance.interceptors.request.use(
+  (config) => {
+    if (!config.headers.Authorization && accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// * Пишем перехватчик для перевыпуска accessToken при его истечении
 axiosInstance.interceptors.response.use(
   (res) => {
     return res;
@@ -45,7 +30,7 @@ axiosInstance.interceptors.response.use(
     if (error.response.status === 401) {
       const response = await axios.get(
         `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
-        { withCredentials: true } // * мы можем получить куку на клиенте
+        { withCredentials: true }
       );
       accessToken = response.data.accessToken;
       prevReq.sent = true;

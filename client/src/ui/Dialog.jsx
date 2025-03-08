@@ -10,19 +10,19 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
     image: product?.image || "",
     price: product?.price || "",
     availability: product?.availability || "",
-    params: product?.params || {},
+    params: product?.params || { Размер: "M", Цвет: "Красный" },
   });
   const [bool, setBool] = useState(false);
 
   useEffect(() => {
     if (product) {
-      let initialParams = product.params || {};
+      let initialParams = product.params || { Размер: "M", Цвет: "Красный" };
       if (typeof initialParams === "string") {
         try {
-          initialParams = JSON.parse(initialParams);
+          initialParams = JSON.parse(initialParams.replace(/\\"/g, '"'));
         } catch (e) {
           console.error("Ошибка парсинга параметров:", e);
-          initialParams = {};
+          initialParams = { Размер: "M", Цвет: "Красный" };
         }
       }
       setFormData({
@@ -40,38 +40,102 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
     const { name, value } = e.target;
     if (name === "params") {
       try {
-        const parsedParams = JSON.parse(value);
-        setFormData({ ...formData, [name]: parsedParams });
-      } catch (e) {
-        console.error("Некорректный JSON");
-        setFormData({ ...formData });
+        if (!value.trim()) {
+          setFormData((prev) => ({ ...prev, params: {} }));
+          return;
+        }
+
+        let parsedValue;
+        try {
+          parsedValue = JSON.parse(value);
+        } catch {
+          // Если не получилось - пробуем текстовый формат
+          parsedValue = parseTextFormat(value);
+        }
+
+        validateParamsObject(parsedValue);
+        setFormData((prev) => ({ ...prev, params: parsedValue }));
+      } catch (error) {
+        console.error("Ошибка обработки параметров:", error);
+        // Сохраняем сырой ввод для возможности редактирования
+        setFormData((prev) => ({ ...prev, params: value }));
       }
-    } else {
-      setFormData({ ...formData, [name]: value });
+      if (typeof parsedValue === "object" && parsedValue !== null) {
+        validateParamsObject(parsedValue);
+
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: parsedValue,
+        }));
+      } else {
+        // Если результат не объект, сохраняем исходное значение
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+    }
+  };
+
+  // Вспомогательная функция для парсинга текстового формата
+  const parseTextFormat = (text) => {
+    const lines = text.split("\n").filter((line) => line.trim());
+    const result = {};
+    for (const line of lines) {
+      const [key, ...valueParts] = line.split(":").map((part) => part.trim());
+      if (key && valueParts.length > 0) {
+        const paramValue = valueParts.join(":").trim();
+        result[key] = paramValue.replace(/^["']|["']$/g, "");
+      }
+    }
+    return result;
+  };
+  // Валидация объекта параметров
+  const validateParamsObject = (obj) => {
+    if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
+      throw new Error("Параметры должны быть в формате объекта");
+    }
+    for (const [key, value] of Object.entries(obj)) {
+      if (typeof key !== "string") {
+        throw new Error("Ключи параметров должны быть строками");
+      }
+      if (typeof value !== "string" && typeof value !== "number") {
+        throw new Error("Значения параметров должны быть строками или числами");
+      }
     }
   };
 
   const handleSave = async () => {
     try {
-      const paramsData = JSON.stringify(formData.params);
-
+      if (!formData.name.trim()) {
+        throw new Error("Название обязательно");
+      }
+      // Преобразуем параметры в строку JSON
+      const paramsString =
+        typeof formData.params === "object"
+          ? JSON.stringify(formData.params)
+          : formData.params;
       const response = await axiosInstance.post(
         `/changeProduct/${product.id}`,
         {
           ...formData,
-          params: paramsData,
+          params: paramsString,
           user,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
-
       if (response.status !== 200) {
         throw new Error("Ошибка при сохранении изменений");
       }
-
       setIsEditing(false);
       onClose();
     } catch (error) {
       console.error("Ошибка сохранения:", error);
+      alert(error.message);
     }
   };
 
@@ -113,23 +177,33 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
   }, [onClose]);
 
   const renderParams = (params) => {
+    let parsedParams = params;
+
+    // Handle string params
     if (typeof params === "string") {
       try {
-        params = JSON.parse(params);
+        parsedParams = JSON.parse(params);
       } catch (e) {
         console.error("Ошибка парсинга параметров:", e);
-        return null;
+        return (
+          <div className="text-red-500 text-sm">
+            Ошибка формата параметров. Используйте корректный JSON.
+          </div>
+        );
       }
     }
-
-    return Object.entries(params).map(([key, value]) => (
+    // Handle empty or invalid params
+    if (!parsedParams || typeof parsedParams !== "object") {
+      return null;
+    }
+    return Object.entries(parsedParams).map(([key, value]) => (
       <div
         key={key}
         className="flex justify-between items-center py-1 px-1.5 text-xs"
       >
         <span className="text-gray-400 truncate">{key}</span>
         <span className="text-blue-300 ml-2 max-w-[60%] text-right truncate">
-          {value}
+          {typeof value === "object" ? JSON.stringify(value) : String(value)}
         </span>
       </div>
     ));
@@ -220,7 +294,9 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                             Категория
                           </p>
                           <p className="text-sm text-white truncate">
-                            {category[product.categoryId].name || "Не указана"}
+                            {category && category[product.categoryId]
+                              ? category[product.categoryId].name
+                              : "Категория не указана"}
                           </p>
                         </div>
 
@@ -346,7 +422,11 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                       </label>
                       <textarea
                         name="params"
-                        value={JSON.stringify(formData.params, null, 2)}
+                        value={
+                          typeof formData.params === "string"
+                            ? formData.params
+                            : JSON.stringify(formData.params, null, 2)
+                        }
                         onChange={handleInputChange}
                         className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[150px]"
                       />
