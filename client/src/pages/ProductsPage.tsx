@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import Dialog from "../ui/Dialog";
@@ -6,12 +6,12 @@ import Cart from "../ui/Cart";
 
 export default function ProductsPage({ user, category }) {
   const { categoryId } = useParams();
-  const [products, setProducts] = useState([]);
-  const [sortedProducts, setSortedProducts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [products, setProducts] = useState([]);
+  // const [sortedProducts, setSortedProducts] = useState([]);
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [selectedProduct, setSelectedProduct] = useState(null);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [sortOption, setSortOption] = useState("name");
   const [availabilityFilter, setAvailabilityFilter] = useState("all");
   const [error, setError] = useState("");
@@ -19,6 +19,57 @@ export default function ProductsPage({ user, category }) {
   const [cartVisible, setCartVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [loadingCart, setLoadingCart] = useState(false);
+
+  const ACTION = {
+    SET_PRODUCTS: "SET_PRODUCTS" as const,
+    SET_SORTED_PRODUCTS: "SET_SORTED_PRODUCTS" as const,
+    SET_SEARCH_QUERY: "SET_SEARCH_QUERY" as const,
+    SET_SELECTED_PRODUCT: "SET_SELECTED_PRODUCT" as const,
+    SET_IS_OPEN: "SET_IS_OPEN" as const,
+    SET_LOADING: "SET_LOADING" as const,
+  };
+
+  const initialState = {
+    products: [],
+    sortedProducts: [],
+    searchQuery: "",
+    selectedProduct: null,
+    isOpen: false,
+    loading: false,
+  };
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case ACTION.SET_PRODUCTS:
+        return { ...state, products: action.payload };
+
+      case ACTION.SET_SORTED_PRODUCTS:
+        return { ...state, sortedProducts: action.payload };
+
+      case ACTION.SET_SEARCH_QUERY:
+        return { ...state, searchQuery: action.payload };
+
+      case ACTION.SET_SELECTED_PRODUCT:
+        return { ...state, selectedProduct: action.payload };
+
+      case ACTION.SET_IS_OPEN:
+        return { ...state, isOpen: action.payload };
+
+      case ACTION.SET_LOADING:
+        return { ...state, loading: action.payload };
+    }
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const {
+    products,
+    sortedProducts,
+    searchQuery,
+    selectedProduct,
+    isOpen,
+    loading,
+  } = state;
+  console.log(state);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -150,9 +201,9 @@ export default function ProductsPage({ user, category }) {
     }
   };
 
-  const sortProducts = (products) => {
-    if (!Array.isArray(products)) return products;
-    let sortedProducts = [...products];
+  const sortProducts = (prods) => {
+    if (!Array.isArray(prods)) return prods;
+    let sortedProducts = [...prods];
 
     switch (sortOption) {
       case "name":
@@ -174,7 +225,7 @@ export default function ProductsPage({ user, category }) {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setLoading(true);
+      dispatch({ type: ACTION.SET_LOADING, payload: true });
       try {
         let response;
         if (categoryId) {
@@ -182,13 +233,13 @@ export default function ProductsPage({ user, category }) {
         } else {
           response = await axiosInstance.get(`/listProducts`);
         }
-        setProducts(response.data);
-        setSortedProducts(response.data);
+        dispatch({ type: ACTION.SET_PRODUCTS, payload: response.data });
+        dispatch({ type: ACTION.SET_SORTED_PRODUCTS, payload: response.data });
       } catch (error) {
         console.error("Ошибка при загрузке товаров:", error);
         setError("Ошибка загрузки товаров");
       } finally {
-        setLoading(false);
+        dispatch({ type: ACTION.SET_LOADING, payload: false });
       }
     };
 
@@ -209,17 +260,23 @@ export default function ProductsPage({ user, category }) {
       return matchesSearch && matchesAvailability && matchesPrice;
     });
 
-    setSortedProducts(sortProducts(filtered));
+    const filter = sortProducts(filtered);
+    console.log(filter);
+
+    dispatch({
+      type: ACTION.SET_SORTED_PRODUCTS,
+      payload: filter,
+    });
   }, [products, searchQuery, availabilityFilter, priceFilter, sortOption]);
 
   const openModal = (product) => {
-    setSelectedProduct(product);
-    setIsOpen(true);
+    dispatch({ type: ACTION.SET_SELECTED_PRODUCT, payload: product });
+    dispatch({ type: ACTION.SET_IS_OPEN, payload: true });
   };
 
   const closeModal = () => {
-    setSelectedProduct(null);
-    setIsOpen(false);
+    dispatch({ type: ACTION.SET_SELECTED_PRODUCT, payload: null });
+    dispatch({ type: ACTION.SET_IS_OPEN, payload: false });
   };
 
   const availabilityOptions = [
@@ -244,7 +301,8 @@ export default function ProductsPage({ user, category }) {
       const response = await axiosInstance.get(
         categoryId ? `/listProducts/${categoryId}` : `/listProducts`
       );
-      setProducts(response.data);
+
+      dispatch({ type: ACTION.SET_PRODUCTS, payload: response.data });
     } catch (error) {
       console.error("Ошибка удаления:", error);
       setError(error.response?.data?.message || "Недостаточно прав");
@@ -295,7 +353,12 @@ export default function ProductsPage({ user, category }) {
               type="text"
               placeholder="Поиск по названию..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) =>
+                dispatch({
+                  type: ACTION.SET_SEARCH_QUERY,
+                  payload: e.target.value,
+                })
+              }
               className="w-full p-3 bg-gray-800 text-white rounded-lg"
             />
           </div>
@@ -314,9 +377,9 @@ export default function ProductsPage({ user, category }) {
 
           {loading ? (
             <div className="text-center text-gray-300">Загрузка...</div>
-          ) : sortedProducts.length > 0 ? (
+          ) : sortedProducts?.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {sortedProducts.map((product) => (
+              {sortedProducts?.map((product) => (
                 <div
                   key={product.id}
                   className="bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 relative"

@@ -9,6 +9,7 @@ const {
 } = require("../../db/models");
 const { where } = require("sequelize");
 const verifyRefreshToken = require("../middlewares/verifyRefreshToken");
+require("dotenv").config();
 
 const router = express.Router();
 
@@ -366,10 +367,20 @@ router.delete("/basket/clear", async (req, res) => {
 router.post("/createOrder", async (req, res) => {
   const { userId, items, total } = req.body;
   try {
+    const user = await User.findByPk(userId);
     const order = await Order.create({
       userId,
       items: JSON.stringify(items),
       total,
+    });
+
+    const emailContent = `Ваш заказ №${order.id} на сумму ${order.total} успешно оформлен.`;
+
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: user.email,
+      subject: "Подтверждение заказа",
+      text: emailContent,
     });
 
     res.status(201).json({
@@ -383,6 +394,71 @@ router.post("/createOrder", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Ошибка создания заказа" });
+  }
+});
+
+router.post("/feedback", async (req, res) => {
+  try {
+    // Валидация обязательных полей
+    const { name, email, phone, message } = req.body;
+
+    if (!email || !email.trim()) {
+      return res.status(400).json({
+        error: "Validation Error",
+        message: "Email обязателен",
+      });
+    }
+    if (!message || !message.trim()) {
+      return res.status(400).json({
+        error: "Validation Error",
+        message: "Сообщение обязательно",
+      });
+    }
+
+    // Создание записи в БД
+    const feedback = await Feedback.create({
+      name: name?.trim() || null,
+      email: email.trim(),
+      phone: phone?.trim() || null,
+      message: message.trim(),
+    });
+
+    // const feedbackEmailContent = `Спасибо за ваш отзыв! Мы свяжемся с вами, если потребуется.`;
+
+    // await transporter.sendMail({
+    //   from: process.env.SMTP_USER,
+    //   to: email,
+    //   subject: "Ваше сообщение получено",
+    //   text: feedbackEmailContent,
+    // });
+
+    // await transporter.sendMail({
+    //   from: process.env.SMTP_USER,
+    //   to: process.env.ADMIN_EMAIL,
+    //   subject: "Новое сообщение от пользователя",
+    //   text: `Новое сообщение от ${email}: ${message}`,
+    // });
+
+    // Успешный ответ
+    return res.status(201).json({
+      message: "Сообщение успешно отправлено",
+      feedback,
+    });
+  } catch (error) {
+    console.error("Feedback creation error:", error);
+
+    // Обработка ошибок БД
+    if (error.name === "SequelizeValidationError") {
+      return res.status(400).json({
+        error: "Validation Error",
+        message: error.message,
+      });
+    }
+    // Общая ошибка сервера
+    return res.status(500).json({
+      error: "Server Error",
+      message: "Внутренняя ошибка сервера",
+    });
   }
 });
 
@@ -458,53 +534,6 @@ router.delete("/feedback/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send(error.message);
-  }
-});
-
-router.post("/feedback", async (req, res) => {
-  try {
-    // Валидация обязательных полей
-    const { name, email, phone, message } = req.body;
-
-    if (!email || !email.trim()) {
-      return res.status(400).json({
-        error: "Validation Error",
-        message: "Email обязателен",
-      });
-    }
-    if (!message || !message.trim()) {
-      return res.status(400).json({
-        error: "Validation Error",
-        message: "Сообщение обязательно",
-      });
-    }
-    // Создание записи в БД
-    const feedback = await Feedback.create({
-      name: name?.trim() || null,
-      email: email.trim(),
-      phone: phone?.trim() || null,
-      message: message.trim(),
-    });
-    // Успешный ответ
-    return res.status(201).json({
-      message: "Сообщение успешно отправлено",
-      feedback,
-    });
-  } catch (error) {
-    console.error("Feedback creation error:", error);
-
-    // Обработка ошибок БД
-    if (error.name === "SequelizeValidationError") {
-      return res.status(400).json({
-        error: "Validation Error",
-        message: error.message,
-      });
-    }
-    // Общая ошибка сервера
-    return res.status(500).json({
-      error: "Server Error",
-      message: "Внутренняя ошибка сервера",
-    });
   }
 });
 
