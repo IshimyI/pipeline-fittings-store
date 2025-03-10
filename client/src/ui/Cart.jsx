@@ -14,7 +14,7 @@ export default function Cart({ items = [], onClose, onCheckout, onRemove }) {
     : `${totalSum.toFixed(2)} ₽`;
 
   return (
-    <div className="fixed bottom-4 right-4 bg-gray-800 p-4 rounded-lg shadow-xl w-sm">
+    <div className="fixed bottom-4 right-4 bg-krio-background p-4 rounded-lg shadow-xl w-sm">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-semibold">Корзина</h3>
         <button onClick={onClose} className="text-gray-400 hover:text-white">

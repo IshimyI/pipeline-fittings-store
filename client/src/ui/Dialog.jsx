@@ -247,7 +247,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
       <dialog
         ref={dialogRef}
         open={isOpen}
-        className="dialog m-auto p-8 bg-gray-800 text-white rounded-lg shadow-lg max-w-250 w-full transform transition-all duration-500 opacity-100"
+        className="dialog m-auto p-8 bg-krio-background text-white rounded-lg shadow-lg max-w-250 w-full transform transition-all duration-500 opacity-100"
         style={{ backdropFilter: "blur(10px)" }}
         aria-labelledby="dialog-title"
         aria-hidden={!isOpen}
@@ -281,7 +281,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
 
                   <div className="md:w-2/3 space-y-3 overflow-y-auto pr-2">
                     <div className="space-y-3">
-                      <div className="bg-gray-700 p-3 rounded-lg">
+                      <div className="bg-krio-foreground p-3 rounded-lg">
                         <p className="text-sm text-gray-400 mb-1">Цена</p>
                         <p className="text-xl text-white font-mono">
                           {product.price} ₽
@@ -289,7 +289,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                       </div>
 
                       <div className="grid grid-cols-2 gap-2">
-                        <div className="bg-gray-700 p-2 rounded-lg">
+                        <div className="bg-krio-foreground p-2 rounded-lg">
                           <p className="text-xs text-gray-400 mb-1">
                             Категория
                           </p>
@@ -300,7 +300,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                           </p>
                         </div>
 
-                        <div className="bg-gray-700 p-2 rounded-lg">
+                        <div className="bg-krio-foreground p-2 rounded-lg">
                           <p className="text-xs text-gray-400 mb-1">Наличие</p>
                           <p className="text-sm text-white">
                             {product.availability}
@@ -309,7 +309,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                       </div>
                     </div>
 
-                    <div className="bg-gray-700 p-3 rounded-lg">
+                    <div className="bg-krio-foreground p-3 rounded-lg">
                       <h4 className="text-sm font-semibold text-white mb-2 border-b border-gray-600 pb-1">
                         Характеристики
                       </h4>
@@ -352,7 +352,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -364,7 +364,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                         name="categoryId"
                         value={formData.categoryId}
                         onChange={handleInputChange}
-                        className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -375,7 +375,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                       {category.map((el, index) => (
                         <p
                           key={el.name}
-                          className="text-white bg-gray-700 px-1.5 rounded"
+                          className="text-white bg-krio-foreground px-1.5 rounded"
                         >
                           {index + 1}. {el.name}
                         </p>
@@ -389,7 +389,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                         name="price"
                         value={formData.price}
                         onChange={handleInputChange}
-                        className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                     <div>
@@ -400,7 +400,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                         name="image"
                         value={formData.image}
                         onChange={handleInputChange}
-                        className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -412,7 +412,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                         name="availability"
                         value={formData.availability}
                         onChange={handleInputChange}
-                        className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -428,7 +428,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                             : JSON.stringify(formData.params, null, 2)
                         }
                         onChange={handleInputChange}
-                        className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[150px]"
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[150px]"
                       />
                     </div>
                   </div>
@@ -437,7 +437,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                 <div className="flex justify-end gap-4 mt-6">
                   <button
                     onClick={() => setBool(false)}
-                    className="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-300"
+                    className="px-6 py-2 bg-krio-primary hover:bg-krio-foreground text-white rounded-lg transition-colors duration-300"
                   >
                     Отмена
                   </button>

@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Header({ user, handleLogout }) {
   return (
-    <header className="flex justify-between items-center p-4 bg-gray-900 text-white border-b border-gray-700">
+    <header className="flex justify-between items-center p-4 bg-krio-background text-white border-b border-gray-700">
       <div className="text-xl font-bold">
         <NavLink to="/" className="hover:text-blue-400">
           Криоарматура

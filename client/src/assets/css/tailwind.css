@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@theme {
+  --color-krio-background: #070f2b;
+  --color-krio-foreground: #1b1a55;
+  --color-krio-primary: #535c91;
+  --color-krio-secondary: #9290c3;
+}
+
 .dialog {
   position: fixed;
   top: 50%;
@@ -17,4 +24,48 @@
   background-color: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   z-index: 9998;
+}
+
+/* body {
+  background-color: rgb(15, 48, 73);
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.15) 2px,
+      transparent 2px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.14) 2px, transparent 2px),
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+} */
+
+body {
+  height: 100%;
+  --color: rgba(43, 43, 43, 0.3);
+  background-color: #191a1a;
+  background-image: linear-gradient(
+      0deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    ),
+    linear-gradient(
+      90deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    );
+  background-size: 105px 105px;
 }

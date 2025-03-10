@@ -162,10 +162,13 @@ export default function MainPage({ user, category }) {
   }, [category]);
 
   return (
-    <div className="text-white min-h-screen p-6" role="main">
+    <div
+      className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8"
+      role="main"
+    >
       <div className="max-w-7xl mx-auto">
         {showForm && (
-          <div className="mb-8 bg-gray-800 p-6 rounded-lg">
+          <div className="mb-8 bg-krio-background p-6 rounded-lg">
             <h3 className="text-xl font-semibold mb-4">
               {showForm === "category"
                 ? "Создать категорию"
@@ -190,7 +193,7 @@ export default function MainPage({ user, category }) {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                  className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white"
                   required
                 />
               </div>
@@ -204,7 +207,7 @@ export default function MainPage({ user, category }) {
                       name="categoryId"
                       value={formData.categoryId}
                       onChange={handleInputChange}
-                      className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                      className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white"
                       required
                     >
                       <option value="">Выберите категорию</option>
@@ -221,7 +224,7 @@ export default function MainPage({ user, category }) {
                       name="price"
                       value={formData.price}
                       onChange={handleInputChange}
-                      className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                      className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white"
                       required
                     />
                   </div>
@@ -231,7 +234,7 @@ export default function MainPage({ user, category }) {
                       name="availability"
                       value={formData.availability}
                       onChange={handleInputChange}
-                      className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                      className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white"
                     />
                   </div>
                 </>
@@ -242,7 +245,7 @@ export default function MainPage({ user, category }) {
                   name="image"
                   value={formData.image}
                   onChange={handleInputChange}
-                  className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                  className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white"
                   placeholder="URL или имя файла"
                 />
               </div>
@@ -260,7 +263,7 @@ export default function MainPage({ user, category }) {
                       params: "",
                     });
                   }}
-                  className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg"
+                  className="px-4 py-2 bg-krio-primary hover:bg-krio-foreground rounded-lg"
                 >
                   Отмена
                 </button>
@@ -317,10 +320,10 @@ export default function MainPage({ user, category }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 <button
                   onClick={() => goToCategory()}
-                  className="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg transform transition-transform hover:scale-105"
+                  className="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg transform transition-transform hover:scale-105 "
                   aria-label="Показать все категории"
                 >
-                  <div className="bg-gray-800 p-6 rounded-lg shadow-lg h-full">
+                  <div className="bg-krio-background p-6 rounded-lg shadow-lg h-full">
                     <img
                       src="/img/categories/all-categories.png"
                       alt="Все категории"

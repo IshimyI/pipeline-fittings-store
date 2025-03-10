@@ -118,9 +118,9 @@ export default function BasketPage({ user }) {
   if (error) return <div className="text-red-500 p-8">{error}</div>;
 
   return (
-    <div>
+    <div className="flex text-black justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
       {user.isAdmin ? (
-        <div>
+        <div className="bg-krio-background shadow-lg rounded-lg p-6 mb-6 w-full max-w-xl border border-gray-700">
           {orders.map((order) => (
             <div className="flex text-center justify-center" key={order.id}>
               <Order order={order} />

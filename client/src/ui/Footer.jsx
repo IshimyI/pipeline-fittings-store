@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="flex justify-between items-center p-4 bg-gray-900 text-white border-t border-gray-700 ">
+    <footer className="flex justify-between items-center p-4 bg-krio-background text-white border-t border-gray-700 ">
       <div className="text-lg font-semibold">
         <NavLink to="/" className="hover:text-blue-400">
           Криоарматура

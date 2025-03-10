@@ -15,7 +15,7 @@ export default function Category({ category }) {
     : "/img/no-photo.png";
 
   return (
-    <div className="category bg-gray-800 p-6 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+    <div className="category bg-krio-background p-6 rounded-lg shadow-lg transform transition-transform hover:scale-105">
       <img
         src={imageUrl}
         alt={category.name}

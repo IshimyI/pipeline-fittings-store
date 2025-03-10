@@ -308,16 +308,16 @@ export default function ProductsPage({ user, category }) {
   };
 
   return (
-    <div className="bg-gray-900 text-white flex justify-center">
+    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
       <main className="w-full max-w-[1280px] p-6 flex">
-        <aside className="h-96 w-1/4 mt-16 p-6 bg-gray-800 rounded-lg mr-6">
+        <aside className="h-96 w-1/4 mt-16 p-6 bg-krio-background rounded-lg mr-6">
           <h3 className="text-2xl font-semibold text-gray-300 mb-4">Фильтры</h3>
           <div className="mb-4">
             <h4 className="text-xl font-semibold text-gray-300">Наличие</h4>
             <select
               value={availabilityFilter}
               onChange={handleAvailabilityFilterChange}
-              className="w-full p-3 bg-gray-700 text-white rounded-lg mb-4"
+              className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
             >
               {availabilityOptions.map((option, index) => (
                 <option key={index} value={option}>
@@ -330,7 +330,7 @@ export default function ProductsPage({ user, category }) {
             <select
               value={priceFilter}
               onChange={handlePriceFilterChange}
-              className="w-full p-3 bg-gray-700 text-white rounded-lg"
+              className="w-full p-3 bg-krio-foreground text-white rounded-lg"
             >
               {priceOptions.map((option, index) => (
                 <option key={index} value={option}>
@@ -357,7 +357,7 @@ export default function ProductsPage({ user, category }) {
                   payload: e.target.value,
                 })
               }
-              className="w-full p-3 bg-gray-800 text-white rounded-lg"
+              className="w-full p-3 bg-krio-background text-white rounded-lg"
             />
           </div>
 
@@ -365,7 +365,7 @@ export default function ProductsPage({ user, category }) {
             <select
               value={sortOption}
               onChange={handleSortChange}
-              className="w-full p-3 bg-gray-800 text-white rounded-lg"
+              className="w-full p-3 bg-krio-background text-white rounded-lg"
             >
               <option value="name">По имени</option>
               <option value="price">По цене</option>
@@ -380,7 +380,7 @@ export default function ProductsPage({ user, category }) {
               {sortedProducts?.map((product) => (
                 <div
                   key={product.id}
-                  className="bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 relative"
+                  className="bg-krio-background p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 relative"
                   onClick={() => openModal(product)}
                 >
                   {user?.isAdmin && (

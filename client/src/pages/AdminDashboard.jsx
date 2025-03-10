@@ -56,20 +56,20 @@ export default function AdminDashboard() {
   if (loading) return <div className="text-center p-8">Загрузка...</div>;
   if (error) return <div className="text-red-500 p-8">{error}</div>;
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Панель администратора</h1>
         <div className="mb-6 flex flex-wrap gap-4">
           <input
             type="text"
             placeholder="Поиск по сообщениям..."
-            className="bg-gray-800 text-white px-4 py-2 rounded-lg flex-1"
+            className="bg-krio-background text-white px-4 py-2 rounded-lg flex-1"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
 
           <select
-            className="bg-gray-800 text-white px-4 py-2 rounded-lg"
+            className="bg-krio-background text-white px-4 py-2 rounded-lg"
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
           >
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
             <option value="asc">Сначала старые</option>
           </select>
           <select
-            className="bg-gray-800 text-white px-4 py-2 rounded-lg"
+            className="bg-krio-background text-white px-4 py-2 rounded-lg"
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >
@@ -86,7 +86,7 @@ export default function AdminDashboard() {
             <option value="processed">Обработанные</option>
           </select>
         </div>
-        <section className="bg-gray-800 rounded-lg p-6">
+        <section className="bg-krio-background rounded-lg p-6">
           <h2 className="text-2xl font-semibold mb-6">
             Сообщения обратной связи
           </h2>
@@ -97,7 +97,7 @@ export default function AdminDashboard() {
               {sortedAndFilteredMessages.map((message) => (
                 <div
                   key={message.id}
-                  className="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors relative group"
+                  className="bg-krio-foreground rounded-lg p-4 hover:bg-krio-primary transition-colors relative group"
                 >
                   <button
                     onClick={() => handleDelete(message.id)}

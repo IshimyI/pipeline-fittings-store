@@ -26,8 +26,8 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
   };
 
   return (
-    <div className="flex items-center justify-center pt-10 text-white">
-      <div className="w-full max-w-md p-8 space-y-6 bg-gray-700 rounded-lg shadow-xl border border-gray-700">
+    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
+      <div className="w-full max-w-md p-8 space-y-6 bg-krio-foreground rounded-lg shadow-xl border border-gray-700">
         <h2 className="text-2xl font-semibold text-center text-gray-300 uppercase tracking-wide">
           {log ? "Вход" : "Регистрация"}
         </h2>
@@ -41,7 +41,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
               name="email"
               type="email"
               id="em1"
-              className="w-full px-3 py-2 mt-1 bg-gray-800 border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-600 focus:outline-none"
+              className="w-full px-3 py-2 mt-1 bg-krio-background border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
 
@@ -59,7 +59,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
                 id="name1"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 mt-1 bg-gray-800 border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                className="w-full px-3 py-2 mt-1 bg-krio-background border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-600 focus:outline-none"
               />
             </div>
           )}
@@ -74,7 +74,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
               id="pass1"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 mt-1 bg-gray-800 border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-600 focus:outline-none"
+              className="w-full px-3 py-2 mt-1 bg-krio-background border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
 
@@ -92,7 +92,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
                 id="pass2"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-3 py-2 mt-1 bg-gray-800 border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                className="w-full px-3 py-2 mt-1 bg-krio-background border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-600 focus:outline-none"
               />
             </div>
           )}

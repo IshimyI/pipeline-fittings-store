@@ -124,8 +124,8 @@ export default function ContactsPage({ user }) {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-900 text-white">
-      <main className="w-full max-w-4xl p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg border border-gray-700 my-8">
+    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10">
+      <main className="w-full max-w-4xl p-8 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 opacity-100">
         <section id="contacts" className="space-y-6">
           <div>
             <h2 className="text-2xl font-bold text-center text-gray-200">
@@ -136,7 +136,7 @@ export default function ContactsPage({ user }) {
             Мы всегда рады помочь! Вы можете связаться с нами через:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-4 bg-gray-700 rounded-lg shadow-md">
+            <div className="p-4 bg-krio-foreground rounded-lg shadow-md">
               <h3 className="text-lg font-semibold text-gray-200">Адрес</h3>
               <p className="text-gray-400">Москва, ул. Инновационная, д. 10</p>
               <div id="map" className="mt-4">
@@ -149,7 +149,7 @@ export default function ContactsPage({ user }) {
                 ></iframe>
               </div>
             </div>
-            <div className="p-4 bg-gray-700 rounded-lg shadow-md">
+            <div className="p-4 bg-krio-foreground rounded-lg shadow-md">
               <h3 className="text-lg font-semibold text-gray-200">Телефон</h3>
               <p className="text-gray-400">
                 <a
@@ -160,7 +160,7 @@ export default function ContactsPage({ user }) {
                 </a>
               </p>
             </div>
-            <div className="p-4 bg-gray-700 rounded-lg shadow-md">
+            <div className="p-4 bg-krio-foreground rounded-lg shadow-md">
               <h3 className="text-lg font-semibold text-gray-200">Email</h3>
               <p className="text-gray-400">
                 <a
@@ -171,7 +171,7 @@ export default function ContactsPage({ user }) {
                 </a>
               </p>
             </div>
-            <div className="p-4 bg-gray-700 rounded-lg shadow-md">
+            <div className="p-4 bg-krio-foreground rounded-lg shadow-md">
               <h3 className="text-lg font-semibold text-gray-200">
                 Социальные сети
               </h3>
@@ -192,7 +192,7 @@ export default function ContactsPage({ user }) {
               </p>
             </div>
           </div>
-          <div className="p-6 bg-gray-700 rounded-lg shadow-md">
+          <div className="p-6 bg-krio-foreground rounded-lg shadow-md">
             <h3 className="text-lg font-semibold text-gray-200 text-center mb-4">
               Обратная связь
             </h3>
@@ -217,7 +217,7 @@ export default function ContactsPage({ user }) {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Ваше имя"
-                  className={`w-full px-3 py-2 bg-gray-800 border ${
+                  className={`w-full px-3 py-2 bg-krio-background border ${
                     errors.name ? "border-red-500" : "border-gray-600"
                   } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                 />
@@ -233,7 +233,7 @@ export default function ContactsPage({ user }) {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Ваш email для связи"
-                  className={`w-full px-3 py-2 bg-gray-800 border ${
+                  className={`w-full px-3 py-2 bg-krio-background border ${
                     errors.email ? "border-red-500" : "border-gray-600"
                   } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                 />
@@ -249,7 +249,7 @@ export default function ContactsPage({ user }) {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="Ваш телефон для связи"
-                  className={`w-full px-3 py-2 bg-gray-800 border ${
+                  className={`w-full px-3 py-2 bg-krio-background border ${
                     errors.phone ? "border-red-500" : "border-gray-600"
                   } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                 />
@@ -265,7 +265,7 @@ export default function ContactsPage({ user }) {
                   onChange={handleChange}
                   placeholder="Ваше сообщение"
                   rows="5"
-                  className={`w-full px-3 py-2 bg-gray-800 border ${
+                  className={`w-full px-3 py-2 bg-krio-background border ${
                     errors.message ? "border-red-500" : "border-gray-600"
                   } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                 />
@@ -279,7 +279,7 @@ export default function ContactsPage({ user }) {
                 disabled={submitStatus.loading}
                 className={`w-full py-2 font-semibold text-white ${
                   submitStatus.loading
-                    ? "bg-gray-600 cursor-not-allowed"
+                    ? "bg-krio-primary cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700"
                 } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors`}
               >

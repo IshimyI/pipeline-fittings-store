@@ -2,8 +2,8 @@ import React from "react";
 
 export default function SelectorPage() {
   return (
-    <div className="flex items-center justify-center bg-gray-900 text-white">
-      <main className="w-full max-w-4xl p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg border border-gray-700 my-8">
+    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
+      <main className="w-full max-w-4xl p-8 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8">
         <section className="space-y-6">
           <h1 className="text-2xl font-bold text-center text-gray-200">
             Общее описание
