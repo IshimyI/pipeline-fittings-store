@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import Dialog from "../ui/Dialog";
+import { OrdersService } from "../ui/OrderService";
 import Cart from "../ui/Cart";
 
 export default function ProductsPage({ user, category }) {
@@ -73,8 +74,10 @@ export default function ProductsPage({ user, category }) {
 
   useEffect(() => {
     const fetchCart = async () => {
-      if (!user?.id) return;
-
+      if (!user?.id) {
+        alert("Для оформления необходимо авторизоваться");
+        return;
+      }
       setLoadingCart(true);
       try {
         const response = await axiosInstance.get("/basket", {
@@ -97,9 +100,7 @@ export default function ProductsPage({ user, category }) {
 
   const addToCart = async (product) => {
     if (!user?.id) {
-      setError(
-        "Пожалуйста, войдите в систему для добавления товаров в корзину"
-      );
+      alert("Для добавления в корзину необходимо авторизоваться");
       return;
     }
     setLoadingCart(true);
@@ -139,17 +140,11 @@ export default function ProductsPage({ user, category }) {
           0
         ),
       };
-
-      const orderResponse = await axiosInstance.post("/createOrder", orderData);
-
-      if (orderResponse.data.message === "Заказ успешно создан") {
-        await axiosInstance.delete("/basket/clear", {
-          data: { userId: user.id },
-        });
-
-        setCartItems([]);
-        alert(`Заказ принят! Менеджер свяжется для уточнения деталей.`);
-      }
+      await OrdersService.createOrder(orderData);
+      // Clear local cart state after successful order creation
+      setCartItems([]);
+      setCartVisible(false); // Hide cart after successful checkout
+      alert(`Заказ принят! Менеджер свяжется для уточнения деталей.`);
     } catch (error) {
       console.error("Ошибка оформления:", error);
       setError("Не удалось оформить заказ");
@@ -188,13 +183,15 @@ export default function ProductsPage({ user, category }) {
   };
 
   const handleRemoveFromCart = async (productId) => {
-    if (!user?.id) return;
-
+    if (!user?.id) {
+      // Handle removal for unauthorized users
+      alert("Для удаления из корзины необходимо авторизоваться");
+      return;
+    }
     try {
       await axiosInstance.delete("/basket", {
         data: { userId: user.id, productId },
       });
-
       setCartItems((prev) => prev.filter((item) => item.id !== productId));
     } catch (error) {
       console.error("Ошибка удаления из корзины:", error);
@@ -202,25 +199,25 @@ export default function ProductsPage({ user, category }) {
   };
 
   const sortProducts = (prods) => {
-    if (!Array.isArray(prods)) return prods;
-    let sortedProducts = [...prods];
+    if (!Array.isArray(prods)) return [];
 
-    switch (sortOption) {
-      case "name":
-        sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "price":
-        sortedProducts.sort((a, b) => a.price - b.price);
-        break;
-      case "availability":
-        sortedProducts.sort((a, b) =>
-          a.availability.localeCompare(b.availability)
-        );
-        break;
-      default:
-        break;
-    }
-    return sortedProducts;
+    return [...prods].sort((a, b) => {
+      switch (sortOption) {
+        case "name":
+          return a.name.localeCompare(b.name);
+        case "price":
+          const priceA = parseFloat(a.price) || 0;
+          const priceB = parseFloat(b.price) || 0;
+          return priceA - priceB;
+        case "availability":
+          if (a.availability === b.availability) return 0;
+          if (a.availability === "в наличии") return -1;
+          if (b.availability === "в наличии") return 1;
+          return a.availability.localeCompare(b.availability);
+        default:
+          return 0;
+      }
+    });
   };
 
   useEffect(() => {
@@ -248,24 +245,25 @@ export default function ProductsPage({ user, category }) {
 
   useEffect(() => {
     const filtered = products.filter((product) => {
+      // Search query filter
       const matchesSearch = product.name
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
+      // Availability filter
       const matchesAvailability =
         availabilityFilter === "all" ||
         product.availability === availabilityFilter;
+      // Price filter with proper number conversion
       const matchesPrice =
-        priceFilter === "all" || product.price.toString() === priceFilter;
-
+        priceFilter === "all" ||
+        (parseFloat(product.price) || 0) === parseFloat(priceFilter);
       return matchesSearch && matchesAvailability && matchesPrice;
     });
-
-    const filter = sortProducts(filtered);
-    console.log(filter);
+    const sortedProducts = sortProducts(filtered);
 
     dispatch({
       type: ACTION.SET_SORTED_PRODUCTS,
-      payload: filter,
+      payload: sortedProducts,
     });
   }, [products, searchQuery, availabilityFilter, priceFilter, sortOption]);
 

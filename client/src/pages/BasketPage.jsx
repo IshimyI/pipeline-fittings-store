@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
 import Order from "../ui/Order";
+import { OrdersService } from "../ui/OrderService";
 
 export default function BasketPage({ user }) {
   const [cartItems, setCartItems] = useState([]);
@@ -61,15 +62,22 @@ export default function BasketPage({ user }) {
         ),
       };
 
-      const orderResponse = await axiosInstance.post("/createOrder", orderData);
+      // Create the order
+      const orderResponse = await OrdersService.createOrder(orderData);
 
-      if (orderResponse.data.message === "Заказ успешно создан") {
+      if (orderResponse) {
+        // Clear the cart on the server
         await axiosInstance.delete("/basket/clear", {
           data: { userId: user.id },
         });
 
+        // Clear the cart locally
         setCartItems([]);
-        alert(`Заказ принят! Менеджер свяжется для уточнения деталей.`);
+
+        // Show success alert
+        alert(
+          `Заказ успешно создан! Менеджер свяжется с вами для уточнения деталей.`
+        );
       }
     } catch (error) {
       console.error("Ошибка оформления:", error);

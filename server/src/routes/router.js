@@ -350,17 +350,18 @@ router.delete("/basket", async (req, res) => {
 });
 
 router.delete("/basket/clear", async (req, res) => {
-  const { userId } = req.body;
-
   try {
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
     await Basket.destroy({
       where: { userId },
     });
-
-    res.json({ message: "Корзина очищена" });
+    res.status(200).json({ message: "Basket cleared successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Ошибка очистки корзины" });
+    console.error("Error clearing basket:", error);
+    res.status(500).json({ message: "Failed to clear basket" });
   }
 });
 
@@ -372,15 +373,6 @@ router.post("/createOrder", async (req, res) => {
       userId,
       items: JSON.stringify(items),
       total,
-    });
-
-    const emailContent = `Ваш заказ №${order.id} на сумму ${order.total} успешно оформлен.`;
-
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: user.email,
-      subject: "Подтверждение заказа",
-      text: emailContent,
     });
 
     res.status(201).json({
@@ -422,22 +414,6 @@ router.post("/feedback", async (req, res) => {
       phone: phone?.trim() || null,
       message: message.trim(),
     });
-
-    // const feedbackEmailContent = `Спасибо за ваш отзыв! Мы свяжемся с вами, если потребуется.`;
-
-    // await transporter.sendMail({
-    //   from: process.env.SMTP_USER,
-    //   to: email,
-    //   subject: "Ваше сообщение получено",
-    //   text: feedbackEmailContent,
-    // });
-
-    // await transporter.sendMail({
-    //   from: process.env.SMTP_USER,
-    //   to: process.env.ADMIN_EMAIL,
-    //   subject: "Новое сообщение от пользователя",
-    //   text: `Новое сообщение от ${email}: ${message}`,
-    // });
 
     // Успешный ответ
     return res.status(201).json({
