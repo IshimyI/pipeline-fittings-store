@@ -1,7 +1,7 @@
 {
   "name": "client",
   "private": true,
-  "homepage": "https://ishimyi.github.io/pipeline-fittings-store/",
+  "homepage": "https://ishimyi.github.io/pipeline-fittings-store",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-"predeploy": "npm run build",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
