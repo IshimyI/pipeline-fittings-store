@@ -1,134 +1,127 @@
 import React from "react";
 
+const Section = ({ title, children }) => (
+  <section className="space-y-6">
+    <h2 className="text-2xl font-bold text-center text-gray-200">{title}</h2>
+    {children}
+  </section>
+);
+
+const ClientsGrid = () => {
+  const clients = [
+    {
+      name: "Роскосмос",
+      imgSrc: "/img/companies/Roscosmos.png",
+      alt: "Лого Роскосмоса",
+    },
+    {
+      name: "Алмаз-Антей",
+      imgSrc: "/img/companies/Almaz-Antey.jpg",
+      alt: "Лого Алмаз-Антея",
+    },
+    {
+      name: "Прогресс",
+      imgSrc: "/img/companies/Progress.jpg",
+      alt: "Лого Прогресса",
+    },
+    {
+      name: "Криогенмаш",
+      imgSrc: "/img/companies/Kriogenmash.jpg",
+      alt: "Лого Криогенмаша",
+    },
+    {
+      name: "Техгаз",
+      imgSrc: "/img/companies/tech-gas.png",
+      alt: "Лого Техгаза",
+    },
+    { name: "ООО ЗИД", imgSrc: "/img/companies/zid.png", alt: "Лого ООО ЗИД" },
+    {
+      name: "НИИМАШ",
+      imgSrc: "/img/companies/niimash.jpg",
+      alt: "Лого НИИМАШа",
+    },
+    { name: "СЭГЗ", imgSrc: "/img/companies/segs.png", alt: "Лого СЭГЗа" },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {clients.map((client, index) => (
+        <div
+          key={index}
+          className="flex flex-col items-center bg-white p-4 rounded-md"
+        >
+          <p className="text-gray-400">{client.name}</p>
+          <img
+            src={client.imgSrc}
+            alt={client.alt}
+            className="w-32 h-32 object-contain rounded-md"
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export default function AboutPage() {
   return (
     <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
       <main className="w-full max-w-4xl p-8 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8">
-        <section id="overview" className="space-y-6">
-          <h2 className="text-2xl font-bold text-center text-gray-200">
-            Общее описание
-          </h2>
+        <Section title="Общее описание">
           <p className="text-gray-300">
-            Компания “Криоарматура” уже более 20 лет успешно работает на рынке
-            поставок стендовой, воздушной и криогенной арматуры, являясь
-            надежным партнером для ведущих предприятий России.
+            Компания <strong>“Криоарматура”</strong> уже более 20 лет успешно
+            работает на рынке поставок высокотехнологичной стендовой, воздушной
+            и криогенной арматуры. Мы гордимся тем, что являемся надежным
+            партнером для ведущих предприятий в России, обеспечивая качественные
+            решения, которые соответствуют самым строгим стандартам.
           </p>
           <p className="text-gray-300">
-            Наша продукция востребована в таких высокотехнологичных отраслях,
-            как космическая промышленность, нефтегазовый сектор и
-            машиностроение.
+            Мы с гордостью поставляем нашу продукцию в такие высокотехнологичные
+            отрасли, как космическая промышленность, нефтегазовый сектор и
+            машиностроение, где особое внимание уделяется надежности и
+            долговечности каждой детали.
           </p>
-        </section>
+        </Section>
 
-        <section id="clients" className="space-y-6">
-          <h2 className="text-2xl font-bold text-center text-gray-200">
-            Наши клиенты
-          </h2>
+        <Section title="Наши клиенты">
           <p className="text-gray-300">
-            Мы гордимся долгосрочным сотрудничеством с такими корпорациями, как:
+            Мы ценим и гордимся нашими партнерскими отношениями с крупнейшими
+            корпорациями, для которых разработали и поставили специализированное
+            оборудование. Наши клиенты — это надежные и успешные компании, на
+            которых мы можем полагаться.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="flex flex-col items-center bg-white p-4 rounded-md">
-              <p className="text-gray-400">Роскосмос</p>
-              <img
-                src="/img/companies/Roscosmos.png"
-                alt="Лого Роскосмоса"
-                className="w-32 h-32 object-contain rounded-md"
-              />
-            </div>
-            <div className="flex flex-col items-center bg-white p-4 rounded-md">
-              <p className="text-gray-400">Алмаз-Антей</p>
-              <img
-                src="/img/companies/Almaz-Antey.jpg"
-                alt="Лого Алмаз-Антея"
-                className="w-32 h-32 object-contain rounded-md"
-              />
-            </div>
-            <div className="flex flex-col items-center bg-white p-4 rounded-md">
-              <p className="text-gray-400">Прогресс</p>
-              <img
-                src="/img/companies/Progress.jpg"
-                alt="Лого Прогресса"
-                className="w-32 h-32 object-contain rounded-md"
-              />
-            </div>
-            <div className="flex flex-col items-center bg-white p-4 rounded-md">
-              <p className="text-gray-400">Криогенмаш</p>
-              <img
-                src="/img/companies/Kriogenmash.jpg"
-                alt="Лого Криогенмаша"
-                className="w-32 h-32 object-contain rounded-md"
-              />
-            </div>
-            <div className="flex flex-col items-center bg-white p-4 rounded-md">
-              <p className="text-gray-400">Техгаз</p>
-              <img
-                src="/img/companies/tech-gas.png"
-                alt="Лого Техгаза"
-                className="w-32 h-32 object-contain rounded-md"
-              />
-            </div>
-            <div className="flex flex-col items-center bg-white p-4 rounded-md">
-              <p className="text-gray-400">ООО ЗИД</p>
-              <img
-                src="/img/companies/zid.png"
-                alt="Лого ООО ЗИД"
-                className="w-32 h-32 object-contain rounded-md"
-              />
-            </div>
-            <div className="flex flex-col items-center bg-white p-4 rounded-md">
-              <p className="text-gray-400">НИИМАШ</p>
-              <img
-                src="/img/companies/niimash.jpg"
-                alt="Лого НИИМАШа"
-                className="w-32 h-32 object-contain rounded-md"
-              />
-            </div>
-            <div className="flex flex-col items-center bg-white p-4 rounded-md">
-              <p className="text-gray-400">СЭГЗ</p>
-              <img
-                src="/img/companies/segs.png"
-                alt="Лого СЭГЗа"
-                className="w-32 h-32 object-contain rounded-md"
-              />
-            </div>
-          </div>
-        </section>
+          <ClientsGrid />
+        </Section>
 
-        <section id="services" className="space-y-6">
-          <h2 className="text-2xl font-bold text-center text-gray-200">
-            Услуги
-          </h2>
+        <Section title="Услуги">
           <p className="text-gray-300">
-            Кроме поставок, “Криоарматура” предоставляет полный комплекс услуг,
-            включая консультации по выбору оборудования, что позволяет нашим
-            клиентам быть уверенными в надежности и долговечности поставленных
-            решений.
+            Компания “Криоарматура” не ограничивается лишь поставками арматуры.
+            Мы предлагаем своим клиентам полный спектр услуг, включая
+            консультации по выбору оборудования, проектирование, внедрение и
+            послепродажную поддержку. Мы гарантируем, что каждое решение будет
+            соответствовать самым высоким требованиям по надежности и
+            эффективности.
           </p>
-        </section>
+        </Section>
 
-        <section id="team" className="space-y-6">
-          <h2 className="text-2xl font-bold text-center text-gray-200">
-            Наша команда
-          </h2>
+        <Section title="Наша команда">
           <p className="text-gray-300">
-            Наша команда объединяет высококвалифицированных специалистов,
-            которые постоянно совершенствуют свои знания и следят за новейшими
-            тенденциями в отрасли. Мы стремимся не только удовлетворять
-            потребности клиентов, но и превосходить их ожидания, предлагая
-            передовые и надежные решения для самых сложных задач.
+            В нашей команде работают высококвалифицированные специалисты,
+            которые не только обладают глубокими знаниями в своей области, но и
+            постоянно совершенствуют свои навыки, следя за новыми технологиями и
+            тенденциями в отрасли. Мы гордимся тем, что наша команда всегда
+            готова предложить передовые и надежные решения для самых сложных
+            задач.
           </p>
-        </section>
+        </Section>
 
-        <section id="mission" className="space-y-6">
-          <h2 className="text-2xl font-bold text-center text-gray-200">
-            Наша миссия
-          </h2>
+        <Section title="Наша миссия">
           <p className="text-gray-300">
-            “Криоарматура” — это ваш партнер на пути к инновациям и
-            стабильности.
+            Миссия <strong>“Криоарматуры”</strong> заключается в том, чтобы быть
+            вашим надежным партнером на пути к инновациям, предоставляя вам
+            решения, которые обеспечивают не только высокую эффективность, но и
+            долгосрочную стабильность.
           </p>
-        </section>
+        </Section>
       </main>
     </div>
   );

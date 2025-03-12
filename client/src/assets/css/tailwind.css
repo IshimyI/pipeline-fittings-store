@@ -69,3 +69,34 @@ body {
     );
   background-size: 105px 105px;
 }
+.stars,
+.twinkling {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  min-height: 100vh; /* Убедимся, что фон покрывает экран */
+}
+
+.stars {
+  background: #4b4b4b00
+    url(https://i.postimg.cc/hhFD7Nkf/apps-47636-13819498107583324-fb06b53a-4974-4acb-85e6-f6f363f85ab6-edec48d0-ec35-4a1f-8bf5-c455987b4a.png)
+    repeat top center;
+  z-index: -10;
+}
+
+.twinkling {
+  background-image: url(https://i.postimg.cc/CLpNr4PF/twinkling.png);
+  animation: twinkle 3s linear infinite;
+  z-index: 1;
+}
+
+@keyframes twinkle {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -100px 0;
+  }
+}

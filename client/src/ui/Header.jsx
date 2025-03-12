@@ -1,51 +1,101 @@
-import { NavLink } from "react-router-dom";
-import React from "react";
+import { NavLink } from "react-router";
 
 export default function Header({ user, handleLogout }) {
   return (
-    <header className="flex justify-between items-center p-4 bg-krio-background text-white border-b border-gray-700">
-      <div className="text-xl font-bold">
-        <NavLink to="/" className="hover:text-blue-400">
-          Криоарматура
-        </NavLink>
-      </div>
-      <nav className="space-x-6 text-sm font-medium">
-        <NavLink to="/about" className="hover:text-blue-400">
-          О нас
-        </NavLink>
-        <NavLink to="/contacts" className="hover:text-blue-400">
-          Контакты
-        </NavLink>
-        <NavLink to="/selector" className="hover:text-blue-400">
-          Подбор арматуры высокого давления
-        </NavLink>
-      </nav>
-      <div className="flex items-center space-x-4">
-        {user?.isAdmin && (
-          <NavLink to="/admin" className="hover:text-blue-400">
-            Список обращений
-          </NavLink>
-        )}
-      </div>
-      <div className="flex items-center space-x-4">
-        <NavLink to="/basket" className="hover:text-blue-400">
-          {user ? (user?.isAdmin ? "Список заказов" : "Корзина") : ""}
-        </NavLink>
-        {!user ? (
-          <>
-            <NavLink to="/login" className="hover:text-blue-400">
-              Вход
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-krio-background text-white border-b border-gray-700 shadow-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex-shrink-0">
+            <NavLink
+              to="/"
+              className="text-2xl font-bold text-krio-primary hover:text-krio-secondary transition-colors duration-300"
+            >
+              Криоарматура
             </NavLink>
-          </>
-        ) : (
-          <button
-            onClick={handleLogout}
-            type="button"
-            className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded-lg text-white"
-          >
-            Выйти
-          </button>
-        )}
+          </div>
+          <nav className="hidden md:flex space-x-8">
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                `${
+                  isActive
+                    ? "text-krio-secondary border-b-2 border-krio-secondary"
+                    : "text-white"
+                } hover:text-krio-secondary hover:border-b-2 hover:border-krio-secondary transition-colors duration-300 text-sm font-medium`
+              }
+            >
+              О нас
+            </NavLink>
+            <NavLink
+              to="/contacts"
+              className={({ isActive }) =>
+                `${
+                  isActive
+                    ? "text-krio-secondary border-b-2 border-krio-secondary"
+                    : "text-white"
+                } hover:text-krio-secondary hover:border-b-2 hover:border-krio-secondary transition-colors duration-300 text-sm font-medium`
+              }
+            >
+              Контакты
+            </NavLink>
+            <NavLink
+              to="/selector"
+              className={({ isActive }) =>
+                `${
+                  isActive
+                    ? "text-krio-secondary border-b-2 border-krio-secondary"
+                    : "text-white"
+                } hover:text-krio-secondary hover:border-b-2 hover:border-krio-secondary transition-colors duration-300 text-sm font-medium`
+              }
+            >
+              Подбор арматуры
+            </NavLink>
+          </nav>
+          <div className="flex items-center space-x-6">
+            {user?.isAdmin && (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  `${
+                    isActive
+                      ? "text-krio-secondary border-b-2 border-krio-secondary"
+                      : "text-white"
+                  } hover:text-krio-secondary hover:border-b-2 hover:border-krio-secondary transition-colors duration-300`
+                }
+              >
+                Список обращений
+              </NavLink>
+            )}
+            <NavLink
+              to="/basket"
+              className={({ isActive }) =>
+                `${
+                  isActive
+                    ? "text-krio-secondary border-b-2 border-krio-secondary"
+                    : "text-white"
+                } hover:text-krio-secondary hover:border-b-2 hover:border-krio-secondary transition-colors duration-300`
+              }
+            >
+              {user ? (user?.isAdmin ? "Список заказов" : "Корзина") : ""}
+            </NavLink>
+            {!user ? (
+              <NavLink
+                to="/login"
+                className="px-4 py-2 text-sm font-medium text-white bg-krio-primary rounded-md hover:bg-krio-secondary transition-colors duration-300"
+              >
+                Вход
+              </NavLink>
+            ) : (
+              <button
+                onClick={handleLogout}
+                type="button"
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors duration-300"
+              >
+                Выйти
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </header>
   );

@@ -163,13 +163,13 @@ export default function MainPage({ user, category }) {
 
   return (
     <div
-      className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8"
+      className="flex items-center justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8"
       role="main"
     >
       <div className="max-w-7xl mx-auto">
         {showForm && (
-          <div className="mb-8 bg-krio-background p-6 rounded-lg">
-            <h3 className="text-xl font-semibold mb-4">
+          <div className="mb-8 bg-krio-background p-6 rounded-xl shadow-lg">
+            <h3 className="text-2xl font-semibold mb-6 text-gray-100">
               {showForm === "category"
                 ? "Создать категорию"
                 : showForm === "editCategory"
@@ -185,7 +185,7 @@ export default function MainPage({ user, category }) {
                   handleCreate(showForm);
                 }
               }}
-              className="space-y-4"
+              className="space-y-6"
             >
               <div>
                 <label className="block text-gray-300 mb-2">Название *</label>
@@ -193,7 +193,7 @@ export default function MainPage({ user, category }) {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white"
+                  className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -207,7 +207,7 @@ export default function MainPage({ user, category }) {
                       name="categoryId"
                       value={formData.categoryId}
                       onChange={handleInputChange}
-                      className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white"
+                      className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     >
                       <option value="">Выберите категорию</option>
@@ -224,7 +224,7 @@ export default function MainPage({ user, category }) {
                       name="price"
                       value={formData.price}
                       onChange={handleInputChange}
-                      className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white"
+                      className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
                   </div>
@@ -234,7 +234,7 @@ export default function MainPage({ user, category }) {
                       name="availability"
                       value={formData.availability}
                       onChange={handleInputChange}
-                      className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white"
+                      className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                 </>
@@ -245,7 +245,7 @@ export default function MainPage({ user, category }) {
                   name="image"
                   value={formData.image}
                   onChange={handleInputChange}
-                  className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white"
+                  className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="URL или имя файла"
                 />
               </div>
@@ -263,13 +263,13 @@ export default function MainPage({ user, category }) {
                       params: "",
                     });
                   }}
-                  className="px-4 py-2 bg-krio-primary hover:bg-krio-foreground rounded-lg"
+                  className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500"
                 >
                   Отмена
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {showForm === "editCategory" ? "Сохранить" : "Создать"}
                 </button>
@@ -277,13 +277,13 @@ export default function MainPage({ user, category }) {
             </form>
           </div>
         )}
-        <div className=" text-white min-h-screen p-6" role="main">
+        <div className="text-white min-h-screen p-6">
           <div className="max-w-7xl mx-auto">
             {user?.isAdmin && (
-              <div className="mb-8 flex gap-4 justify-end">
+              <div className="mb-8 flex gap-6 justify-end">
                 <button
                   onClick={() => setShowForm("product")}
-                  className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
                   disabled={isLoading}
                   aria-label="Добавить новый товар"
                 >
@@ -291,7 +291,7 @@ export default function MainPage({ user, category }) {
                 </button>
                 <button
                   onClick={() => setShowForm("category")}
-                  className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                   disabled={isLoading}
                   aria-label="Добавить новую категорию"
                 >
@@ -301,7 +301,7 @@ export default function MainPage({ user, category }) {
             )}
             {error && (
               <div
-                className="mb-4 p-4 bg-red-800 text-red-100 rounded-lg"
+                className="mb-6 p-6 bg-red-800 text-red-100 rounded-lg shadow-xl"
                 role="alert"
                 aria-live="polite"
               >
@@ -310,27 +310,27 @@ export default function MainPage({ user, category }) {
             )}
             {isLoading && (
               <div className="flex justify-center items-center py-8">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
               </div>
             )}
             <section>
-              <h2 className="text-3xl font-bold text-center text-gray-300 mb-8">
+              <h2 className="text-4xl font-bold text-center text-gray-300 mb-12">
                 Каталог
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
                 <button
                   onClick={() => goToCategory()}
-                  className="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg transform transition-transform hover:scale-105 "
+                  className="w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-xl transform transition-transform hover:scale-105"
                   aria-label="Показать все категории"
                 >
-                  <div className="bg-krio-background p-6 rounded-lg shadow-lg h-full">
+                  <div className="bg-krio-background p-8 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
                     <img
                       src="/img/categories/all-categories.png"
                       alt="Все категории"
-                      className="w-full object-cover rounded-lg mb-4"
+                      className="w-full object-cover rounded-xl mb-6"
                       loading="lazy"
                     />
-                    <p className="text-center text-xl font-semibold">
+                    <p className="text-center text-2xl font-semibold text-gray-300">
                       Все категории
                     </p>
                   </div>
@@ -338,13 +338,13 @@ export default function MainPage({ user, category }) {
                 {categories.map((category) => (
                   <div key={category.id} className="relative group">
                     {user?.isAdmin && (
-                      <div className="absolute top-2 right-2 flex gap-2 z-10">
+                      <div className="absolute top-4 right-4 flex gap-4 z-10">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDeleteCategory(category.id);
                           }}
-                          className="p-2 text-red-500 hover:text-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 rounded-full"
+                          className="p-3 text-red-500 hover:text-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 rounded-full"
                           title="Удалить категорию"
                           aria-label={`Удалить категорию ${category.name}`}
                           disabled={isLoading}
@@ -375,7 +375,7 @@ export default function MainPage({ user, category }) {
                               image: category.img,
                             });
                           }}
-                          className="p-2 text-blue-500 hover:text-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
+                          className="p-3 text-blue-500 hover:text-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
                           title="Редактировать категорию"
                           aria-label={`Редактировать категорию ${category.name}`}
                           disabled={isLoading}
@@ -399,7 +399,7 @@ export default function MainPage({ user, category }) {
                     )}
                     <button
                       onClick={() => goToCategory(category.id)}
-                      className="w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg transform transition-transform hover:scale-105"
+                      className="w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-xl transform transition-transform hover:scale-105"
                       aria-label={`Перейти в категорию ${category.name}`}
                     >
                       <MemoizedCategory category={category} />

@@ -38,6 +38,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     if (name === "params") {
       try {
         if (!value.trim()) {
@@ -47,34 +48,27 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
 
         let parsedValue;
         try {
-          parsedValue = JSON.parse(value);
+          parsedValue = JSON.parse(value); // Пробуем распарсить как JSON
         } catch {
-          // Если не получилось - пробуем текстовый формат
-          parsedValue = parseTextFormat(value);
+          // Если не получается, сохраняем как обычную строку для редактирования
+          parsedValue = value;
         }
 
-        validateParamsObject(parsedValue);
+        // Сохраняем результат в состояние
         setFormData((prev) => ({ ...prev, params: parsedValue }));
       } catch (error) {
         console.error("Ошибка обработки параметров:", error);
-        // Сохраняем сырой ввод для возможности редактирования
+        // Если ошибка, сохраняем введенные данные как есть
         setFormData((prev) => ({ ...prev, params: value }));
       }
-      if (typeof parsedValue === "object" && parsedValue !== null) {
-        validateParamsObject(parsedValue);
-
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: parsedValue,
-        }));
-      } else {
-        // Если результат не объект, сохраняем исходное значение
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
-        }));
-      }
+      return; // Завершаем обработку для поля "params"
     }
+
+    // Для всех других полей обновляем данные напрямую
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // Обновляем состояние для остальных полей
+    }));
   };
 
   // Вспомогательная функция для парсинга текстового формата

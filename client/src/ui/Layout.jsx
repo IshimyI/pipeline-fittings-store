@@ -6,12 +6,16 @@ import { ShootingStars } from "./shooting-stars";
 export default function Layout({ user, handleLogout }) {
   return (
     <>
-      <Header user={user} handleLogout={handleLogout} />
-      <div className="min-h-screen relative isolate">
-        <Outlet />
-        <ShootingStars />
+      <div className="min-h-screen relative isolate ">
+        <div className="twinkling">
+          <div className="stars">
+            <Header user={user} handleLogout={handleLogout} />
+            <Outlet />
+            <ShootingStars />
+            <Footer />
+          </div>
+        </div>
       </div>
-      <Footer />
     </>
   );
 }
