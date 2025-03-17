@@ -13,6 +13,9 @@ require("dotenv").config();
 
 const router = express.Router();
 
+const ctrlTelegram = require("../configs/teleramMsg");
+router.post("/telegram", ctrlTelegram.sendMsg);
+
 router.get("/users", async (req, res) => {
   try {
     res.status(200).send(await User.findAll({}));

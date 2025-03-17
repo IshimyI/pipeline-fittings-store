@@ -14,14 +14,14 @@ module.exports = {
     password: process.env.DB_PASS || "123",
     database: process.env.DB_NAME || "krioarmatura",
     host: process.env.DB_HOST || "127.0.0.1",
-    port: process.env.DB_PORT || "5433",
+    port: process.env.DB_PORT || "5432",
     dialect: "postgres",
   },
   production: {
-    use_env_variable: "DATABASE_URL", // Используем переменную окружения для Render
+    use_env_variable: "DATABASE_URL",
     dialect: "postgres",
     dialectOptions: {
-      ssl: { rejectUnauthorized: false }, // Нужно для подключения через SSL (для Render)
+      ssl: { rejectUnauthorized: false },
     },
   },
 };
