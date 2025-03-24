@@ -20,6 +20,7 @@ const corsConfig = {
     "https://pipeline-fittings-store-client.vercel.app",
   ],
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
 };
 app.use(cors(corsConfig));
 app.use(logger("dev"));
