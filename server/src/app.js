@@ -18,6 +18,7 @@ const corsConfig = {
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://pipeline-fittings-store-client.vercel.app",
+    "pipeline-fittings-store-client.vercel.app",
   ],
   credentials: true,
 };
