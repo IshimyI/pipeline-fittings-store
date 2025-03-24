@@ -10,11 +10,9 @@ const config = require("./configs/config.json");
 const router = require("./routes/router");
 const authRouter = require("./routes/authRouter");
 const tokensRouter = require("./routes/tokensRouter");
-const TelegramBotService = require("./services/telegramBot");
 const app = express();
 const { PORT } = process.env || 3000;
-// Инициализация Telegram бота
-const telegramBot = new TelegramBotService();
+
 const corsConfig = {
   origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
   credentials: true,

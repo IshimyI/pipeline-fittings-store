@@ -60,6 +60,7 @@ export default function BasketPage({ user }) {
           (sum, item) => sum + item.price * item.quantity,
           0
         ),
+        email: "",
       };
 
       // Create the order

@@ -4,13 +4,15 @@ interface OrderItem {
   quantity: number;
 }
 interface OrderData {
-  userId: number;
+  userId?: number;
+  email?: string;
   items: OrderItem[];
   total: number | string;
 }
 interface OrderResponse {
   id: number;
-  userId: number;
+  email?: string;
+  userId?: number;
   items: OrderItem[];
   total: number | string;
   createdAt: string;
@@ -18,32 +20,24 @@ interface OrderResponse {
 export class OrdersService {
   static async createOrder(orderData: OrderData): Promise<OrderResponse> {
     try {
-      // Создаем заказ
       const response = await axiosInstance.post<OrderResponse>(
         "/createOrder",
         orderData
       );
 
-      if (response.status !== 200 && response.status !== 201) {
-        throw new Error(
-          `Order creation failed with status: ${response.status}`
-        );
+      if (orderData.userId) {
+        try {
+          await this.clearBasket(orderData.userId);
+        } catch (clearError) {
+          console.error("Error clearing basket:", clearError);
+        }
       }
-      // Очищаем корзину только после успешного создания заказа
-      try {
-        await this.clearBasket(orderData.userId);
-      } catch (clearError) {
-        console.error(
-          "Error clearing basket after order creation:",
-          clearError
-        );
-        // Не прерываем выполнение, так как заказ уже создан
-      }
+
       return response.data;
     } catch (error) {
       console.error("Error creating order:", error);
       throw new Error(
-        error instanceof Error ? error.message : "Failed to create order"
+        error.response?.data?.message || "Ошибка оформления заказа"
       );
     }
   }

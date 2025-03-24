@@ -18,7 +18,11 @@ export default function ProductsPage({ user, category }) {
   const [error, setError] = useState("");
   const [priceFilter, setPriceFilter] = useState("all");
   const [cartVisible, setCartVisible] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    const localCart = localStorage.getItem("cart");
+    return localCart ? JSON.parse(localCart) : [];
+  });
+
   const [loadingCart, setLoadingCart] = useState(false);
 
   const ACTION = {
@@ -74,20 +78,25 @@ export default function ProductsPage({ user, category }) {
 
   useEffect(() => {
     const fetchCart = async () => {
-      if (!user?.id) {
-        alert("Для оформления необходимо авторизоваться");
-        return;
-      }
       setLoadingCart(true);
       try {
-        const response = await axiosInstance.get("/basket", {
-          params: { userId: user.id },
-        });
-        const cartProducts = response.data.map((item) => ({
-          ...item.product,
-          quantity: item.quantity,
-        }));
-        setCartItems(cartProducts);
+        if (user?.id) {
+          // Загрузка корзины авторизованного пользователя
+          const response = await axiosInstance.get("/basket", {
+            params: { userId: user.id },
+          });
+          const cartProducts = response.data.map((item) => ({
+            ...item.product,
+            quantity: item.quantity,
+          }));
+          setCartItems(cartProducts);
+        } else {
+          // Загрузка корзины из localStorage для гостя
+          const localCart = localStorage.getItem("guestCart");
+          if (localCart) {
+            setCartItems(JSON.parse(localCart));
+          }
+        }
       } catch (error) {
         console.error("Ошибка загрузки корзины:", error);
         setError("Не удалось загрузить корзину");
@@ -99,26 +108,38 @@ export default function ProductsPage({ user, category }) {
   }, [user]);
 
   const addToCart = async (product) => {
-    if (!user?.id) {
-      alert("Для добавления в корзину необходимо авторизоваться");
-      return;
-    }
     setLoadingCart(true);
     try {
-      await axiosInstance.post("/basket", {
-        userId: user.id,
-        productId: product.id,
-      });
-      setCartItems((prev) => {
-        const existing = prev.find((item) => item.id === product.id);
-        return existing
-          ? prev.map((item) =>
-              item.id === product.id
-                ? { ...item, quantity: item.quantity + 1 }
-                : item
-            )
-          : [...prev, { ...product, quantity: 1 }];
-      });
+      if (user?.id) {
+        // Логика для авторизованного пользователя
+        await axiosInstance.post("/basket", {
+          userId: user.id,
+          productId: product.id,
+        });
+        setCartItems((prev) => {
+          const existing = prev.find((item) => item.id === product.id);
+          return existing
+            ? prev.map((item) =>
+                item.id === product.id
+                  ? { ...item, quantity: item.quantity + 1 }
+                  : item
+              )
+            : [...prev, { ...product, quantity: 1 }];
+        });
+      } else {
+        // Логика для гостя
+        const newCart = [...cartItems];
+        const existing = newCart.find((item) => item.id === product.id);
+
+        if (existing) {
+          existing.quantity += 1;
+        } else {
+          newCart.push({ ...product, quantity: 1 });
+        }
+
+        localStorage.setItem("guestCart", JSON.stringify(newCart));
+        setCartItems(newCart);
+      }
     } catch (error) {
       console.error("Ошибка добавления в корзину:", error);
       setError("Не удалось добавить товар в корзину");
@@ -127,27 +148,53 @@ export default function ProductsPage({ user, category }) {
     }
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (email?: string) => {
     try {
-      const orderData = {
-        userId: user.id,
-        items: cartItems.map((item) => ({
-          productId: item.id,
-          quantity: item.quantity,
-        })),
-        total: cartItems.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        ),
-      };
+      let orderData;
+
+      if (!user?.id) {
+        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+          setError("Пожалуйста, введите корректный email");
+          return;
+        }
+
+        orderData = {
+          email,
+          items: cartItems.map((item) => ({
+            productId: item.id,
+            quantity: item.quantity,
+          })),
+          total: cartItems.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+          ),
+        };
+      } else {
+        orderData = {
+          userId: user.id,
+          items: cartItems.map((item) => ({
+            productId: item.id,
+            quantity: item.quantity,
+          })),
+          total: cartItems.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+          ),
+        };
+      }
+
       await OrdersService.createOrder(orderData);
-      // Clear local cart state after successful order creation
+      localStorage.removeItem("guestCart");
       setCartItems([]);
-      setCartVisible(false); // Hide cart after successful checkout
-      alert(`Заказ принят! Менеджер свяжется для уточнения деталей.`);
+      setCartVisible(false);
+      alert("Заказ принят! Менеджер свяжется для уточнения деталей.");
     } catch (error) {
       console.error("Ошибка оформления:", error);
-      setError("Не удалось оформить заказ");
+      setError(
+        error.message ||
+          error.response?.data?.message ||
+          "Не удалось оформить заказ"
+      );
     }
   };
 
@@ -183,15 +230,15 @@ export default function ProductsPage({ user, category }) {
   };
 
   const handleRemoveFromCart = async (productId) => {
-    if (!user?.id) {
-      // Handle removal for unauthorized users
-      alert("Для удаления из корзины необходимо авторизоваться");
-      return;
-    }
     try {
-      await axiosInstance.delete("/basket", {
-        data: { userId: user.id, productId },
-      });
+      if (user?.id) {
+        await axiosInstance.delete("/basket", {
+          data: { userId: user.id, productId },
+        });
+      } else {
+        const newCart = cartItems.filter((item) => item.id !== productId);
+        localStorage.setItem("guestCart", JSON.stringify(newCart));
+      }
       setCartItems((prev) => prev.filter((item) => item.id !== productId));
     } catch (error) {
       console.error("Ошибка удаления из корзины:", error);
@@ -222,6 +269,10 @@ export default function ProductsPage({ user, category }) {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      if (!category || !category.length) {
+        console.warn("Waiting for categories to load...");
+        return;
+      }
       dispatch({ type: ACTION.SET_LOADING, payload: true });
       try {
         let response;
@@ -239,9 +290,8 @@ export default function ProductsPage({ user, category }) {
         dispatch({ type: ACTION.SET_LOADING, payload: false });
       }
     };
-
     fetchProducts();
-  }, [categoryId]);
+  }, [categoryId, category]);
 
   useEffect(() => {
     const filtered = products.filter((product) => {
@@ -490,6 +540,7 @@ export default function ProductsPage({ user, category }) {
           onClose={() => setCartVisible(false)}
           onCheckout={handleCheckout}
           onRemove={handleRemoveFromCart}
+          user={user}
         />
       )}
 

@@ -10,11 +10,10 @@ const {
 const { where } = require("sequelize");
 const verifyRefreshToken = require("../middlewares/verifyRefreshToken");
 require("dotenv").config();
+const sendMsg = require("../configs/telegramMsg");
+const sendEmail = require("../services/emailService");
 
 const router = express.Router();
-
-const ctrlTelegram = require("../configs/teleramMsg");
-router.post("/telegram", ctrlTelegram.sendMsg);
 
 router.get("/users", async (req, res) => {
   try {
@@ -66,7 +65,8 @@ router.post("/cta", async (req, res) => {
         .status(400)
         .send({ message: "Все поля должны быть заполнены" });
     }
-    // ! добавить отправку сообщений на почту
+
+    res.status(201).send({ message: "Сообщение успешно отправлено" });
   } catch (error) {
     console.log(error);
     res.status(500).send(error.message);
@@ -369,32 +369,48 @@ router.delete("/basket/clear", async (req, res) => {
 });
 
 router.post("/createOrder", async (req, res) => {
-  const { userId, items, total } = req.body;
   try {
-    const user = await User.findByPk(userId);
+    const { userId, email, items, total } = req.body;
     const order = await Order.create({
       userId,
-      items: JSON.stringify(items),
+      items,
       total,
     });
-
-    res.status(201).json({
-      message: "Заказ успешно создан",
-      order: {
-        id: order.id,
-        total: order.total,
-        items: JSON.parse(order.items),
-      },
+    let userInfo = email;
+    if (userId) {
+      const user = await User.findByPk(userId);
+      userInfo = `${user.name} (${user.email})`;
+    }
+    const itemDetails = await Promise.all(
+      items.map(async (item) => {
+        const product = await Product.findByPk(item.productId);
+        return `${product.name} - ${item.quantity} шт.`;
+      })
+    );
+    const messageText = `
+Новый заказ #${order.id}
+От: ${userInfo}
+Товары:
+${itemDetails.join("\n")}
+Итого: ${total || "По запросу"} ₽
+  `.trim();
+    await sendMsg({
+      body: { message: messageText },
     });
+    await sendEmail({
+      to: process.env.ADMIN_EMAIL,
+      subject: `Новый заказ #${order.id}`,
+      text: messageText,
+    });
+    res.status(201).json(order);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Ошибка создания заказа" });
+    console.error("Order creation error:", error);
+    res.status(500).json({ message: "Error creating order" });
   }
 });
 
 router.post("/feedback", async (req, res) => {
   try {
-    // Валидация обязательных полей
     const { name, email, phone, message } = req.body;
 
     if (!email || !email.trim()) {
@@ -410,7 +426,6 @@ router.post("/feedback", async (req, res) => {
       });
     }
 
-    // Создание записи в БД
     const feedback = await Feedback.create({
       name: name?.trim() || null,
       email: email.trim(),
@@ -418,7 +433,22 @@ router.post("/feedback", async (req, res) => {
       message: message.trim(),
     });
 
-    // Успешный ответ
+    sendEmail({
+      to: process.env.ADMIN_EMAIL,
+      subject: "Новое сообщение от пользователя",
+      text: `Имя: ${name}\nEmail: ${email}\nТелефон: ${phone}\nСообщение: ${message}`,
+    });
+
+    const telegramMessage = `
+    Новый фидбек:
+    Имя: ${name || "Не указано"}
+    Email: ${email}
+    Телефон: ${phone || "Не указан"}
+    Сообщение: ${message}
+    `;
+
+    sendMsg({ body: { message: telegramMessage } }, {});
+
     return res.status(201).json({
       message: "Сообщение успешно отправлено",
       feedback,
@@ -426,14 +456,12 @@ router.post("/feedback", async (req, res) => {
   } catch (error) {
     console.error("Feedback creation error:", error);
 
-    // Обработка ошибок БД
     if (error.name === "SequelizeValidationError") {
       return res.status(400).json({
         error: "Validation Error",
         message: error.message,
       });
     }
-    // Общая ошибка сервера
     return res.status(500).json({
       error: "Server Error",
       message: "Внутренняя ошибка сервера",

@@ -27,16 +27,21 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     const prevReq = error.config;
-    if (error.response.status === 401) {
-      const response = await axios.get(
-        `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
-        { withCredentials: true }
-      );
-      accessToken = response.data.accessToken;
-      prevReq.sent = true;
-      prevReq.headers.Authorization = `Bearer ${accessToken}`;
-      return axiosInstance(prevReq);
+    if (error.response?.status === 401) {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
+          { withCredentials: true }
+        );
+        accessToken = response.data.accessToken;
+        prevReq.sent = true;
+        prevReq.headers.Authorization = `Bearer ${accessToken}`;
+        return axiosInstance(prevReq);
+      } catch (refreshError) {
+        return Promise.reject(refreshError);
+      }
     }
+    return Promise.reject(error);
   }
 );
 
