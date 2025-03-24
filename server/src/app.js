@@ -20,7 +20,6 @@ const corsConfig = {
     "https://pipeline-fittings-store-client.vercel.app",
   ],
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
 };
 app.use(cors(corsConfig));
 app.use(logger("dev"));
@@ -38,6 +37,13 @@ app.use(
     },
   })
 );
+app.options("*", cors(corsConfig));
+app.use((err, req, res, next) => {
+  if (err.name === "CORSError") {
+    res.status(403).json({ error: "CORS error", message: err.message });
+  }
+  next(err);
+});
 app.use("/api", router);
 app.use("/api/auth", authRouter);
 app.use("/api/tokens", tokensRouter);
