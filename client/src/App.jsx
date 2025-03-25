@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from "react-router";
+import { Routes, Route } from "react-router";
 import Layout from "./ui/Layout";
 import axiosInstance, { setAccessToken } from "./axiosInstance";
 import { useEffect, useState } from "react";
@@ -90,39 +90,35 @@ function App() {
   };
 
   return (
-    <BrowserRouter basename="/pipeline-fittings-store">
-      <Routes>
-        <Route element={<Layout user={user} handleLogout={handleLogout} />}>
-          <Route
-            path="/"
-            element={<MainPage user={user} category={category} />}
-          />
-          <Route path="/contacts" element={<ContactsPage user={user} />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/selector" element={<SelectorPage />} />
-          <Route path="/basket" element={<BasketPage user={user} />} />
-          <Route
-            path="/login"
-            element={
-              <AuthPage handleLogin={handleLogin} handleSignUp={handleSignUp} />
-            }
-          />
-          {user?.isAdmin && (
-            <Route path="/admin" element={<AdminDashboard />} />
-          )}
-          <Route
-            path="/category/:categoryId"
-            element={<ProductsPage user={user} category={category} />}
-          />
-          <Route
-            path="/category"
-            element={<ProductsPage user={user} category={category} />}
-          />
+    <Routes>
+      <Route element={<Layout user={user} handleLogout={handleLogout} />}>
+        <Route
+          path="/"
+          element={<MainPage user={user} category={category} />}
+        />
+        <Route path="/contacts" element={<ContactsPage user={user} />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/selector" element={<SelectorPage />} />
+        <Route path="/basket" element={<BasketPage user={user} />} />
+        <Route
+          path="/login"
+          element={
+            <AuthPage handleLogin={handleLogin} handleSignUp={handleSignUp} />
+          }
+        />
+        {user?.isAdmin && <Route path="/admin" element={<AdminDashboard />} />}
+        <Route
+          path="/category/:categoryId"
+          element={<ProductsPage user={user} category={category} />}
+        />
+        <Route
+          path="/category"
+          element={<ProductsPage user={user} category={category} />}
+        />
 
-          <Route path="*" element={<ErrorPage user={user} />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        <Route path="*" element={<ErrorPage user={user} />} />
+      </Route>
+    </Routes>
   );
 }
 
