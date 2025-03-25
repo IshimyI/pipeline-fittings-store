@@ -1,48 +1,34 @@
 @import "tailwindcss";
 
 @theme {
-  --color-krio-background: #070f2b;
-  --color-krio-foreground: #1b1a55;
-  --color-krio-primary: #535c91;
-  --color-krio-secondary: #9290c3;
+  --color-krio-background: #243a90;
+  --color-krio-foreground: #4a49b5;
+  --color-krio-primary: #9aa6eb;
+  --color-krio-secondary: #d7d6f5;
 }
 
-.dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9998;
+/* Базовые стили */
+body {
+  height: 100vh;
+  margin: 0;
+  --color: rgba(43, 43, 43, 0.3);
+  background-color: #191a1a;
+  position: relative;
+  overflow-x: hidden;
 }
 
-.dialog-overlay {
+/* Все фоновые элементы */
+.space-layer {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  z-index: 9998;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
-/* body {
-  background-color: rgb(15, 48, 73);
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.15) 2px,
-      transparent 2px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.14) 2px, transparent 2px),
-    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
-} */
-
-body {
-  height: 100%;
-  --color: rgba(43, 43, 43, 0.3);
-  background-color: #191a1a;
+/* Сетка */
+.grid-layer {
   background-image: linear-gradient(
       0deg,
       transparent 24%,
@@ -67,29 +53,42 @@ body {
       transparent 77%,
       transparent
     );
-  background-size: 105px 105px;
-}
-.stars,
-.twinkling {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  min-height: 100%;
-  min-height: 100vh; /* Убедимся, что фон покрывает экран */
+  background-size: 400px 405px;
+  background-position: -2px -2px;
+  z-index: 0;
 }
 
-.stars {
-  background: #4b4b4b00
-    url(https://i.postimg.cc/hhFD7Nkf/apps-47636-13819498107583324-fb06b53a-4974-4acb-85e6-f6f363f85ab6-edec48d0-ec35-4a1f-8bf5-c455987b4a.png)
+/* Звезды */
+.stars-layer {
+  background: url(https://i.postimg.cc/hhFD7Nkf/apps-47636-13819498107583324-fb06b53a-4974-4acb-85e6-f6f363f85ab6-edec48d0-ec35-4a1f-8bf5-c455987b4a.png)
     repeat top center;
-  z-index: -2;
+  z-index: 1;
 }
 
-.twinkling {
+/* Мерцание */
+.twinkling-layer {
   background-image: url(https://i.postimg.cc/CLpNr4PF/twinkling.png);
   animation: twinkle 3s linear infinite;
-  z-index: 1;
+  z-index: 2;
+}
+
+/* Спутник */
+.sputnik-layer {
+  background: url("/img/sputnik.png") no-repeat;
+  background-size: contain;
+  width: 350px;
+  height: 350px;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: float 6s ease-in-out infinite;
+  z-index: 3;
+}
+
+/* Основной контент */
+.main-content {
+  position: relative;
+  z-index: 10;
 }
 
 @keyframes twinkle {
@@ -98,5 +97,17 @@ body {
   }
   to {
     background-position: -100px 0;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(-55%);
+  }
+  100% {
+    transform: translateY(-50%);
   }
 }

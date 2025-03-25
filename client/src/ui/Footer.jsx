@@ -68,16 +68,16 @@ export default function Footer() {
                   href="tel:+74951234567"
                   className="hover:text-krio-secondary transition-colors duration-300"
                 >
-                  +7 (495) 123-45-67
+                  +7 (995) 887 06 11
                 </a>
               </li>
               <li className="text-gray-400">
                 <span className="block">Email:</span>
                 <a
-                  href="mailto:info@krioarmatura.ru"
+                  href="mailto:krioarmatura@yandex.ru"
                   className="hover:text-krio-secondary transition-colors duration-300"
                 >
-                  info@krioarmatura.ru
+                  krioarmatura@yandex.ru
                 </a>
               </li>
             </ul>

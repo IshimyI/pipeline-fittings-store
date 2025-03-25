@@ -29,7 +29,7 @@ function App() {
       .catch(() => {
         setUser(null);
         setAccessToken("");
-        navigate("/login");
+        navigate("/");
       })
       .finally(() => {
         setLoadingUser(false);
