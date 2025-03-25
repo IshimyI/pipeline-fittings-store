@@ -8,6 +8,7 @@ export default function BasketPage({ user }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -49,6 +50,9 @@ export default function BasketPage({ user }) {
   };
 
   const handleCheckout = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     try {
       const orderData = {
         userId: user.id,
@@ -62,19 +66,15 @@ export default function BasketPage({ user }) {
         ),
         email: "",
       };
-
       // Create the order
       const orderResponse = await OrdersService.createOrder(orderData);
-
       if (orderResponse) {
         // Clear the cart on the server
         await axiosInstance.delete("/basket/clear", {
           data: { userId: user.id },
         });
-
         // Clear the cart locally
         setCartItems([]);
-
         // Show success alert
         alert(
           `Заказ успешно создан! Менеджер свяжется с вами для уточнения деталей.`
@@ -83,6 +83,8 @@ export default function BasketPage({ user }) {
     } catch (error) {
       console.error("Ошибка оформления:", error);
       setError("Не удалось оформить заказ");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -184,9 +186,12 @@ export default function BasketPage({ user }) {
 
                   <button
                     onClick={handleCheckout}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg"
+                    disabled={isSubmitting}
+                    className={`w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg ${
+                      isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                   >
-                    Перейти к оформлению
+                    {isSubmitting ? "Оформление..." : "Перейти к оформлению"}
                   </button>
                 </div>
               </>
