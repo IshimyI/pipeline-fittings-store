@@ -9,6 +9,7 @@ export default function Cart({
 }) {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [emailInput, setEmailInput] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const hasAnyRequestPrice = items.some((item) =>
     String(item.price).toLowerCase().includes("запросу")
@@ -34,7 +35,6 @@ export default function Cart({
 
   return (
     <div className="fixed bottom-4 right-4 bg-krio-background p-4 rounded-lg shadow-xl w-96">
-      {/* Модальное окно для email */}
       {showEmailModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-krio-foreground p-6 rounded-lg w-80">
@@ -54,10 +54,15 @@ export default function Cart({
                 Отмена
               </button>
               <button
-                onClick={() => {
+                onClick={async () => {
                   if (/^\S+@\S+\.\S+$/.test(emailInput)) {
-                    onCheckout(emailInput);
-                    setShowEmailModal(false);
+                    setIsSubmitting(true);
+                    try {
+                      await onCheckout(emailInput);
+                      setShowEmailModal(false);
+                    } finally {
+                      setIsSubmitting(false);
+                    }
                   } else {
                     alert("Пожалуйста, введите корректный email");
                   }
@@ -71,7 +76,6 @@ export default function Cart({
         </div>
       )}
 
-      {/* Остальная часть корзины */}
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-semibold">Корзина</h3>
         <button onClick={onClose} className="text-gray-400 hover:text-white">
@@ -120,8 +124,12 @@ export default function Cart({
             </div>
             <button
               onClick={handleCheckoutClick}
-              className="w-full bg-green-600 hover:bg-green-700 py-2 rounded-lg"
-              disabled={items.length === 0}
+              className={`w-full py-2 rounded-lg ${
+                isSubmitting
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700"
+              }`}
+              disabled={items.length === 0 || isSubmitting}
             >
               Оформить заказ
             </button>
