@@ -19,6 +19,7 @@ const corsConfig = {
     "http://127.0.0.1:5173",
     "https://pipeline-fittings-store-client.vercel.app",
     "pipeline-fittings-store-client.vercel.app",
+    "postgresql://pipeline_filtings_krioarmatura_user:vrcQfYLKeHfsFQV5abyszkv5zKDrgSQX@dpg-cvc7slbqf0us73ddg460-a.oregon-postgres.render.com/pipeline_filtings_krioarmatura",
   ],
   credentials: true,
 };
