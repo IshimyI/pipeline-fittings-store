@@ -61,17 +61,15 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
         // Если ошибка, сохраняем введенные данные как есть
         setFormData((prev) => ({ ...prev, params: value }));
       }
-      return; // Завершаем обработку для поля "params"
+      return;
     }
 
-    // Для всех других полей обновляем данные напрямую
     setFormData((prevData) => ({
       ...prevData,
       [name]: value, // Обновляем состояние для остальных полей
     }));
   };
 
-  // Вспомогательная функция для парсинга текстового формата
   const parseTextFormat = (text) => {
     const lines = text.split("\n").filter((line) => line.trim());
     const result = {};
@@ -84,7 +82,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
     }
     return result;
   };
-  // Валидация объекта параметров
+
   const validateParamsObject = (obj) => {
     if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
       throw new Error("Параметры должны быть в формате объекта");
@@ -104,7 +102,6 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
       if (!formData.name.trim()) {
         throw new Error("Название обязательно");
       }
-      // Преобразуем параметры в строку JSON
       const paramsString =
         typeof formData.params === "object"
           ? JSON.stringify(formData.params)
@@ -278,7 +275,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                       <div className="bg-krio-foreground p-3 rounded-lg">
                         <p className="text-sm text-gray-400 mb-1">Цена</p>
                         <p className="text-xl text-white font-mono">
-                          {product.price} ₽
+                          По запросу
                         </p>
                       </div>
 
@@ -297,7 +294,9 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                         <div className="bg-krio-foreground p-2 rounded-lg">
                           <p className="text-xs text-gray-400 mb-1">Наличие</p>
                           <p className="text-sm text-white">
-                            {product.availability}
+                            {product.availability === "Под заказ за 7 дней"
+                              ? "Под заказ"
+                              : "Есть в наличии"}
                           </p>
                         </div>
                       </div>

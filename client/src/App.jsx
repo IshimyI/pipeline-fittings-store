@@ -11,7 +11,7 @@ import SelectorPage from "./pages/SelectorPage";
 import AuthPage from "./pages/AuthPage";
 import ProductsPage from "./pages/ProductsPage";
 import BasketPage from "./pages/BasketPage";
-import AdminDashboard from "./pages/AdminDashboard";
+import Admin from "./pages/Admin";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -106,7 +106,9 @@ function App() {
             <AuthPage handleLogin={handleLogin} handleSignUp={handleSignUp} />
           }
         />
-        {user?.isAdmin && <Route path="/admin" element={<AdminDashboard />} />}
+        {user?.isAdmin && (
+          <Route path="/admin" element={<Admin user={user} />} />
+        )}
         <Route
           path="/category/:categoryId"
           element={<ProductsPage user={user} category={category} />}

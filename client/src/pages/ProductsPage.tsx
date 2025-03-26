@@ -14,9 +14,15 @@ export default function ProductsPage({ user, category }) {
   // const [isOpen, setIsOpen] = useState(false);
   // const [loading, setLoading] = useState(false);
   const [sortOption, setSortOption] = useState("name");
-  const [availabilityFilter, setAvailabilityFilter] = useState("all");
+  const [workingPressureFilter, setWorkingPressureFilter] = useState("all");
+  const [nominalDiameterFilter, setNominalDiameterFilter] = useState("all");
+  const [mediumGroupFilter, setMediumGroupFilter] = useState("all");
+  const [flowDirectionFilter, setFlowDirectionFilter] = useState("all");
+  const [pressureRangeFilter, setPressureRangeFilter] = useState("all");
+  const [connectionTypeFilter, setConnectionTypeFilter] = useState("all");
+  const [dimensionsFilter, setDimensionsFilter] = useState("all");
+  const [weightFilter, setWeightFilter] = useState("all");
   const [error, setError] = useState("");
-  const [priceFilter, setPriceFilter] = useState("all");
   const [cartVisible, setCartVisible] = useState(false);
   const [cartItems, setCartItems] = useState(() => {
     const localCart = localStorage.getItem("cart");
@@ -24,6 +30,19 @@ export default function ProductsPage({ user, category }) {
   });
 
   const [loadingCart, setLoadingCart] = useState(false);
+
+  const handleResetFilters = () => {
+    setSortOption("name");
+    setWorkingPressureFilter("all");
+    setNominalDiameterFilter("all");
+    setMediumGroupFilter("all");
+    setFlowDirectionFilter("all");
+    setPressureRangeFilter("all");
+    setConnectionTypeFilter("all");
+    setDimensionsFilter("all");
+    setWeightFilter("all");
+    dispatch({ type: ACTION.SET_SEARCH_QUERY, payload: "" });
+  };
 
   const ACTION = {
     SET_PRODUCTS: "SET_PRODUCTS" as const,
@@ -74,7 +93,6 @@ export default function ProductsPage({ user, category }) {
     isOpen,
     loading,
   } = state;
-  console.log(state);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -164,10 +182,7 @@ export default function ProductsPage({ user, category }) {
             productId: item.id,
             quantity: item.quantity,
           })),
-          total: cartItems.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0
-          ),
+          total: "По запросу",
         };
       } else {
         orderData = {
@@ -176,10 +191,7 @@ export default function ProductsPage({ user, category }) {
             productId: item.id,
             quantity: item.quantity,
           })),
-          total: cartItems.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0
-          ),
+          total: "По запросу",
         };
       }
 
@@ -219,14 +231,6 @@ export default function ProductsPage({ user, category }) {
 
   const handleSortChange = (e) => {
     setSortOption(e.target.value);
-  };
-
-  const handleAvailabilityFilterChange = (e) => {
-    setAvailabilityFilter(e.target.value);
-  };
-
-  const handlePriceFilterChange = (e) => {
-    setPriceFilter(e.target.value);
   };
 
   const handleRemoveFromCart = async (productId) => {
@@ -293,29 +297,92 @@ export default function ProductsPage({ user, category }) {
     fetchProducts();
   }, [categoryId, category]);
 
+  // Новая функция для парсинга параметров
+  const parseProductParams = (product) => {
+    // Если params уже объект - возвращаем его
+    if (typeof product.params === "object" && product.params !== null) {
+      return product.params;
+    }
+
+    try {
+      return product.params ? JSON.parse(product.params) : {};
+    } catch (e) {
+      console.error("Error parsing params:", e);
+      return {};
+    }
+  };
+
+  // Исправленная функция получения уникальных значений
+  const getUniqueValues = (products, paramName) => {
+    const values = new Set();
+    products.forEach((product) => {
+      const params = parseProductParams(product);
+      const value = params[paramName];
+      if (value) values.add(String(value)); // Приводим к строке
+    });
+    return Array.from(values);
+  };
+
+  // Исправленная функция фильтрации
   useEffect(() => {
     const filtered = products.filter((product) => {
-      // Search query filter
+      const params = parseProductParams(product);
       const matchesSearch = product.name
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
-      // Availability filter
-      const matchesAvailability =
-        availabilityFilter === "all" ||
-        product.availability === availabilityFilter;
-      // Price filter with proper number conversion
-      const matchesPrice =
-        priceFilter === "all" ||
-        (parseFloat(product.price) || 0) === parseFloat(priceFilter);
-      return matchesSearch && matchesAvailability && matchesPrice;
-    });
-    const sortedProducts = sortProducts(filtered);
 
-    dispatch({
-      type: ACTION.SET_SORTED_PRODUCTS,
-      payload: sortedProducts,
+      const matchesWorkingPressure =
+        workingPressureFilter === "all" ||
+        params["Рабочее давление Рр, кгс/см2"] === workingPressureFilter;
+
+      const matchesNominalDiameter =
+        nominalDiameterFilter === "all" ||
+        params["Условный проходной диаметр Ду, мм"] === nominalDiameterFilter;
+
+      const matchesMediumGroup =
+        mediumGroupFilter === "all" ||
+        params["Рабочая среда"]?.includes(mediumGroupFilter);
+
+      const matchesFlowDirection =
+        flowDirectionFilter === "all" ||
+        params["Направление потока"] === flowDirectionFilter;
+
+      const matchesConnectionType =
+        connectionTypeFilter === "all" ||
+        params["Тип присоединения"] === connectionTypeFilter;
+
+      const matchesDimensions =
+        dimensionsFilter === "all" ||
+        params["Габаритные размеры, мм"] === dimensionsFilter;
+
+      const matchesWeight =
+        weightFilter === "all" || params["Масса, кг"] === weightFilter;
+
+      return (
+        matchesSearch &&
+        matchesWorkingPressure &&
+        matchesNominalDiameter &&
+        matchesMediumGroup &&
+        matchesFlowDirection &&
+        matchesConnectionType &&
+        matchesDimensions &&
+        matchesWeight
+      );
     });
-  }, [products, searchQuery, availabilityFilter, priceFilter, sortOption]);
+
+    const sortedProducts = sortProducts(filtered);
+    dispatch({ type: ACTION.SET_SORTED_PRODUCTS, payload: sortedProducts });
+  }, [
+    products,
+    searchQuery,
+    workingPressureFilter,
+    nominalDiameterFilter,
+    mediumGroupFilter,
+    flowDirectionFilter,
+    pressureRangeFilter,
+    connectionTypeFilter,
+    dimensionsFilter,
+  ]);
 
   const openModal = (product) => {
     dispatch({ type: ACTION.SET_SELECTED_PRODUCT, payload: product });
@@ -363,34 +430,106 @@ export default function ProductsPage({ user, category }) {
         <aside className="h-96 w-1/4 mt-16 p-6 bg-krio-background rounded-lg mr-6">
           <h3 className="text-2xl font-semibold text-gray-300 mb-4">Фильтры</h3>
           <div className="mb-4">
-            <h4 className="text-xl font-semibold text-gray-300">Наличие</h4>
-            <select
-              value={availabilityFilter}
-              onChange={handleAvailabilityFilterChange}
-              className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
-            >
-              {availabilityOptions.map((option, index) => (
-                <option key={index} value={option}>
-                  {option === "all" ? "Все товары" : option}
-                </option>
-              ))}
-            </select>
-
-            <h4 className="text-xl font-semibold text-gray-300">Цена</h4>
-            <select
-              value={priceFilter}
-              onChange={handlePriceFilterChange}
-              className="w-full p-3 bg-krio-foreground text-white rounded-lg"
-            >
-              {priceOptions.map((option, index) => (
-                <option key={index} value={option}>
-                  {option === "all" ? "Все цены" : `${option} ₽`}
-                </option>
-              ))}
-            </select>
+            <div className="mb-4">
+              {/* Фильтр рабочего давления */}
+              {getUniqueValues(products, "Рабочее давление Рр, кгс/см2")
+                .length > 0 && (
+                <select
+                  value={workingPressureFilter}
+                  onChange={(e) => setWorkingPressureFilter(e.target.value)}
+                  className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
+                >
+                  <option value="all">Все значения давления</option>
+                  {getUniqueValues(
+                    products,
+                    "Рабочее давление Рр, кгс/см2"
+                  ).map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
+              )}
+              {/* Фильтр диаметра */}
+              {getUniqueValues(products, "Условный проходной диаметр Ду, мм")
+                .length > 0 && (
+                <select
+                  value={nominalDiameterFilter}
+                  onChange={(e) => setNominalDiameterFilter(e.target.value)}
+                  className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
+                >
+                  <option value="all">Все значения диаметра</option>
+                  {getUniqueValues(
+                    products,
+                    "Условный проходной диаметр Ду, мм"
+                  ).map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
+              )}
+              {/* Фильтр направления потока */}
+              {getUniqueValues(products, "Направление потока").length > 0 && (
+                <select
+                  value={flowDirectionFilter}
+                  onChange={(e) => setFlowDirectionFilter(e.target.value)}
+                  className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
+                >
+                  <option value="all">Все направления потока</option>
+                  {getUniqueValues(products, "Направление потока").map(
+                    (value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    )
+                  )}
+                </select>
+              )}
+              {/* Фильтр типа присоединения */}
+              {getUniqueValues(products, "Тип присоединения").length > 0 && (
+                <select
+                  value={connectionTypeFilter}
+                  onChange={(e) => setConnectionTypeFilter(e.target.value)}
+                  className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
+                >
+                  <option value="all">Все типы присоединения</option>
+                  {getUniqueValues(products, "Тип присоединения").map(
+                    (value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    )
+                  )}
+                </select>
+              )}
+              {/* Фильтр габаритов */}
+              {getUniqueValues(products, "Габаритные размеры, мм").length >
+                0 && (
+                <select
+                  value={dimensionsFilter}
+                  onChange={(e) => setDimensionsFilter(e.target.value)}
+                  className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
+                >
+                  <option value="all">Все габаритные размеры</option>
+                  {getUniqueValues(products, "Габаритные размеры, мм").map(
+                    (value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    )
+                  )}
+                </select>
+              )}
+            </div>
           </div>
+          <button
+            onClick={handleResetFilters}
+            className="w-full mt-4 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+          >
+            Сбросить все фильтры
+          </button>
         </aside>
-
         <section className="w-3/4">
           <h2 className="text-3xl font-bold text-center text-gray-300 mb-8">
             Товары в категории

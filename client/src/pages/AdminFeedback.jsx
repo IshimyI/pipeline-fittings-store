@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axiosInstance from "../axiosInstance";
 
-export default function AdminDashboard() {
+export default function AdminFeedback({ user }) {
   const [feedbackMessages, setFeedbackMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,6 +23,7 @@ export default function AdminDashboard() {
     };
     fetchFeedback();
   }, []);
+
   const handleDelete = async (id) => {
     if (window.confirm("Вы уверены, что хотите удалить это сообщение?")) {
       try {
@@ -59,6 +60,7 @@ export default function AdminDashboard() {
     <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Панель администратора</h1>
+
         <div className="mb-6 flex flex-wrap gap-4">
           <input
             type="text"
