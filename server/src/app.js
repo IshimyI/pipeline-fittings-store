@@ -23,6 +23,8 @@ const corsConfig = {
     "postgresql://pipeline_filtings_krioarmatura_user:vrcQfYLKeHfsFQV5abyszkv5zKDrgSQX@dpg-cvc7slbqf0us73ddg460-a.oregon-postgres.render.com/pipeline_filtings_krioarmatura",
   ],
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 app.use(cors(corsConfig));
 app.use(logger("dev"));
