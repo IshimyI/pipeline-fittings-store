@@ -481,12 +481,15 @@ export default function ProductsPage({ user, category }) {
                       </svg>
                     </button>
                   )}
-                  <img
-                    src={getImageUrl(product.image)}
-                    alt={product.name}
-                    className="w-64 h-64 object-cover rounded-lg mb-4 mx-auto"
-                    onError={handleImageError}
-                  />
+                  <div className="aspect-square flex items-center justify-center relative">
+                    <img
+                      src={getImageUrl(product.image)}
+                      alt={product.name}
+                      className="w-full h-full object-contain hover:object-cover transition-[object-fit] duration-300"
+                      onError={handleImageError}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-krio-background/30 to-transparent pointer-events-none" />
+                  </div>
                   <p className="text-center text-xl font-semibold">
                     {product.name}
                   </p>

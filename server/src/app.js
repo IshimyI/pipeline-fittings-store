@@ -35,8 +35,11 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      sameSite: "Strict",
+      sameSite: "None",
       secure: true,
+      httpOnly: true,
+      domain: ".vercel.app",
+      path: "/",
     },
   })
 );
