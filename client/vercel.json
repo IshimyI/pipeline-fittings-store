@@ -1,11 +1,12 @@
 {
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://your-frontend-domain.vercel.app"
+          "value": "https://pipeline-fittings-store-client.vercel.app"
         },
         { "key": "Access-Control-Allow-Credentials", "value": "true" }
       ]
