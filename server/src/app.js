@@ -23,6 +23,8 @@ const corsConfig = {
     "postgresql://pipeline_filtings_krioarmatura_user:vrcQfYLKeHfsFQV5abyszkv5zKDrgSQX@dpg-cvc7slbqf0us73ddg460-a.oregon-postgres.render.com/pipeline_filtings_krioarmatura",
   ],
   credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Set-Cookie"],
 };
 app.use(cors(corsConfig));
 app.use(logger("dev"));
@@ -38,7 +40,6 @@ app.use(
       sameSite: "None",
       secure: true,
       httpOnly: true,
-      domain: ".vercel.app",
       path: "/",
     },
   })
