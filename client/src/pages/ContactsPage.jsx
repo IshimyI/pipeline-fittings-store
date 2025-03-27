@@ -73,6 +73,63 @@ export default function ContactsPage({ user }) {
     setDirtyFields((prev) => ({ ...prev, [name]: true }));
   };
 
+  const [callMeStatus, setCallMeStatus] = useState({
+    loading: false,
+    success: false,
+    error: null,
+  });
+
+  const handlePhone = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const phoneInput = form.phone;
+
+    // Нормализация номера
+    const rawPhone = phoneInput.value.replace(/\D/g, "");
+
+    // Проверка что номер содержит ровно 11 цифр
+    if (rawPhone.length !== 11) {
+      setCallMeStatus({
+        loading: false,
+        error: "Введите 11-значный номер телефона",
+      });
+      return;
+    }
+
+    // Проверка что номер начинается с 7 или 8
+    if (!/^[78]/.test(rawPhone)) {
+      setCallMeStatus({
+        loading: false,
+        error: "Номер должен начинаться с 7 или 8",
+      });
+      return;
+    }
+    setCallMeStatus({ loading: true, success: false, error: null });
+
+    try {
+      const res = await axiosInstance.post("/callMe", { phone: rawPhone });
+
+      if (res.status === 201) {
+        setCallMeStatus({
+          loading: false,
+          success: "Заявка принята! Мы вам перезвоним",
+          error: null,
+        });
+        form.reset();
+      }
+    } catch (error) {
+      const serverMessage = error.response?.data?.message;
+      const errorMessage =
+        serverMessage || "Ошибка при отправке. Попробуйте позже";
+
+      setCallMeStatus({
+        loading: false,
+        success: false,
+        error: errorMessage,
+      });
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -265,16 +322,61 @@ export default function ContactsPage({ user }) {
                 <h3 className="text-xl font-bold text-white mb-4">
                   Заказать звонок
                 </h3>
-                <div className="flex flex-col space-y-3">
+
+                {callMeStatus.success && (
+                  <div className="mb-4 p-3 bg-green-600/80 text-white rounded text-center text-sm">
+                    Заявка принята! Мы вам перезвоним
+                  </div>
+                )}
+
+                {callMeStatus.error && (
+                  <div className="mb-4 p-3 bg-red-600/80 text-white rounded text-center text-sm">
+                    {callMeStatus.error}
+                  </div>
+                )}
+
+                <form
+                  onSubmit={handlePhone}
+                  className="flex flex-col space-y-3"
+                >
                   <input
                     type="tel"
-                    placeholder="Ваш телефон"
-                    className="bg-krio-foreground/50 border border-krio-secondary/20 rounded-lg px-4 py-2 text-white placeholder-krio-secondary focus:ring-2 focus:ring-krio-primary outline-none"
+                    name="phone"
+                    placeholder="+7 (XXX) XXX-XX-XX"
+                    className="..."
+                    pattern="\+7\s?[\(]{0,1}\d{3}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
                   />
-                  <button className="bg-krio-primary text-krio-background font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all transform hover:scale-[1.02]">
-                    Перезвоните мне
+                  <button
+                    type="submit"
+                    disabled={callMeStatus.loading}
+                    className="bg-krio-primary text-krio-background font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all flex justify-center items-center"
+                  >
+                    {callMeStatus.loading ? (
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                    ) : (
+                      "Перезвоните мне"
+                    )}
                   </button>
-                </div>
+                </form>
               </div>
             </div>
 
@@ -332,23 +434,7 @@ export default function ContactsPage({ user }) {
               </div>
             </div>
           </div>
-          {/* Вспомогательный компонент ContactItem */}
-          <div className="flex items-start space-x-4 group">
-            <div className="p-2 bg-krio-background/50 rounded-lg group-hover:bg-krio-primary/20 transition-colors">
-              <svg
-                className="w-6 h-6 text-krio-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                />
-              </svg>
-            </div>
-          </div>
+
           <div className="p-6 bg-krio-foreground rounded-lg shadow-md">
             <h3 className="text-lg font-semibold text-white text-center mb-4">
               Форма обратной связи

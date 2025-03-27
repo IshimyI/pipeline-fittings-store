@@ -368,6 +368,33 @@ router.delete("/basket/clear", async (req, res) => {
   }
 });
 
+router.post("/callMe", async (req, res) => {
+  const { phone } = req.body;
+  if (!phone) {
+    return res.status(400).json({ message: "Не указан номер телефона" });
+  }
+  try {
+    const messageText = `
+Пришел новый запрос на звонок
+Телефон: ${phone}
+`.trim();
+
+    // Добавляем второй параметр, если функция его требует
+    await sendMsg({ body: { message: messageText } }, {});
+
+    await sendEmail({
+      to: process.env.ADMIN_EMAIL,
+      subject: `Пришел новый запрос на звонок`,
+      text: messageText,
+    });
+
+    res.status(201).json({ message: "Запрос на звонок отправлен" });
+  } catch (error) {
+    console.error("CallMe error:", error);
+    res.status(500).json({ message: "Ошибка при отправке запроса" });
+  }
+});
+
 router.post("/createOrder", async (req, res) => {
   try {
     const { userId, email, items, total } = req.body;
@@ -433,7 +460,7 @@ router.post("/feedback", async (req, res) => {
       message: message.trim(),
     });
 
-    sendEmail({
+    await sendEmail({
       to: process.env.ADMIN_EMAIL,
       subject: "Новое сообщение от пользователя",
       text: `Имя: ${name}\nEmail: ${email}\nТелефон: ${phone}\nСообщение: ${message}`,
@@ -447,7 +474,7 @@ router.post("/feedback", async (req, res) => {
     Сообщение: ${message}
     `;
 
-    sendMsg({ body: { message: telegramMessage } }, {});
+    await sendMsg({ body: { message: telegramMessage } }, {});
 
     return res.status(201).json({
       message: "Сообщение успешно отправлено",

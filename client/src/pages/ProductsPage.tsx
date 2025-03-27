@@ -550,18 +550,6 @@ export default function ProductsPage({ user, category }) {
             />
           </div>
 
-          <div className="mb-8">
-            <select
-              value={sortOption}
-              onChange={handleSortChange}
-              className="w-full p-3 bg-krio-background text-white rounded-lg"
-            >
-              <option value="name">По имени</option>
-              <option value="price">По цене</option>
-              <option value="availability">По количеству</option>
-            </select>
-          </div>
-
           {loading ? (
             <div className="text-center text-gray-300">Загрузка...</div>
           ) : sortedProducts?.length > 0 ? (

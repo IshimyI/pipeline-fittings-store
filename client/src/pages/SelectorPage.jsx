@@ -1,20 +1,44 @@
 import React from "react";
 
 const Section = ({ title, children }) => (
-  <section className="space-y-6">
-    <h1 className="text-2xl font-bold text-center text-gray-200">{title}</h1>
+  <section className="space-y-8">
+    <h2 className="text-3xl font-bold text-center text-white mb-8 relative group">
+      <span className="relative z-10 px-4 bg-krio-background">
+        <span className="bg-gradient-to-r from-krio-primary to-blue-400 bg-clip-text text-transparent">
+          {title}
+        </span>
+      </span>
+      <div className="absolute bottom-0 left-1/2 w-4/5 h-[2px] bg-gradient-to-r from-transparent via-krio-primary/80 to-transparent transform -translate-x-1/2 group-hover:via-krio-primary transition-all" />
+    </h2>
     {children}
   </section>
 );
 
-const List = ({ items }) => (
-  <ul className="list-disc list-inside space-y-2 text-gray-400">
+const CardGrid = ({ items, columns = "md:grid-cols-2 lg:grid-cols-2" }) => (
+  <div className={`grid grid-cols-1 ${columns} gap-6`}>
     {items.map((item, index) => (
-      <li key={index}>
-        <strong>{item.label}:</strong> {item.description}
-      </li>
+      <div
+        key={index}
+        className="group p-8 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 "
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-krio-primary/5 to-transparent opacity-0 transition-opacity" />
+        <div className="flex items-start mb-4 relative z-10">
+          <div className="w-12 h-12 bg-krio-primary/10 rounded-xl flex items-center justify-center mr-4 transform transition-transform">
+            <span className="text-2xl bg-gradient-to-r from-krio-primary to-blue-400 text-transparent bg-clip-text">
+              {index + 1}
+            </span>
+          </div>
+          <h3 className="text-xl font-semibold text-white drop-shadow-sm">
+            {item.label}
+          </h3>
+        </div>
+        <p className="text-gray-300/90 pl-2 text-lg leading-relaxed relative z-10">
+          {item.description}
+        </p>
+        <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-krio-primary/5 rounded-full transform transition-transform" />
+      </div>
     ))}
-  </ul>
+  </div>
 );
 
 const SelectorPage = () => {
@@ -103,27 +127,77 @@ const SelectorPage = () => {
   ];
 
   return (
-    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
-      <main className="w-full max-w-4xl p-8 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8">
-        <Section title="Общее описание арматуры высокого давления">
-          <p className="text-gray-300">
-            Стендовая арматура представляет собой комплекс технических
-            устройств, предназначенных для оснащения испытательных,
-            производственных стендов. Она обеспечивает контроль, регулирование и
-            тестирование различных инженерных систем и механизмов.
-          </p>
+    <div className="flex items-center justify-center min-h-screen">
+      <main className="w-full max-w-4xl p-6 space-y-8 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
+        <Section title="Арматура высокого давления">
+          <div className="p-8 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-krio-primary/5 to-transparent opacity-40" />
+            <p className="text-gray-300/90 text-lg leading-relaxed text-center relative z-10 transform group-hover:scale-[1.01] transition-transform">
+              <span className="text-krio-primary font-medium">
+                Инновационные решения
+              </span>{" "}
+              для точного контроля сложных систем. Соответствие международным
+              стандартам качества и безопасности.
+            </p>
+          </div>
         </Section>
 
-        <Section title="Классификация арматуры высокого давления">
-          <List items={classificationItems} />
+        <Section title="Классификация">
+          <CardGrid items={classificationItems} />
         </Section>
 
-        <Section title="Основные параметры арматуры высокого давления">
-          <List items={parametersItems} />
+        <Section title="Технические параметры">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {parametersItems.map((item, index) => (
+              <div
+                key={index}
+                className="p-6 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 hover:border-krio-primary/40 transition-all group relative hover:shadow-[0_8px_30px_rgba(99,102,241,0.1)]"
+              >
+                <div className="flex items-center mb-4">
+                  <div className="w-3 h-3 bg-gradient-to-r from-krio-primary to-blue-400 rounded-full mr-4 animate-pulse" />
+                  <h3 className="text-lg font-semibold text-white drop-shadow-sm">
+                    {item.label}
+                  </h3>
+                </div>
+                <p className="text-gray-300/90 pl-7 text-base leading-relaxed">
+                  {item.description}
+                </p>
+                <div className="absolute bottom-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity text-4xl text-krio-primary/20">
+                  {String.fromCharCode(0x2460 + index)}
+                </div>
+              </div>
+            ))}
+          </div>
         </Section>
 
-        <Section title="Примеры применения арматуры высокого давления">
-          <List items={applicationsItems} />
+        <Section title="Отрасли применения">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {applicationsItems.map((item, index) => (
+              <div
+                key={index}
+                className="p-6 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 hover:border-krio-primary/40 transition-all group relative overflow-hidden"
+              >
+                <div className="flex items-start gap-6">
+                  <div className="w-16 h-16 bg-krio-primary/10 rounded-2xl flex items-center justify-center shrink-0 transform group-hover:scale-110 transition-transform">
+                    <span className="text-3xl text-krio-primary drop-shadow-sm">
+                      {["⛢", "⚗", "⚡", "🌪"][index]}
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-2 drop-shadow-sm">
+                      {item.label}
+                    </h3>
+                    <p className="text-gray-300/90 text-base leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute -bottom-6 -right-6 text-8xl opacity-10 text-krio-primary/20 group-hover:opacity-20 transition-opacity">
+                  {String.fromCharCode(0x2780 + index)}
+                </div>
+              </div>
+            ))}
+          </div>
         </Section>
       </main>
     </div>

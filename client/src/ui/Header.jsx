@@ -15,6 +15,18 @@ export default function Header({ user, handleLogout }) {
           </div>
           <nav className="hidden md:flex space-x-8">
             <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `${
+                  isActive
+                    ? "text-krio-secondary border-b-2 border-krio-secondary"
+                    : "text-white"
+                } hover:text-krio-secondary hover:border-b-2 hover:border-krio-secondary transition-colors duration-300 text-sm font-medium`
+              }
+            >
+              Каталог
+            </NavLink>
+            <NavLink
               to="/about"
               className={({ isActive }) =>
                 `${
