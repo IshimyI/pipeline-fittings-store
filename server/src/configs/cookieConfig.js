@@ -6,6 +6,7 @@ const cookieConfig = {
   secure: true,
   sameSite: "None",
   path: "/",
+  domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined,
 };
 
 module.exports = cookieConfig;
