@@ -18,12 +18,11 @@ const corsConfig = {
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://pipeline-fittings-store-client.vercel.app",
-    "https://www.pipeline-fittings-store-client.vercel.app",
     "pipeline-fittings-store-client.vercel.app",
+    "https://pipeline-fittings-store-client.vercel.app",
+    "postgresql://pipeline_filtings_krioarmatura_user:vrcQfYLKeHfsFQV5abyszkv5zKDrgSQX@dpg-cvc7slbqf0us73ddg460-a.oregon-postgres.render.com/pipeline_filtings_krioarmatura",
   ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 app.use(cors(corsConfig));
 app.use(logger("dev"));
@@ -36,10 +35,8 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-      maxAge: 12 * 60 * 60 * 1000 // 12 часов, как в jwtConfig
+      sameSite: "Strict",
+      secure: true,
     },
   })
 );

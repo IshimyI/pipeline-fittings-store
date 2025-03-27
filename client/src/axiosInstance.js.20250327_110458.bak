@@ -27,23 +27,17 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     const prevReq = error.config;
-    if (error.response?.status === 401 && !prevReq.sent) {
+    if (error.response?.status === 401) {
       try {
-        console.log('Attempting to refresh token...');
-        prevReq.sent = true;
         const response = await axios.get(
           `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
           { withCredentials: true }
         );
-        if (response.data.accessToken) {
-          console.log('Token refreshed successfully');
-          accessToken = response.data.accessToken;
-          prevReq.headers.Authorization = `Bearer ${accessToken}`;
-          return axiosInstance(prevReq);
-        }
+        accessToken = response.data.accessToken;
+        prevReq.sent = true;
+        prevReq.headers.Authorization = `Bearer ${accessToken}`;
+        return axiosInstance(prevReq);
       } catch (refreshError) {
-        console.error('Token refresh failed:', refreshError);
-        // Возможно, перенаправление на страницу логина при неудачном обновлении токена
         return Promise.reject(refreshError);
       }
     }
