@@ -10,13 +10,14 @@ export default function BasketPage({ user }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  const isEmailValid = email && /^\S+@\S+\.\S+$/.test(email);
+
   useEffect(() => {
     const fetchCart = async () => {
       setLoading(true);
       setError("");
       try {
         if (user?.id) {
-          // Загрузка корзины для авторизованного пользователя
           const response = await axiosInstance.get("/basket", {
             params: { userId: user.id },
           });
@@ -26,7 +27,6 @@ export default function BasketPage({ user }) {
           }));
           setCartItems(cartProducts);
         } else {
-          // Загрузка гостевой корзины из localStorage
           const guestCart = localStorage.getItem("guestCart");
           if (guestCart) {
             try {
@@ -71,11 +71,11 @@ export default function BasketPage({ user }) {
     try {
       let orderData;
 
-      // Логика для гостя
       if (!user?.id) {
         if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
           setError("Пожалуйста, введите корректный email");
           setIsSubmitting(false);
+
           return;
         }
 
@@ -277,32 +277,50 @@ export default function BasketPage({ user }) {
 
                 <button
                   onClick={handleCheckout}
-                  disabled={isSubmitting || cartItems.length === 0}
+                  disabled={
+                    isSubmitting ||
+                    cartItems.length === 0 ||
+                    (!user?.id && !isEmailValid) // Блокируем если гость и email невалидный
+                  }
                   className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg text-lg font-medium ${
-                    isSubmitting || cartItems.length === 0
+                    isSubmitting ||
+                    cartItems.length === 0 ||
+                    (!user?.id && !isEmailValid) // Соответствие условий для стилей
                       ? "opacity-50 cursor-not-allowed"
                       : ""
                   }`}
                 >
                   {isSubmitting ? "Оформление..." : "Перейти к оформлению"}
                 </button>
-              </div>
 
-              {cartItems.length > 0 && !user?.id && (
-                <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Email для связи
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
-                    placeholder="Введите ваш email"
-                    required
-                  />
-                </div>
-              )}
+                {cartItems.length > 0 && !user?.id && (
+                  <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Email для связи
+                    </label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setError(null); // Сбрасываем ошибку при изменении email
+                      }}
+                      className={`w-full p-2 border rounded text-white ${
+                        email && !isEmailValid
+                          ? "bg-red-900/20 border-red-500"
+                          : "bg-gray-700 border-gray-600"
+                      }`}
+                      placeholder="Введите ваш email"
+                      required
+                    />
+                    {email && !isEmailValid && (
+                      <p className="text-red-400 text-sm mt-1">
+                        Введите корректный email
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
             </>
           )}
         </div>

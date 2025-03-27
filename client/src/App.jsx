@@ -1,6 +1,9 @@
 import { Routes, Route } from "react-router";
 import Layout from "./ui/Layout";
-import axiosInstance, { setAccessToken, clearAccessToken } from "./axiosInstance";
+import axiosInstance, {
+  setAccessToken,
+  clearAccessToken,
+} from "./axiosInstance";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
@@ -86,13 +89,13 @@ function App() {
       if (res.status === 200) {
         setUser(null);
         clearAccessToken();
-        localStorage.removeItem('user');
-        sessionStorage.removeItem('user');
+        localStorage.removeItem("user");
+        sessionStorage.removeItem("user");
         navigate("/login");
       }
     } catch (error) {
-    console.error("Ошибка при выходе:", error);
-    console.error("Детали ошибки:", error.response?.data || error.message);
+      console.error("Ошибка при выходе:", error);
+      console.error("Детали ошибки:", error.response?.data || error.message);
     }
   };
   return (

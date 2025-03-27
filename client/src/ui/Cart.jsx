@@ -7,9 +7,11 @@ export default function Cart({
   onRemove,
   user,
 }) {
-  const [showEmailModal, setShowEmailModal] = useState(false);
-  const [emailInput, setEmailInput] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState(null);
+
+  const isEmailValid = email && /^\S+@\S+\.\S+$/.test(email);
 
   const hasAnyRequestPrice = items.some((item) =>
     String(item.price).toLowerCase().includes("запросу")
@@ -25,57 +27,8 @@ export default function Cart({
     ? "По запросу"
     : `${totalSum.toFixed(2)} ₽`;
 
-  const handleCheckoutClick = () => {
-    if (!user?.id) {
-      setShowEmailModal(true);
-    } else {
-      onCheckout(user.email);
-    }
-  };
-
   return (
     <div className="fixed bottom-4 right-4 bg-krio-background p-4 rounded-lg shadow-xl w-96">
-      {showEmailModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-krio-foreground p-6 rounded-lg w-80">
-            <h3 className="text-xl font-semibold mb-4">Введите email</h3>
-            <input
-              type="email"
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-              placeholder="Ваш email"
-              className="w-full p-3 mb-4 bg-krio-background text-white rounded-lg"
-            />
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setShowEmailModal(false)}
-                className="px-4 py-2 bg-gray-500 rounded-lg hover:bg-gray-600"
-              >
-                Отмена
-              </button>
-              <button
-                onClick={async () => {
-                  if (/^\S+@\S+\.\S+$/.test(emailInput)) {
-                    setIsSubmitting(true);
-                    try {
-                      await onCheckout(emailInput);
-                      setShowEmailModal(false);
-                    } finally {
-                      setIsSubmitting(false);
-                    }
-                  } else {
-                    alert("Пожалуйста, введите корректный email");
-                  }
-                }}
-                className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700"
-              >
-                Подтвердить
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-semibold">Корзина</h3>
         <button onClick={onClose} className="text-gray-400 hover:text-white">
@@ -123,16 +76,52 @@ export default function Cart({
               <span className="font-semibold">{formattedTotal}</span>
             </div>
             <button
-              onClick={handleCheckoutClick}
-              className={`w-full py-2 rounded-lg ${
-                isSubmitting
-                  ? "bg-gray-500 cursor-not-allowed"
-                  : "bg-green-600 hover:bg-green-700"
+              onClick={() => {
+                setIsSubmitting(true);
+                onCheckout(email);
+              }}
+              disabled={
+                isSubmitting ||
+                items.length === 0 ||
+                (!user?.id && !isEmailValid)
+              }
+              className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg text-lg font-medium ${
+                isSubmitting ||
+                items.length === 0 ||
+                (!user?.id && !isEmailValid)
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
-              disabled={items.length === 0 || isSubmitting}
             >
-              Оформить заказ
+              {isSubmitting ? "Оформление..." : "Перейти к оформлению"}
             </button>
+            {items.length > 0 && !user?.id && (
+              <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Email для связи
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setError(null);
+                  }}
+                  className={`w-full p-2 border rounded text-white ${
+                    email && !isEmailValid
+                      ? "bg-red-900/20 border-red-500"
+                      : "bg-gray-700 border-gray-600"
+                  }`}
+                  placeholder="Введите ваш email"
+                  required
+                />
+                {email && !isEmailValid && (
+                  <p className="text-red-400 text-sm mt-1">
+                    Введите корректный email
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </>
       )}
