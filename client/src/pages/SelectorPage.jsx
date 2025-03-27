@@ -2,11 +2,9 @@ import React from "react";
 
 const Section = ({ title, children }) => (
   <section className="space-y-8">
-    <h2 className="text-3xl font-bold text-center text-white mb-8 relative group">
+    <h2 className="text-2xl font-bold text-center text-white">
       <span className="relative z-10 px-4 bg-krio-background">
-        <span className="bg-gradient-to-r from-krio-primary to-blue-400 bg-clip-text text-transparent">
-          {title}
-        </span>
+        <span className="text-white bg-clip-text ">{title}</span>
       </span>
       <div className="absolute bottom-0 left-1/2 w-4/5 h-[2px] bg-gradient-to-r from-transparent via-krio-primary/80 to-transparent transform -translate-x-1/2 group-hover:via-krio-primary transition-all" />
     </h2>
@@ -24,7 +22,7 @@ const CardGrid = ({ items, columns = "md:grid-cols-2 lg:grid-cols-2" }) => (
         <div className="absolute inset-0 bg-gradient-to-br from-krio-primary/5 to-transparent opacity-0 transition-opacity" />
         <div className="flex items-start mb-4 relative z-10">
           <div className="w-12 h-12 bg-krio-primary/10 rounded-xl flex items-center justify-center mr-4 transform transition-transform">
-            <span className="text-2xl bg-gradient-to-r from-krio-primary to-blue-400 text-transparent bg-clip-text">
+            <span className="text-2xl text-white  bg-clip-text">
               {index + 1}
             </span>
           </div>
@@ -154,7 +152,7 @@ const SelectorPage = () => {
                 className="p-6 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 hover:border-krio-primary/40 transition-all group relative hover:shadow-[0_8px_30px_rgba(99,102,241,0.1)]"
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-3 h-3 bg-gradient-to-r from-krio-primary to-blue-400 rounded-full mr-4 animate-pulse" />
+                  <div className="w-3 h-3 text-white rounded-full mr-4 animate-pulse" />
                   <h3 className="text-lg font-semibold text-white drop-shadow-sm">
                     {item.label}
                   </h3>
