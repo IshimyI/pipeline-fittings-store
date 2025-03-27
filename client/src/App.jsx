@@ -85,6 +85,8 @@ function App() {
     if (res.status === 200) {
       setUser(null);
       setAccessToken("");
+      document.cookie =
+        "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; secure; samesite=none";
       navigate("/login");
     }
   };

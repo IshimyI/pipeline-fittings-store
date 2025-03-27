@@ -22,8 +22,9 @@ const corsConfig = {
     "pipeline-fittings-store-client.vercel.app",
   ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Set-Cookie"],
 };
 app.use(cors(corsConfig));
 app.use(logger("dev"));
@@ -36,10 +37,10 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-      maxAge: 12 * 60 * 60 * 1000 // 12 часов, как в jwtConfig
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 12 * 60 * 60 * 1000, // 12 часов, как в jwtConfig
     },
   })
 );
