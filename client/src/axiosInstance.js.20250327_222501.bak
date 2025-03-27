@@ -11,10 +11,6 @@ export function setAccessToken(newToken) {
   accessToken = newToken;
 }
 
-export function clearAccessToken() {
-  accessToken = "";
-}
-
 axiosInstance.interceptors.request.use(
   (config) => {
     if (!config.headers.Authorization && accessToken) {

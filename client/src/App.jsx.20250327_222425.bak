@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router";
 import Layout from "./ui/Layout";
-import axiosInstance, { setAccessToken, clearAccessToken } from "./axiosInstance";
+import axiosInstance, { setAccessToken } from "./axiosInstance";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
@@ -28,7 +28,7 @@ function App() {
       })
       .catch(() => {
         setUser(null);
-        clearAccessToken();
+        setAccessToken("");
         navigate("/");
       })
       .finally(() => {
@@ -84,13 +84,14 @@ function App() {
     try {
       const res = await axiosInstance.post("/auth/logout");
       if (res.status === 200) {
+        document.cookie =
+          "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; secure; samesite=none";
         setUser(null);
-        clearAccessToken();
+        setAccessToken("");
         navigate("/login");
       }
     } catch (error) {
-    console.error("Ошибка при выходе:", error);
-    console.error("Детали ошибки:", error.response?.data || error.message);
+      console.error("Ошибка при выходе:", error);
     }
   };
   return (
