@@ -109,7 +109,6 @@ export default function ProductsPage({ user, category }) {
           }));
           setCartItems(cartProducts);
         } else {
-          // Загрузка корзины из localStorage для гостя
           const localCart = localStorage.getItem("guestCart");
           if (localCart) {
             setCartItems(JSON.parse(localCart));
@@ -145,7 +144,6 @@ export default function ProductsPage({ user, category }) {
             : [...prev, { ...product, quantity: 1 }];
         });
       } else {
-        // Логика для гостя
         const newCart = [...cartItems];
         const existing = newCart.find((item) => item.id === product.id);
 

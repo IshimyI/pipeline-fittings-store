@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
-import Order from "../ui/Order";
 import { OrdersService } from "../ui/OrderService";
 
 export default function BasketPage({ user }) {
   const [cartItems, setCartItems] = useState([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [orders, setOrders] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchCart = async () => {
       if (user?.id) {
         try {
+          setLoading(true);
+          setError(null);
           const response = await axiosInstance.get("/basket", {
             params: { userId: user.id },
           });
@@ -53,32 +54,33 @@ export default function BasketPage({ user }) {
     if (isSubmitting) return;
 
     setIsSubmitting(true);
+    setError(null);
     try {
       const orderData = {
         userId: user.id,
         items: cartItems.map((item) => ({
           productId: item.id,
           quantity: item.quantity,
+          productName: item.name, // Добавляем имя товара
         })),
         total: cartItems.reduce(
-          (sum, item) => sum + item.price * item.quantity,
+          (sum, item) =>
+            sum + (item.price ? parseFloat(item.price) : 0) * item.quantity,
           0
         ),
-        email: "",
+        email: user.email, // Добавляем email пользователя
       };
-      // Create the order
+
       const orderResponse = await OrdersService.createOrder(orderData);
       if (orderResponse) {
-        // Clear the cart on the server
         await axiosInstance.delete("/basket/clear", {
           data: { userId: user.id },
         });
-        // Clear the cart locally
         setCartItems([]);
-        // Show success alert
-        alert(
-          `Заказ успешно создан! Менеджер свяжется с вами для уточнения деталей.`
+        setSuccessMessage(
+          "Заказ успешно создан! Менеджер свяжется с вами для уточнения деталей."
         );
+        setTimeout(() => setSuccessMessage(""), 5000);
       }
     } catch (error) {
       console.error("Ошибка оформления:", error);
@@ -88,117 +90,154 @@ export default function BasketPage({ user }) {
     }
   };
 
-  const isAnyProductByRequest = cartItems.some((item) =>
-    isNaN(parseFloat(item.price))
-  );
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <main className="w-full max-w-4xl p-6 space-y-8 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+          <p className="mt-4 text-white">Загрузка корзины...</p>
+        </main>
+      </div>
+    );
+  }
 
-  const totalSum = cartItems.reduce((sum, item) => {
-    if (isNaN(item.price) || isNaN(item.quantity)) {
-      return sum;
-    }
-    return sum + item.price * item.quantity;
-  }, 0);
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axiosInstance.get("/allOrders");
-        setOrders(response.data);
-      } catch (error) {
-        console.error("Ошибка загрузки заказов:", error);
-      }
-    };
-
-    fetchOrders();
-  }, []);
-
-  const formattedTotal = isAnyProductByRequest
-    ? "По запросу"
-    : `${isNaN(totalSum) ? 0 : totalSum.toFixed(2)} ₽`;
-
-  if (loading)
-    return <div className="text-center p-8">Загрузка корзины...</div>;
-  if (error) return <div className="text-red-500 p-8">{error}</div>;
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <main className="w-full max-w-4xl p-6 space-y-8 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
+          <p className="text-red-300 font-medium">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-red-700 hover:bg-red-600 rounded text-white"
+          >
+            Попробовать снова
+          </button>
+        </main>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex text-black justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
-      {user.isAdmin ? (
-        <div className="bg-krio-background shadow-lg rounded-lg p-6 mb-6 w-full max-w-xl border border-gray-700">
-          {orders.map((order) => (
-            <div className="flex text-center justify-center" key={order.id}>
-              <Order order={order} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="min-h-screen p-8">
-          <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
-            <h1 className="text-3xl font-bold mb-6">Ваша корзина</h1>
+    <div className="flex items-center justify-center min-h-screen">
+      <main className="w-full max-w-4xl p-6 space-y-8 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-6">
+          Ваша корзина
+        </h1>
 
-            {cartItems.length === 0 ? (
-              <div className="text-center text-gray-500 py-12">
-                Ваша корзина пуста
-              </div>
-            ) : (
-              <>
-                <div className="space-y-4 mb-8">
-                  {cartItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between border-b pb-4"
+        {/* Сообщения об ошибках/успехе */}
+        {error && (
+          <div className="bg-red-900/30 border border-red-500 rounded-lg p-4 mb-6">
+            <p className="text-red-300">{error}</p>
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="bg-green-900/30 border border-green-500 rounded-lg p-4 mb-6">
+            <p className="text-green-300">{successMessage}</p>
+          </div>
+        )}
+
+        {/* Содержимое корзины */}
+        <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
+          {cartItems.length === 0 ? (
+            <div className="text-center py-12">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-16 w-16 mx-auto text-gray-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <p className="mt-4 text-gray-400">Ваша корзина пуста</p>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-4 mb-6">
+                {cartItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-gray-800/30 border border-gray-700 rounded-lg p-4 hover:bg-gray-800/50 transition-colors relative group"
+                  >
+                    <button
+                      onClick={() => handleRemoveFromCart(item.id)}
+                      className="absolute top-3 right-3 text-red-400 hover:text-red-300 transition-colors"
+                      title="Удалить товар"
                     >
-                      <div className="flex items-center space-x-4">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </button>
+
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0">
                         <img
                           src={item.img || "/img/no-photo.png"}
                           alt={item.name}
-                          className="w-20 h-20 object-cover rounded"
+                          className="h-16 w-16 object-cover rounded"
                         />
-                        <div>
-                          <h3 className="text-lg font-semibold">{item.name}</h3>
-                          <p className="text-gray-600">
-                            Количество: {item.quantity}
-                          </p>
-                        </div>
                       </div>
-
-                      <div className="flex items-center space-x-4">
-                        <p className="text-lg font-semibold">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-semibold text-white truncate">
+                          {item.name}
+                        </h3>
+                        <p className="text-gray-400 text-sm mt-1">
+                          Количество: {item.quantity}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-semibold text-white">
                           {isNaN(parseFloat(item.price))
                             ? "По запросу"
                             : `${item.price} ₽`}
                         </p>
-                        <button
-                          onClick={() => handleRemoveFromCart(item.id)}
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          Удалить
-                        </button>
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                <div className="border-t pt-6">
-                  <div className="flex justify-between items-center mb-6">
-                    <span className="text-xl font-bold">Итого:</span>
-                    <span className="text-xl font-bold">По запросу</span>
                   </div>
+                ))}
+              </div>
 
-                  <button
-                    onClick={handleCheckout}
-                    disabled={isSubmitting}
-                    className={`w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg ${
-                      isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    {isSubmitting ? "Оформление..." : "Перейти к оформлению"}
-                  </button>
+              <div className="border-t border-gray-700 pt-6">
+                <div className="flex justify-between items-center mb-6">
+                  <span className="text-xl font-bold text-white">Итого:</span>
+                  <span className="text-xl font-bold text-white">
+                    По запросу
+                  </span>
                 </div>
-              </>
-            )}
-          </div>
+
+                <button
+                  onClick={handleCheckout}
+                  disabled={isSubmitting || cartItems.length === 0}
+                  className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg text-lg font-medium ${
+                    isSubmitting || cartItems.length === 0
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                >
+                  {isSubmitting ? "Оформление..." : "Перейти к оформлению"}
+                </button>
+              </div>
+            </>
+          )}
         </div>
-      )}
+      </main>
     </div>
   );
 }

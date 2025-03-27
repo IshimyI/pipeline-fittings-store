@@ -398,9 +398,23 @@ router.post("/callMe", async (req, res) => {
 router.post("/createOrder", async (req, res) => {
   try {
     const { userId, email, items, total } = req.body;
+    
+    // Обогащаем items информацией о товарах
+    const enrichedItems = await Promise.all(
+      items.map(async (item) => {
+        const product = await Product.findByPk(item.productId);
+        return {
+          ...item,
+          productName: product.name,
+          price: product.price
+        };
+      })
+    );
+    
     const order = await Order.create({
       userId,
-      items,
+      email: email || null,  // Сохраняем email незарегистрированного пользователя
+      items: enrichedItems,
       total,
     });
     let userInfo = email;
@@ -496,7 +510,7 @@ router.post("/feedback", async (req, res) => {
   }
 });
 
-router.get("/allOrders", async (req, res) => {
+router.get("/allOrders", verifyRefreshToken, async (req, res) => {
   try {
     const orders = await Order.findAll({
       include: [
@@ -509,35 +523,20 @@ router.get("/allOrders", async (req, res) => {
       order: [["createdAt", "DESC"]],
     });
 
-    const formattedOrders = await Promise.all(
-      orders.map(async (order) => {
-        const items = JSON.parse(order.items);
-
-        const itemsWithNames = await Promise.all(
-          items.map(async (item) => {
-            const product = await Product.findByPk(item.productId, {
-              attributes: ["name", "price"],
-            });
-            return {
-              productName: product?.name || "Товар удален",
-              quantity: item.quantity,
-              price: product?.price || 0,
-            };
-          })
-        );
-
-        return {
-          id: order.id,
-          total: order.total,
-          createdAt: order.createdAt,
-          user: {
-            name: order.user?.name || "Неизвестный пользователь",
-            email: order.user?.email || "Нет email",
-          },
-          items: itemsWithNames,
-        };
-      })
-    );
+    const formattedOrders = orders.map((order) => ({
+      id: order.id,
+      userId: order.userId,
+      email: order.email, // Добавляем email из заказа
+      items:
+        typeof order.items === "string" ? JSON.parse(order.items) : order.items,
+      total: order.total,
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt,
+      user: {
+        name: order.user?.name,
+        email: order.user?.email || order.email, // Используем email из заказа, если нет пользователя
+      },
+    }));
 
     res.status(200).json(formattedOrders);
   } catch (error) {

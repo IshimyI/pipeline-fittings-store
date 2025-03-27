@@ -122,14 +122,6 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-
-            <div className="flex items-center space-x-3 mt-4 p-3 bg-krio-background/50 rounded-lg">
-              <div className="w-2 h-2 bg-krio-primary rounded-full" />
-              <p className="text-sm text-krio-secondary">
-                Вся продукция соответствует ГОСТ Р ИСО 9001-2015 и имеет
-                сертификаты Ростехнадзора
-              </p>
-            </div>
           </div>
         </Section>
 
@@ -280,27 +272,6 @@ export default function AboutPage() {
                         </div>
                       </div>
                     </div>
-
-                    <div className="p-3 bg-krio-background/50 rounded-lg border border-krio-primary/20  transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-krio-primary/20 rounded-full flex items-center justify-center">
-                          <span className="text-krio-primary">📖</span>
-                        </div>
-                        <div>
-                          <h4 className="text-krio-primary font-medium">
-                            Обучение
-                          </h4>
-                          <div className="flex items-center gap-2">
-                            <div className="text-gray-300 text-sm">
-                              120+ часов/год
-                            </div>
-                            <div className="w-12 h-1 bg-krio-primary/20 rounded-full">
-                              <div className="w-8/12 h-full bg-krio-primary rounded-full" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -314,31 +285,25 @@ export default function AboutPage() {
                   для самых сложных задач, сочетая традиционные подходы с
                   инновационными технологиями.
                 </p>
-
-                <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20">
-                  <div className="space-y-3">
-                    <h3 className="text-krio-primary font-semibold text-lg">
-                      Сертификаты
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-3 py-1.5 bg-krio-primary/10 text-krio-primary rounded-full text-sm border border-krio-primary/20">
-                        ISO 9001:2015
-                      </span>
-                      <span className="px-3 py-1.5 bg-krio-primary/10 text-krio-primary rounded-full text-sm border border-krio-primary/20">
-                        СРО-П-001-2907
-                      </span>
-                      <span className="px-3 py-1.5 bg-krio-primary/10 text-krio-primary rounded-full text-sm border border-krio-primary/20">
-                        ГОСТ Р 53673-2009
-                      </span>
+                <div className="p-3 bg-krio-background/50 rounded-lg border border-krio-primary/20  transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-krio-primary/20 rounded-full flex items-center justify-center">
+                      <span className="text-krio-primary">📖</span>
+                    </div>
+                    <div>
+                      <h4 className="text-krio-primary font-medium">
+                        Обучение
+                      </h4>
+                      <div className="flex items-center gap-2">
+                        <div className="text-gray-300 text-sm">
+                          120+ часов/год
+                        </div>
+                        <div className="w-12 h-1 bg-krio-primary/20 rounded-full">
+                          <div className="w-8/12 h-full bg-krio-primary rounded-full" />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="flex items-center gap-2 p-3 bg-krio-background/50 rounded-lg border border-krio-primary/20">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <span className="text-sm text-krio-secondary">
-                    Ежегодное подтверждение квалификации НАКС
-                  </span>
                 </div>
               </div>
             </div>

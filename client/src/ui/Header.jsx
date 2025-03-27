@@ -75,21 +75,23 @@ export default function Header({ user, handleLogout }) {
                   } hover:text-krio-secondary hover:border-b-2 hover:border-krio-secondary transition-colors duration-300`
                 }
               >
-                Список обращений
+                Панель администратора
               </NavLink>
             )}
-            <NavLink
-              to="/basket"
-              className={({ isActive }) =>
-                `${
-                  isActive
-                    ? "text-krio-secondary border-b-2 border-krio-secondary"
-                    : "text-white"
-                } hover:text-krio-secondary hover:border-b-2 hover:border-krio-secondary transition-colors duration-300`
-              }
-            >
-              {user ? (user?.isAdmin ? "Список заказов" : "Корзина") : ""}
-            </NavLink>
+            {!user?.isAdmin && (
+              <NavLink
+                to="/basket"
+                className={({ isActive }) =>
+                  `${
+                    isActive
+                      ? "text-krio-secondary border-b-2 border-krio-secondary"
+                      : "text-white"
+                  } hover:text-krio-secondary hover:border-b-2 hover:border-krio-secondary transition-colors duration-300`
+                }
+              >
+                Корзина
+              </NavLink>
+            )}
             {!user ? (
               <NavLink
                 to="/login"
