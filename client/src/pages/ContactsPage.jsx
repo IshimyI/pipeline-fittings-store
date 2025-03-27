@@ -343,7 +343,9 @@ export default function ContactsPage({ user }) {
                     type="tel"
                     name="phone"
                     placeholder="+7 (XXX) XXX-XX-XX"
-                    className="..."
+                    className="
+w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none
+"
                     pattern="\+7\s?[\(]{0,1}\d{3}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
                   />
                   <button
