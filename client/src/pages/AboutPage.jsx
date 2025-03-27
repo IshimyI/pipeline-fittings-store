@@ -77,7 +77,6 @@ export default function AboutPage() {
                 соответствуют самым строгим стандартам.
               </p>
               <div className="h-px bg-krio-primary/20 my-4" />{" "}
-              {/* Разделитель */}
               <p className="text-gray-300 leading-relaxed">
                 Мы с гордостью поставляем нашу продукцию в такие
                 высокотехнологичные отрасли, как:

@@ -53,7 +53,6 @@ export class OrdersService {
         );
       }
 
-      // Verify the response indicates successful clearing
       if (!response.data || response.data.error) {
         throw new Error(response.data?.error || "Failed to clear basket");
       }

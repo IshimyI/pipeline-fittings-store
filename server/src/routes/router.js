@@ -379,7 +379,6 @@ router.post("/callMe", async (req, res) => {
 Телефон: ${phone}
 `.trim();
 
-    // Добавляем второй параметр, если функция его требует
     await sendMsg({ body: { message: messageText } }, {});
 
     await sendEmail({
@@ -398,22 +397,21 @@ router.post("/callMe", async (req, res) => {
 router.post("/createOrder", async (req, res) => {
   try {
     const { userId, email, items, total } = req.body;
-    
-    // Обогащаем items информацией о товарах
+
     const enrichedItems = await Promise.all(
       items.map(async (item) => {
         const product = await Product.findByPk(item.productId);
         return {
           ...item,
           productName: product.name,
-          price: product.price
+          price: product.price,
         };
       })
     );
-    
+
     const order = await Order.create({
       userId,
-      email: email || null,  // Сохраняем email незарегистрированного пользователя
+      email: email || null,
       items: enrichedItems,
       total,
     });
@@ -526,7 +524,7 @@ router.get("/allOrders", verifyRefreshToken, async (req, res) => {
     const formattedOrders = orders.map((order) => ({
       id: order.id,
       userId: order.userId,
-      email: order.email, // Добавляем email из заказа
+      email: order.email,
       items:
         typeof order.items === "string" ? JSON.parse(order.items) : order.items,
       total: order.total,
@@ -534,7 +532,7 @@ router.get("/allOrders", verifyRefreshToken, async (req, res) => {
       updatedAt: order.updatedAt,
       user: {
         name: order.user?.name,
-        email: order.user?.email || order.email, // Используем email из заказа, если нет пользователя
+        email: order.user?.email || order.email,
       },
     }));
 

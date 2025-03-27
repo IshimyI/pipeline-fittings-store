@@ -7,12 +7,6 @@ import Cart from "../ui/Cart";
 
 export default function ProductsPage({ user, category }) {
   const { categoryId } = useParams();
-  // const [products, setProducts] = useState([]);
-  // const [sortedProducts, setSortedProducts] = useState([]);
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [selectedProduct, setSelectedProduct] = useState(null);
-  // const [isOpen, setIsOpen] = useState(false);
-  // const [loading, setLoading] = useState(false);
   const [sortOption, setSortOption] = useState("name");
   const [workingPressureFilter, setWorkingPressureFilter] = useState("all");
   const [nominalDiameterFilter, setNominalDiameterFilter] = useState("all");
@@ -99,7 +93,6 @@ export default function ProductsPage({ user, category }) {
       setLoadingCart(true);
       try {
         if (user?.id) {
-          // Загрузка корзины авторизованного пользователя
           const response = await axiosInstance.get("/basket", {
             params: { userId: user.id },
           });
@@ -128,7 +121,6 @@ export default function ProductsPage({ user, category }) {
     setLoadingCart(true);
     try {
       if (user?.id) {
-        // Логика для авторизованного пользователя
         await axiosInstance.post("/basket", {
           userId: user.id,
           productId: product.id,
@@ -295,9 +287,7 @@ export default function ProductsPage({ user, category }) {
     fetchProducts();
   }, [categoryId, category]);
 
-  // Новая функция для парсинга параметров
   const parseProductParams = (product) => {
-    // Если params уже объект - возвращаем его
     if (typeof product.params === "object" && product.params !== null) {
       return product.params;
     }
@@ -310,18 +300,16 @@ export default function ProductsPage({ user, category }) {
     }
   };
 
-  // Исправленная функция получения уникальных значений
   const getUniqueValues = (products, paramName) => {
     const values = new Set();
     products.forEach((product) => {
       const params = parseProductParams(product);
       const value = params[paramName];
-      if (value) values.add(String(value)); // Приводим к строке
+      if (value) values.add(String(value));
     });
     return Array.from(values);
   };
 
-  // Исправленная функция фильтрации
   useEffect(() => {
     const filtered = products.filter((product) => {
       const params = parseProductParams(product);
@@ -429,7 +417,6 @@ export default function ProductsPage({ user, category }) {
           <h3 className="text-2xl font-semibold text-gray-300 mb-4">Фильтры</h3>
           <div className="mb-4">
             <div className="mb-4">
-              {/* Фильтр рабочего давления */}
               {getUniqueValues(products, "Рабочее давление Рр, кгс/см2")
                 .length > 0 && (
                 <select
@@ -448,7 +435,6 @@ export default function ProductsPage({ user, category }) {
                   ))}
                 </select>
               )}
-              {/* Фильтр диаметра */}
               {getUniqueValues(products, "Условный проходной диаметр Ду, мм")
                 .length > 0 && (
                 <select
@@ -467,7 +453,6 @@ export default function ProductsPage({ user, category }) {
                   ))}
                 </select>
               )}
-              {/* Фильтр направления потока */}
               {getUniqueValues(products, "Направление потока").length > 0 && (
                 <select
                   value={flowDirectionFilter}
@@ -484,7 +469,6 @@ export default function ProductsPage({ user, category }) {
                   )}
                 </select>
               )}
-              {/* Фильтр типа присоединения */}
               {getUniqueValues(products, "Тип присоединения").length > 0 && (
                 <select
                   value={connectionTypeFilter}
@@ -501,7 +485,6 @@ export default function ProductsPage({ user, category }) {
                   )}
                 </select>
               )}
-              {/* Фильтр габаритов */}
               {getUniqueValues(products, "Габаритные размеры, мм").length >
                 0 && (
                 <select

@@ -84,19 +84,16 @@ export default function MainPage({ user, category }) {
     try {
       setIsLoading(true);
       setError("");
-      // Валидация общих полей
       if (!formData.name.trim()) {
         throw new Error("Название обязательно для заполнения");
       }
       if (type === "product") {
-        // Валидация полей товара
         if (!formData.categoryId) {
           throw new Error("Выберите категорию");
         }
         if (!formData.price) {
           throw new Error("Укажите цену");
         }
-        // Создание товара
         const productPayload = {
           name: formData.name.trim(),
           categoryId: Number(formData.categoryId),
@@ -114,7 +111,6 @@ export default function MainPage({ user, category }) {
           throw new Error("Ошибка при создании товара");
         }
       } else if (type === "category") {
-        // Проверка на дубликат категории
         const existingCategory = categories.find(
           (c) => c.name.toLowerCase() === formData.name.trim().toLowerCase()
         );
@@ -122,7 +118,6 @@ export default function MainPage({ user, category }) {
         if (existingCategory) {
           throw new Error("Категория с таким названием уже существует");
         }
-        // Создание категории
         const categoryPayload = {
           name: formData.name.trim(),
           img: formData.image || "default-category.jpg",
@@ -135,10 +130,8 @@ export default function MainPage({ user, category }) {
         if (response.status !== 201) {
           throw new Error("Ошибка при создании категории");
         }
-        // Обновляем локальный state
         setCategories((prev) => [...prev, response.data]);
       }
-      // Очистка формы после успешного создания
       setShowForm(null);
       setFormData({
         name: "",

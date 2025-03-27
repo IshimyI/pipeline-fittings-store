@@ -11,7 +11,6 @@ export default function Order({ order }) {
   return (
     <div className="bg-gray-800/50 hover:bg-gray-800/70 transition-all border border-gray-700 rounded-lg shadow-lg overflow-hidden">
       <div className="p-6">
-        {/* Шапка заказа */}
         <div className="flex justify-between items-start mb-4 pb-4 border-b border-gray-700">
           <div>
             <h3>
@@ -33,7 +32,6 @@ export default function Order({ order }) {
           </span>
         </div>
 
-        {/* Список товаров */}
         <div className="mb-4">
           {items.length > 0 ? (
             <div className="space-y-3">
@@ -64,7 +62,6 @@ export default function Order({ order }) {
           )}
         </div>
 
-        {/* Итого */}
         <div className="flex justify-end pt-4 border-t border-gray-700">
           <div className="text-lg font-bold text-white">
             Итого: {typeof total === "number" ? `${total} ₽` : total}

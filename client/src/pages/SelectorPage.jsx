@@ -33,7 +33,6 @@ const CardGrid = ({ items, columns = "md:grid-cols-2 lg:grid-cols-2" }) => (
         <p className="text-gray-300/90 pl-2 text-lg leading-relaxed relative z-10">
           {item.description}
         </p>
-        <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-krio-primary/5 rounded-full transform transition-transform" />
       </div>
     ))}
   </div>

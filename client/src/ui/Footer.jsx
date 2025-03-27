@@ -3,110 +3,143 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-krio-background text-white py-12 mt-auto">
+    <footer className="bg-krio-background text-white pt-16 pb-8 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-          {/* О компании */}
-          <div>
-            <h3 className="text-xl font-semibold text-krio-primary mb-6">
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-krio-secondary relative pb-4 after:absolute after:bottom-0 after:left-0 after:w-16 after:h-1 after:bg-krio-primary after:rounded-full">
               О компании
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               <li>
                 <Link
                   to="/about"
-                  className="text-gray-400 hover:text-krio-secondary transition-colors duration-300"
+                  className="flex items-center text-krio-primary hover:text-krio-secondary transition-all duration-300 group"
                 >
+                  <span className="w-2 h-2 bg-krio-primary rounded-full mr-3 group-hover:bg-krio-secondary transition-all duration-300"></span>
                   О нас
                 </Link>
               </li>
               <li>
                 <Link
                   to="/contacts"
-                  className="text-gray-400 hover:text-krio-secondary transition-colors duration-300"
+                  className="flex items-center text-krio-primary hover:text-krio-secondary transition-all duration-300 group"
                 >
+                  <span className="w-2 h-2 bg-krio-primary rounded-full mr-3 group-hover:bg-krio-secondary transition-all duration-300"></span>
                   Контакты
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/selector"
+                  className="flex items-center text-krio-primary hover:text-krio-secondary transition-all duration-300 group"
+                >
+                  <span className="w-2 h-2 bg-krio-primary rounded-full mr-3 group-hover:bg-krio-secondary transition-all duration-300"></span>
+                  Подбор арматуры
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Каталог */}
-          <div>
-            <h3 className="text-xl font-semibold text-krio-primary mb-6">
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-krio-secondary relative pb-4 after:absolute after:bottom-0 after:left-0 after:w-16 after:h-1 after:bg-krio-primary after:rounded-full">
               Каталог
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               <li>
                 <Link
                   to="/category"
-                  className="text-gray-400 hover:text-krio-secondary transition-colors duration-300"
+                  className="flex items-center text-krio-primary hover:text-krio-secondary transition-all duration-300 group"
                 >
+                  <span className="w-2 h-2 bg-krio-primary rounded-full mr-3 group-hover:bg-krio-secondary transition-all duration-300"></span>
                   Все товары
                 </Link>
               </li>
               <li>
                 <Link
                   to="/"
-                  className="text-gray-400 hover:text-krio-secondary transition-colors duration-300"
+                  className="flex items-center text-krio-primary hover:text-krio-secondary transition-all duration-300 group"
                 >
+                  <span className="w-2 h-2 bg-krio-primary rounded-full mr-3 group-hover:bg-krio-secondary transition-all duration-300"></span>
                   Категории
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Контакты */}
-          <div>
-            <h3 className="text-xl font-semibold text-krio-primary mb-6">
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-krio-secondary relative pb-4 after:absolute after:bottom-0 after:left-0 after:w-16 after:h-1 after:bg-krio-primary after:rounded-full">
               Контакты
             </h3>
-            <ul className="space-y-4">
-              <li className="text-gray-400">
-                <span className="block">Телефон:</span>
-                <a
-                  href="tel:+74951234567"
-                  className="hover:text-krio-secondary transition-colors duration-300"
-                >
-                  +7 (995) 887 06 11
-                </a>
-              </li>
-              <li className="text-gray-400">
-                <span className="block">Email:</span>
-                <a
-                  href="mailto:krioarmatura@yandex.ru"
-                  className="hover:text-krio-secondary transition-colors duration-300"
-                >
-                  krioarmatura@yandex.ru
-                </a>
-              </li>
-            </ul>
+            <div className="space-y-4">
+              <div className="flex items-start">
+                <div className="flex-shrink-0 mt-1 mr-3 text-krio-primary">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm text-krio-primary">Телефон</p>
+                  <a
+                    href="tel:+74951234567"
+                    className="text-krio-secondary hover:text-white transition-colors duration-300 text-lg font-medium"
+                  >
+                    +7 (995) 887-06-11
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="flex-shrink-0 mt-1 mr-3 text-krio-primary">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm text-krio-primary">Email</p>
+                  <a
+                    href="mailto:krioarmatura@yandex.ru"
+                    className="text-krio-secondary hover:text-white transition-colors duration-300 text-lg font-medium"
+                  >
+                    krioarmatura@yandex.ru
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Социальные сети */}
-          <div>
-            <h3 className="text-xl font-semibold text-krio-primary mb-6">
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-krio-secondary relative pb-4 after:absolute after:bottom-0 after:left-0 after:w-16 after:h-1 after:bg-krio-primary after:rounded-full">
               Мы в соцсетях
             </h3>
-            <div className="flex space-x-6">
+            <div className="flex space-x-4">
               <a
-                href="#"
-                className="text-gray-400 hover:text-krio-secondary transition-colors duration-300"
+                href="https://t.me/krioarmatura"
+                className="w-12 h-12 bg-krio-foreground rounded-full flex items-center justify-center text-white hover:bg-krio-primary transition-all duration-300 transform hover:-translate-y-1"
+                aria-label="Telegram"
               >
-                <span className="sr-only">VK</span>
-                <svg
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17h-1.372c-.538 0-.697-.447-1.668-1.418C15.377 14.623 14.932 14 14.5 14c-.388 0-.482.118-.482.75v1.583c0 .422-.137.667-1.25.667-1.846 0-3.89-1.118-5.33-3.193C5.93 11.71 5.446 9.807 5.446 9.35c0-.24.087-.458.534-.458h1.372c.402 0 .534.192.683.645.683 2.016 1.837 3.785 2.307 3.785.175 0 .254-.08.254-.53V10.89c-.05-1.063-.577-1.153-.577-1.532 0-.18.147-.367.38-.367h2.157c.29 0 .4.16.4.53v2.88c0 .31.137.417.24.417.176 0 .32-.107.643-.43 1.003-1.122 1.718-2.845 1.718-2.845.096-.21.308-.405.587-.405h1.37c.418 0 .515.213.418.505-.175.818-1.871 3.223-1.871 3.223-.154.25-.22.36 0 .643.145.21.5.643.757.972.47.595.83 1.095.934 1.44.11.346-.08.526-.477.526z" />
-                </svg>
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-krio-secondary transition-colors duration-300"
-              >
-                <span className="sr-only">Telegram</span>
                 <svg
                   className="h-6 w-6"
                   fill="currentColor"
@@ -118,10 +151,13 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-12 pt-8 border-t border-gray-700">
-          <p className="text-center text-gray-400">
-            © {new Date().getFullYear()} Криоарматура. Все права защищены.
-          </p>
+
+        <div className="mt-16 pt-8 border-t border-krio-primary/20">
+          <div className="flex flex-col md:flex-row items-center justify-center">
+            <p className="text-krio-primary flex flex-col justify-center text-center md:text-left">
+              © {new Date().getFullYear()} Криоарматура. Все права защищены.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

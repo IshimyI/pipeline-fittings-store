@@ -48,17 +48,14 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
 
         let parsedValue;
         try {
-          parsedValue = JSON.parse(value); // Пробуем распарсить как JSON
+          parsedValue = JSON.parse(value);
         } catch {
-          // Если не получается, сохраняем как обычную строку для редактирования
           parsedValue = value;
         }
 
-        // Сохраняем результат в состояние
         setFormData((prev) => ({ ...prev, params: parsedValue }));
       } catch (error) {
         console.error("Ошибка обработки параметров:", error);
-        // Если ошибка, сохраняем введенные данные как есть
         setFormData((prev) => ({ ...prev, params: value }));
       }
       return;
@@ -66,7 +63,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
 
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value, // Обновляем состояние для остальных полей
+      [name]: value,
     }));
   };
 
@@ -170,7 +167,6 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
   const renderParams = (params) => {
     let parsedParams = params;
 
-    // Handle string params
     if (typeof params === "string") {
       try {
         parsedParams = JSON.parse(params);
@@ -183,7 +179,6 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
         );
       }
     }
-    // Handle empty or invalid params
     if (!parsedParams || typeof parsedParams !== "object") {
       return null;
     }

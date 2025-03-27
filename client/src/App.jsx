@@ -117,7 +117,6 @@ function App() {
           path="/category"
           element={<ProductsPage user={user} category={category} />}
         />
-
         <Route path="*" element={<ErrorPage user={user} />} />
       </Route>
     </Routes>

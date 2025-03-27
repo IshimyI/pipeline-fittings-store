@@ -29,7 +29,7 @@ export default function Cart({
     if (!user?.id) {
       setShowEmailModal(true);
     } else {
-      onCheckout(user.email); // Передаем email пользователя
+      onCheckout(user.email);
     }
   };
 

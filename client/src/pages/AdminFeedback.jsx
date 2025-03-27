@@ -97,7 +97,6 @@ export default function AdminFeedback({ user }) {
           Обратная связь от клиентов
         </h1>
 
-        {/* Панель управления */}
         <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 mb-6">
           <div className="flex flex-col md:flex-row gap-4 mb-4">
             <input
@@ -131,7 +130,6 @@ export default function AdminFeedback({ user }) {
           </div>
         </div>
 
-        {/* Список сообщений */}
         <div className="space-y-4">
           {sortedAndFilteredMessages.length === 0 ? (
             <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-8 text-center">

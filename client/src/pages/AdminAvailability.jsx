@@ -61,7 +61,6 @@ export default function AdminAvailability({ user }) {
     }
   };
 
-  // Основные изменения здесь
   const filteredCategories = useMemo(() => {
     return categories.filter((category) => {
       const hasCategoryMatch = category.name

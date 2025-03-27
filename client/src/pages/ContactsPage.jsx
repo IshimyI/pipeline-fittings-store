@@ -24,7 +24,6 @@ export default function ContactsPage({ user }) {
     error: null,
   });
 
-  // Валидация при изменении данных
   useEffect(() => {
     validateForm();
   }, [formData]);
@@ -32,21 +31,18 @@ export default function ContactsPage({ user }) {
   const validateForm = () => {
     const newErrors = {};
 
-    // Валидация имени
     if (!formData.name.trim()) {
       newErrors.name = "Имя обязательно";
     } else if (!/^([а-яё]{2,}|[a-z]{2,})$/i.test(formData.name.trim())) {
       newErrors.name = "Некорректное имя";
     }
 
-    // Валидация email
     if (!formData.email.trim()) {
       newErrors.email = "Email обязателен";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Некорректный email адрес";
     }
 
-    // Валидация телефона (необязательное поле)
     if (
       formData.phone &&
       !/^(\+7|8)[\s-]?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/.test(
@@ -56,7 +52,6 @@ export default function ContactsPage({ user }) {
       newErrors.phone = "Некорректный номер телефона";
     }
 
-    // Валидация сообщения
     if (!formData.message.trim()) {
       newErrors.message = "Сообщение обязательно";
     } else if (formData.message.trim().length < 10) {
@@ -84,10 +79,8 @@ export default function ContactsPage({ user }) {
     const form = e.target;
     const phoneInput = form.phone;
 
-    // Нормализация номера
     const rawPhone = phoneInput.value.replace(/\D/g, "");
 
-    // Проверка что номер содержит ровно 11 цифр
     if (rawPhone.length !== 11) {
       setCallMeStatus({
         loading: false,
@@ -96,7 +89,6 @@ export default function ContactsPage({ user }) {
       return;
     }
 
-    // Проверка что номер начинается с 7 или 8
     if (!/^[78]/.test(rawPhone)) {
       setCallMeStatus({
         loading: false,
@@ -134,7 +126,6 @@ export default function ContactsPage({ user }) {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Сброс ошибки при изменении поля
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -214,15 +205,12 @@ export default function ContactsPage({ user }) {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Левая колонка */}
             <div className="space-y-6">
-              {/* Контакты с анимацией */}
               <div className="p-6 bg-krio-foreground rounded-2xl shadow-2xl transform transition-all">
                 <h3 className="text-2xl font-bold text-krio-primary mb-4 glow-text">
                   Контакты
                 </h3>
                 <div className="space-y-4">
-                  {/* Адрес */}
                   <div className="flex items-start space-x-4 group">
                     <div className="p-2 bg-krio-background/50 rounded-lg group-hover:bg-krio-primary/20 transition-colors">
                       <svg
@@ -249,7 +237,6 @@ export default function ContactsPage({ user }) {
                     </div>
                   </div>
 
-                  {/* Телефон */}
                   <div className="flex items-start space-x-4 group">
                     <div className="p-2 bg-krio-background/50 rounded-lg group-hover:bg-krio-primary/20 transition-colors">
                       <svg
@@ -281,7 +268,6 @@ export default function ContactsPage({ user }) {
                     </div>
                   </div>
 
-                  {/* Telegram */}
                   <div className="flex items-start space-x-4 group">
                     <div className="p-2 bg-krio-background/50 rounded-lg group-hover:bg-krio-primary/20 transition-colors">
                       <svg
@@ -316,7 +302,6 @@ export default function ContactsPage({ user }) {
                 </div>
               </div>
 
-              {/* Виджет обратного звонка */}
               <div className="p-6 bg-krio-background rounded-2xl border-2 border-krio-primary/20 relative overflow-hidden">
                 <div className="absolute -right-8 -top-8 w-24 h-24 bg-krio-primary/10 rounded-full"></div>
                 <h3 className="text-xl font-bold text-white mb-4">
@@ -382,9 +367,7 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
               </div>
             </div>
 
-            {/* Правая колонка */}
             <div className="space-y-6">
-              {/* Интерактивная карта */}
               <div className="bg-krio-foreground rounded-2xl shadow-2xl overflow-hidden border-2 border-krio-primary/20">
                 <div className="p-4 bg-krio-background/30">
                   <h3 className="text-xl font-bold text-white flex items-center">
@@ -409,7 +392,6 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                 </div>
               </div>
 
-              {/* Время работы и срочные контакты */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 bg-krio-primary/10 rounded-xl border border-krio-primary/20">
                   <h4 className="text-sm text-krio-primary mb-2">

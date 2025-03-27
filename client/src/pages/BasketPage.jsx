@@ -4,6 +4,7 @@ import { OrdersService } from "../ui/OrderService";
 
 export default function BasketPage({ user }) {
   const [cartItems, setCartItems] = useState([]);
+  const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -11,29 +12,41 @@ export default function BasketPage({ user }) {
 
   useEffect(() => {
     const fetchCart = async () => {
-      if (user?.id) {
-        try {
-          setLoading(true);
-          setError(null);
+      setLoading(true);
+      setError("");
+      try {
+        if (user?.id) {
+          // Загрузка корзины для авторизованного пользователя
           const response = await axiosInstance.get("/basket", {
             params: { userId: user.id },
           });
-
           const cartProducts = response.data.map((item) => ({
             ...item.product,
             quantity: item.quantity,
           }));
-
           setCartItems(cartProducts);
-        } catch (error) {
-          console.error("Ошибка загрузки корзины:", error);
-          setError("Не удалось загрузить корзину");
-        } finally {
-          setLoading(false);
+        } else {
+          // Загрузка гостевой корзины из localStorage
+          const guestCart = localStorage.getItem("guestCart");
+          if (guestCart) {
+            try {
+              const parsedCart = JSON.parse(guestCart);
+              setCartItems(parsedCart);
+            } catch (parseError) {
+              console.error("Ошибка парсинга гостевой корзины:", parseError);
+              localStorage.removeItem("guestCart");
+              setCartItems([]);
+            }
+          }
         }
+      } catch (error) {
+        console.error("Ошибка загрузки корзины:", error);
+        setError("Не удалось загрузить корзину");
+        setCartItems([]);
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchCart();
   }, [user]);
 
@@ -56,26 +69,64 @@ export default function BasketPage({ user }) {
     setIsSubmitting(true);
     setError(null);
     try {
-      const orderData = {
-        userId: user.id,
-        items: cartItems.map((item) => ({
-          productId: item.id,
-          quantity: item.quantity,
-          productName: item.name, // Добавляем имя товара
-        })),
-        total: cartItems.reduce(
-          (sum, item) =>
-            sum + (item.price ? parseFloat(item.price) : 0) * item.quantity,
-          0
-        ),
-        email: user.email, // Добавляем email пользователя
-      };
+      let orderData;
 
-      const orderResponse = await OrdersService.createOrder(orderData);
-      if (orderResponse) {
+      // Логика для гостя
+      if (!user?.id) {
+        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+          setError("Пожалуйста, введите корректный email");
+          setIsSubmitting(false);
+          return;
+        }
+
+        orderData = {
+          email,
+          items: cartItems.map((item) => ({
+            productId: item.id,
+            quantity: item.quantity,
+            productName: item.name,
+          })),
+          total: cartItems.reduce(
+            (sum, item) =>
+              sum + (item.price ? parseFloat(item.price) : 0) * item.quantity,
+            0
+          ),
+        };
+
+        // Сохраняем заказ гостя
+        const guestOrders = JSON.parse(
+          localStorage.getItem("guestOrders") || "[]"
+        );
+        localStorage.setItem(
+          "guestOrders",
+          JSON.stringify([...guestOrders, orderData])
+        );
+        localStorage.removeItem("guestCart");
+
+        // Логика для авторизованного пользователя
+      } else {
+        orderData = {
+          userId: user.id,
+          items: cartItems.map((item) => ({
+            productId: item.id,
+            quantity: item.quantity,
+            productName: item.name,
+          })),
+          total: cartItems.reduce(
+            (sum, item) =>
+              sum + (item.price ? parseFloat(item.price) : 0) * item.quantity,
+            0
+          ),
+          email: user.email,
+        };
+
         await axiosInstance.delete("/basket/clear", {
           data: { userId: user.id },
         });
+      }
+
+      const orderResponse = await OrdersService.createOrder(orderData);
+      if (orderResponse) {
         setCartItems([]);
         setSuccessMessage(
           "Заказ успешно создан! Менеджер свяжется с вами для уточнения деталей."
@@ -84,7 +135,11 @@ export default function BasketPage({ user }) {
       }
     } catch (error) {
       console.error("Ошибка оформления:", error);
-      setError("Не удалось оформить заказ");
+      setError(
+        error.message ||
+          error.response?.data?.message ||
+          "Не удалось оформить заказ"
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -124,7 +179,6 @@ export default function BasketPage({ user }) {
           Ваша корзина
         </h1>
 
-        {/* Сообщения об ошибках/успехе */}
         {error && (
           <div className="bg-red-900/30 border border-red-500 rounded-lg p-4 mb-6">
             <p className="text-red-300">{error}</p>
@@ -137,7 +191,6 @@ export default function BasketPage({ user }) {
           </div>
         )}
 
-        {/* Содержимое корзины */}
         <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
           {cartItems.length === 0 ? (
             <div className="text-center py-12">
@@ -234,6 +287,22 @@ export default function BasketPage({ user }) {
                   {isSubmitting ? "Оформление..." : "Перейти к оформлению"}
                 </button>
               </div>
+
+              {cartItems.length > 0 && !user?.id && (
+                <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Email для связи
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
+                    placeholder="Введите ваш email"
+                    required
+                  />
+                </div>
+              )}
             </>
           )}
         </div>
