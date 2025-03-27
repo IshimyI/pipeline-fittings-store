@@ -16,7 +16,6 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
       .json({ accessToken, user: res.locals.user });
   } catch (error) {
     console.log(error.message);
-    res.clearCookie("refreshToken", cookieConfig).sendStatus(401);
   }
 });
 

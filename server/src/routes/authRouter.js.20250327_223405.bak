@@ -51,7 +51,7 @@ authRouter.post("/login", async (req, res) => {
 });
 
 authRouter.post("/logout", async (req, res) => {
-  res.clearCookie("refreshToken", cookieConfig).sendStatus(200);
+  res.clearCookie("refreshToken").sendStatus(200);
 });
 
 module.exports = authRouter;

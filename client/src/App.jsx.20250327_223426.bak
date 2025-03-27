@@ -86,8 +86,6 @@ function App() {
       if (res.status === 200) {
         setUser(null);
         clearAccessToken();
-        localStorage.removeItem('user');
-        sessionStorage.removeItem('user');
         navigate("/login");
       }
     } catch (error) {

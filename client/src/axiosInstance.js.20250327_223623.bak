@@ -42,9 +42,6 @@ axiosInstance.interceptors.response.use(
         prevReq.headers.Authorization = `Bearer ${accessToken}`;
         return axiosInstance(prevReq);
       } catch (refreshError) {
-        clearAccessToken();
-        localStorage.removeItem('user');
-        sessionStorage.removeItem('user');
         return Promise.reject(refreshError);
       }
     }
