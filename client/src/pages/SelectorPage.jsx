@@ -125,12 +125,12 @@ const SelectorPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <main className="w-full max-w-4xl p-6 space-y-8 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
+      <main className="w-full max-w-4xl 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 2xl:p-8 4k:p-12 space-y-8 2xl:space-y-12 4k:space-y-16 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
         <Section title="Арматура высокого давления">
-          <div className="p-8 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 relative overflow-hidden">
+          <div className="p-8 2xl:p-10 4k:p-12 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-krio-primary/5 to-transparent opacity-40" />
-            <p className="text-gray-300/90 text-lg leading-relaxed text-center relative z-10 transform group-hover:scale-[1.01] transition-transform">
-              <span className="text-krio-primary font-medium">
+            <p className="text-gray-300/90 text-lg 2xl:text-xl 4k:text-2xl leading-relaxed text-center relative z-10 transform group-hover:scale-[1.01] transition-transform">
+              <span className="text-krio-primary font-medium 2xl:text-2xl 4k:text-3xl">
                 Инновационные решения
               </span>{" "}
               для точного контроля сложных систем. Соответствие международным
@@ -140,15 +140,18 @@ const SelectorPage = () => {
         </Section>
 
         <Section title="Классификация">
-          <CardGrid items={classificationItems} />
+          <CardGrid
+            items={classificationItems}
+            className="2xl:grid-cols-3 4k:grid-cols-4"
+          />
         </Section>
 
         <Section title="Технические параметры">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8 4k:gap-10">
             {parametersItems.map((item, index) => (
               <div
                 key={index}
-                className="p-6 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 hover:border-krio-primary/40 transition-all group relative hover:shadow-[0_8px_30px_rgba(99,102,241,0.1)]"
+                className="p-6 2xl:p-8 4k:p-10 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 hover:border-krio-primary/40 transition-all group relative hover:shadow-[0_8px_30px_rgba(99,102,241,0.1)]"
               >
                 <div className="flex items-center mb-4">
                   <div className="w-3 h-3 text-white rounded-full mr-4 animate-pulse" />
@@ -168,29 +171,26 @@ const SelectorPage = () => {
         </Section>
 
         <Section title="Отрасли применения">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8 4k:gap-10">
             {applicationsItems.map((item, index) => (
               <div
                 key={index}
-                className="p-6 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 hover:border-krio-primary/40 transition-all group relative overflow-hidden"
+                className="p-6 2xl:p-8 4k:p-10 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 hover:border-krio-primary/40 transition-all group relative overflow-hidden"
               >
-                <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 bg-krio-primary/10 rounded-2xl flex items-center justify-center shrink-0 transform group-hover:scale-110 transition-transform">
-                    <span className="text-3xl text-krio-primary drop-shadow-sm">
+                <div className="flex items-start gap-6 2xl:gap-8">
+                  <div className="w-16 h-16 2xl:w-20 2xl:h-20 bg-krio-primary/10 rounded-2xl flex items-center justify-center shrink-0 transform group-hover:scale-110 transition-transform">
+                    <span className="text-3xl 2xl:text-4xl 4k:text-5xl text-krio-primary drop-shadow-sm">
                       {["⛢", "⚗", "⚡", "🌪"][index]}
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-2 drop-shadow-sm">
+                    <h3 className="text-lg 2xl:text-xl 4k:text-2xl font-semibold text-white mb-2 drop-shadow-sm">
                       {item.label}
                     </h3>
-                    <p className="text-gray-300/90 text-base leading-relaxed">
+                    <p className="text-gray-300/90 text-base 2xl:text-lg leading-relaxed">
                       {item.description}
                     </p>
                   </div>
-                </div>
-                <div className="absolute -bottom-6 -right-6 text-8xl opacity-10 text-krio-primary/20 group-hover:opacity-20 transition-opacity">
-                  {String.fromCharCode(0x2780 + index)}
                 </div>
               </div>
             ))}

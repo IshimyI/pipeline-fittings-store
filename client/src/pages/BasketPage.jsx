@@ -174,29 +174,29 @@ export default function BasketPage({ user }) {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <main className="w-full max-w-4xl p-6 space-y-8 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
-        <h1 className="text-2xl md:text-3xl font-bold text-white mb-6">
+      <main className="w-full max-w-4xl 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 2xl:p-8 4k:p-12 space-y-8 2xl:space-y-10 4k:space-y-12 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
+        <h1 className="text-2xl md:text-3xl 2xl:text-4xl 4k:text-5xl font-bold text-white mb-6 2xl:mb-8">
           Ваша корзина
         </h1>
 
         {error && (
-          <div className="bg-red-900/30 border border-red-500 rounded-lg p-4 mb-6">
+          <div className="bg-red-900/30 border border-red-500 rounded-lg p-4 2xl:p-5 mb-6 2xl:text-lg">
             <p className="text-red-300">{error}</p>
           </div>
         )}
 
         {successMessage && (
-          <div className="bg-green-900/30 border border-green-500 rounded-lg p-4 mb-6">
+          <div className="bg-green-900/30 border border-green-500 rounded-lg p-4 2xl:p-5 mb-6 2xl:text-lg">
             <p className="text-green-300">{successMessage}</p>
           </div>
         )}
 
-        <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
+        <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 2xl:p-8 4k:p-10">
           {cartItems.length === 0 ? (
-            <div className="text-center py-12">
+            <div className="text-center py-12 2xl:py-16">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-16 w-16 mx-auto text-gray-500"
+                className="h-16 w-16 2xl:h-20 2xl:w-20 mx-auto text-gray-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -208,24 +208,26 @@ export default function BasketPage({ user }) {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <p className="mt-4 text-gray-400">Ваша корзина пуста</p>
+              <p className="mt-4 2xl:mt-6 text-gray-400 2xl:text-lg">
+                Ваша корзина пуста
+              </p>
             </div>
           ) : (
             <>
-              <div className="space-y-4 mb-6">
+              <div className="space-y-4 2xl:space-y-6 mb-6 2xl:mb-8">
                 {cartItems.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-gray-800/30 border border-gray-700 rounded-lg p-4 hover:bg-gray-800/50 transition-colors relative group"
+                    className="bg-gray-800/30 border border-gray-700 rounded-lg p-4 2xl:p-5 hover:bg-gray-800/50 transition-colors relative group"
                   >
                     <button
                       onClick={() => handleRemoveFromCart(item.id)}
-                      className="absolute top-3 right-3 text-red-400 hover:text-red-300 transition-colors"
+                      className="absolute top-3 right-3 text-red-400 hover:text-red-300 transition-colors 2xl:top-4 2xl:right-4"
                       title="Удалить товар"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
+                        className="h-5 w-5 2xl:h-6 2xl:w-6"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -239,24 +241,24 @@ export default function BasketPage({ user }) {
                       </svg>
                     </button>
 
-                    <div className="flex items-start space-x-4">
+                    <div className="flex items-start space-x-4 2xl:space-x-6">
                       <div className="flex-shrink-0">
                         <img
                           src={item.img || "/img/no-photo.png"}
                           alt={item.name}
-                          className="h-16 w-16 object-cover rounded"
+                          className="h-16 w-16 2xl:h-24 2xl:w-24 object-cover rounded"
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-white truncate">
+                        <h3 className="text-lg 2xl:text-xl font-semibold text-white truncate">
                           {item.name}
                         </h3>
-                        <p className="text-gray-400 text-sm mt-1">
+                        <p className="text-gray-400 text-sm 2xl:text-base mt-1">
                           Количество: {item.quantity}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-lg font-semibold text-white">
+                        <p className="text-lg 2xl:text-xl font-semibold text-white">
                           {isNaN(parseFloat(item.price))
                             ? "По запросу"
                             : `${item.price} ₽`}
@@ -267,10 +269,12 @@ export default function BasketPage({ user }) {
                 ))}
               </div>
 
-              <div className="border-t border-gray-700 pt-6">
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-xl font-bold text-white">Итого:</span>
-                  <span className="text-xl font-bold text-white">
+              <div className="border-t border-gray-700 pt-6 2xl:pt-8">
+                <div className="flex justify-between items-center mb-6 2xl:mb-8">
+                  <span className="text-xl 2xl:text-2xl font-bold text-white">
+                    Итого:
+                  </span>
+                  <span className="text-xl 2xl:text-2xl font-bold text-white">
                     По запросу
                   </span>
                 </div>
@@ -280,12 +284,12 @@ export default function BasketPage({ user }) {
                   disabled={
                     isSubmitting ||
                     cartItems.length === 0 ||
-                    (!user?.id && !isEmailValid) // Блокируем если гость и email невалидный
+                    (!user?.id && !isEmailValid)
                   }
-                  className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg text-lg font-medium ${
+                  className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 2xl:py-4 2xl:px-6 rounded-lg text-lg 2xl:text-xl font-medium ${
                     isSubmitting ||
                     cartItems.length === 0 ||
-                    (!user?.id && !isEmailValid) // Соответствие условий для стилей
+                    (!user?.id && !isEmailValid)
                       ? "opacity-50 cursor-not-allowed"
                       : ""
                   }`}
@@ -294,8 +298,8 @@ export default function BasketPage({ user }) {
                 </button>
 
                 {cartItems.length > 0 && !user?.id && (
-                  <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 2xl:p-5 mt-6">
+                    <label className="block text-sm 2xl:text-base font-medium text-gray-300 mb-2">
                       Email для связи
                     </label>
                     <input
@@ -303,9 +307,9 @@ export default function BasketPage({ user }) {
                       value={email}
                       onChange={(e) => {
                         setEmail(e.target.value);
-                        setError(null); // Сбрасываем ошибку при изменении email
+                        setError(null);
                       }}
-                      className={`w-full p-2 border rounded text-white ${
+                      className={`w-full p-2 2xl:p-3 border rounded text-white 2xl:text-base ${
                         email && !isEmailValid
                           ? "bg-red-900/20 border-red-500"
                           : "bg-gray-700 border-gray-600"
@@ -314,7 +318,7 @@ export default function BasketPage({ user }) {
                       required
                     />
                     {email && !isEmailValid && (
-                      <p className="text-red-400 text-sm mt-1">
+                      <p className="text-red-400 text-sm 2xl:text-base mt-1">
                         Введите корректный email
                       </p>
                     )}

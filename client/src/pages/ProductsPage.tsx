@@ -412,8 +412,8 @@ export default function ProductsPage({ user, category }) {
 
   return (
     <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
-      <main className="w-full max-w-[1280px] p-6 flex">
-        <aside className="h-96 w-1/4 mt-16 p-6 bg-krio-background rounded-lg mr-6">
+      <main className="w-full max-w-[1280px] 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 flex mx-auto">
+        <aside className="h-96 w-72 min-w-[288px] mt-16 p-6 bg-krio-background rounded-lg mr-6 sticky top-6">
           <h3 className="text-2xl font-semibold text-gray-300 mb-4">Фильтры</h3>
           <div className="mb-4">
             <div className="mb-4">
@@ -511,12 +511,12 @@ export default function ProductsPage({ user, category }) {
             Сбросить все фильтры
           </button>
         </aside>
-        <section className="w-3/4">
-          <h2 className="text-3xl font-bold text-center text-gray-300 mb-8">
+        <section className="flex-1">
+          <h2 className="text-3xl font-bold text-center text-gray-300 mb-8 2xl:text-4xl 4k:text-5xl">
             Товары в категории
           </h2>
 
-          <div className="mb-8">
+          <div className="mb-8 2xl:mb-12">
             <input
               type="text"
               placeholder="Поиск по названию..."
@@ -527,18 +527,18 @@ export default function ProductsPage({ user, category }) {
                   payload: e.target.value,
                 })
               }
-              className="w-full p-3 bg-krio-background text-white rounded-lg"
+              className="w-full p-4 2xl:p-5 text-lg 2xl:text-xl bg-krio-background rounded-xl"
             />
           </div>
 
           {loading ? (
             <div className="text-center text-gray-300">Загрузка...</div>
           ) : sortedProducts?.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-8 2xl:gap-10">
               {sortedProducts?.map((product) => (
                 <div
                   key={product.id}
-                  className="bg-krio-background p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 relative"
+                  className="bg-krio-background p-6 rounded-xl shadow-xl transition-transform hover:scale-105 4k:hover:scale-[1.03]"
                   onClick={() => openModal(product)}
                 >
                   {user?.isAdmin && (

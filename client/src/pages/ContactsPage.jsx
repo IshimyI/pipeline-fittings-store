@@ -193,28 +193,32 @@ export default function ContactsPage({ user }) {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <main className="w-full max-w-4xl p-6 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8">
-        <section id="contacts" className="space-y-6">
+      <main className="w-full max-w-4xl 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 2xl:p-8 4k:p-12 space-y-6 2xl:space-y-10 4k:space-y-14 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto">
+        <section
+          id="contacts"
+          className="space-y-6 2xl:space-y-10 4k:space-y-14"
+        >
           <div>
-            <h2 className="text-2xl font-bold text-center text-white">
+            <h2 className="text-2xl 2xl:text-3xl 4k:text-4xl font-bold text-center text-white">
               Свяжитесь с нами
             </h2>
-            <p className="text-krio-secondary text-center mt-2">
+            <p className="text-krio-secondary text-center mt-2 2xl:mt-4 4k:mt-6 2xl:text-lg 4k:text-xl">
               Мы всегда рады помочь! Вы можете связаться с нами следующими
               способами:
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8 4k:gap-12">
             <div className="space-y-6">
-              <div className="p-6 bg-krio-foreground rounded-2xl shadow-2xl transform transition-all">
-                <h3 className="text-2xl font-bold text-krio-primary mb-4 glow-text">
+              <div className="p-6 2xl:p-8 4k:p-10 bg-krio-foreground rounded-2xl shadow-2xl transform transition-all">
+                <h3 className="text-2xl 2xl:text-3xl 4k:text-4xl font-bold text-krio-primary mb-4 2xl:mb-6 glow-text">
                   Контакты
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-4 group">
-                    <div className="p-2 bg-krio-background/50 rounded-lg group-hover:bg-krio-primary/20 transition-colors">
+                <div className="space-y-4 2xl:space-y-6">
+                  <div className="flex items-start space-x-4 2xl:space-x-6 group">
+                    <div className="p-2 2xl:p-3 bg-krio-background/50 rounded-lg group-hover:bg-krio-primary/20 transition-colors">
                       <svg
-                        className="w-6 h-6 text-krio-primary"
+                        className="w-6 h-6 2xl:w-8 2xl:h-8 text-krio-primary"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -228,10 +232,10 @@ export default function ContactsPage({ user }) {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm text-krio-secondary/80 mb-1">
+                      <p className="text-sm 2xl:text-base text-krio-secondary/80 mb-1">
                         Адрес
                       </p>
-                      <div className="text-white text-lg font-medium">
+                      <div className="text-white text-lg 2xl:text-xl 4k:text-2xl font-medium">
                         ул. Академика Королёва, 13, стр. 4, Москва
                       </div>
                     </div>
@@ -302,9 +306,8 @@ export default function ContactsPage({ user }) {
                 </div>
               </div>
 
-              <div className="p-6 bg-krio-background rounded-2xl border-2 border-krio-primary/20 relative overflow-hidden">
-                <div className="absolute -right-8 -top-8 w-24 h-24 bg-krio-primary/10 rounded-full"></div>
-                <h3 className="text-xl font-bold text-white mb-4">
+              <div className="p-6 2xl:p-8 4k:p-10 bg-krio-background rounded-2xl border-2 border-krio-primary/20">
+                <h3 className="text-xl 2xl:text-2xl 4k:text-3xl font-bold text-white mb-4 2xl:mb-6">
                   Заказать звонок
                 </h3>
 
@@ -368,7 +371,7 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
             </div>
 
             <div className="space-y-6">
-              <div className="bg-krio-foreground rounded-2xl shadow-2xl overflow-hidden border-2 border-krio-primary/20">
+              <div className="bg-krio-foreground rounded-2xl shadow-2xl overflow-hidden border-2 border-krio-primary/20 2xl:col-span-2 4k:col-span-2">
                 <div className="p-4 bg-krio-background/30">
                   <h3 className="text-xl font-bold text-white flex items-center">
                     <svg
@@ -381,7 +384,7 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                     Как добраться
                   </h3>
                 </div>
-                <div className="relative h-96">
+                <div className="relative h-96 2xl:h-[500px] 4k:h-[600px]">
                   <iframe
                     src="https://yandex.ru/map-widget/v1/?um=constructor%3A8ee14e9655b269c9eaa2997abc9cf3ce54a90ac89bb3f490ddb59296a9f63303&amp;source=constructor"
                     className="w-full h-full"
@@ -392,9 +395,9 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-krio-primary/10 rounded-xl border border-krio-primary/20">
-                  <h4 className="text-sm text-krio-primary mb-2">
+              <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4 2xl:gap-6 4k:gap-8">
+                <div className="p-4 2xl:p-6 bg-krio-primary/10 rounded-xl border border-krio-primary/20">
+                  <h4 className="text-sm 2xl:text-base text-krio-primary mb-2">
                     Часы работы
                   </h4>
                   <div className="space-y-1">

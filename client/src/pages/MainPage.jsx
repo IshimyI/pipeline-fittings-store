@@ -159,7 +159,12 @@ export default function MainPage({ user, category }) {
       className="flex items-center justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8"
       role="main"
     >
-      <div className="max-w-7xl mx-auto">
+      <main className="max-w-7xl 2xl:max-w-[1440px] 4k:max-w-[1800px] mx-auto">
+        {/* <div
+      className="flex items-center justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8"
+      role="main"
+    >
+      <div className="max-w-7xl  mx-auto"> */}
         {showForm && (
           <div className="mb-8 bg-krio-background p-6 rounded-xl shadow-lg">
             <h3 className="text-2xl font-semibold mb-6 text-gray-100">
@@ -271,7 +276,9 @@ export default function MainPage({ user, category }) {
           </div>
         )}
         <div className="text-white min-h-screen p-6">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl 2xl:max-w-[1440px] 4k:max-w-[1800px] mx-auto">
+            {/* <div className="text-white min-h-screen p-6">
+          <div className="max-w-7xl mx-auto"> */}
             {user?.isAdmin && (
               <div className="mb-8 flex gap-6 justify-end">
                 <button
@@ -403,7 +410,7 @@ export default function MainPage({ user, category }) {
             </section>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

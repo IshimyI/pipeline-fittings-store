@@ -64,9 +64,9 @@ export default function AboutPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <main className="w-full max-w-4xl p-6 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8">
+      <main className="w-full max-w-4xl 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto">
         <Section title="О компании">
-          <div className="p-6 bg-krio-foreground rounded-2xl shadow-2xl space-y-6">
+          <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8">
             <div className="space-y-4">
               <p className="text-gray-300 leading-relaxed">
                 <strong className="text-krio-primary">"Криоарматура"</strong>{" "}
@@ -93,7 +93,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-4 2xl:gap-6 pt-4">
               <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20 transform transition ">
                 <h3 className="text-krio-primary text-lg font-semibold mb-2">
                   Космос
@@ -125,8 +125,8 @@ export default function AboutPage() {
         </Section>
 
         <Section title="Наши клиенты">
-          <div className="p-6 bg-krio-foreground rounded-2xl shadow-2xl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-6 2xl:gap-8">
               {clients.map((client, index) => (
                 <ClientCard key={index} client={client} />
               ))}
@@ -135,8 +135,8 @@ export default function AboutPage() {
         </Section>
 
         <Section title="Услуги">
-          <div className="p-6 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 border border-krio-primary/20">
-            <div className="space-y-6">
+          <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8 border border-krio-primary/20">
+            <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8">
               <div className="space-y-3">
                 <p className="text-gray-300 leading-relaxed text-lg">
                   <strong className="text-krio-primary font-semibold">
@@ -237,8 +237,8 @@ export default function AboutPage() {
         </Section>
 
         <Section title="Наша команда">
-          <div className="p-6 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 border border-krio-primary/20">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8 border border-krio-primary/20">
+            <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8">
               <div className="space-y-4">
                 <div className="space-y-4">
                   <p className="text-gray-300 leading-relaxed text-lg">

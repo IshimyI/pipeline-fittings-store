@@ -1,10 +1,39 @@
 @import "tailwindcss";
 
 @theme {
+  /* Цвета */
   --color-krio-background: #243a90;
   --color-krio-foreground: #4a49b5;
   --color-krio-primary: #9aa6eb;
   --color-krio-secondary: #d7d6f5;
+
+  --size-8xl: 90rem; /* 1440px */
+  --size-9xl: 100rem; /* 1600px */
+  --size-10xl: 112.5rem; /* 1800px */
+
+  /* Брейкпоинты */
+  --breakpoint-2xl: 1536px;
+  --breakpoint-3xl: 1920px;
+  --breakpoint-4k: 2560px;
+}
+
+/* Кастомные медиа-запросы */
+@media (min-width: 1536px) {
+  .max-w-8xl {
+    max-width: var(--size-8xl);
+  }
+}
+
+@media (min-width: 1920px) {
+  .max-w-9xl {
+    max-width: var(--size-9xl);
+  }
+}
+
+@media (min-width: 2560px) {
+  .max-w-10xl {
+    max-width: var(--size-10xl);
+  }
 }
 
 .dialog {
