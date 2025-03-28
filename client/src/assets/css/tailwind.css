@@ -55,7 +55,6 @@
   z-index: 9997;
 }
 
-/* Базовые стили */
 body {
   height: 100vh;
   margin: 0;
@@ -65,7 +64,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Все фоновые элементы */
 .space-layer {
   position: fixed;
   top: 0;
@@ -75,7 +73,6 @@ body {
   pointer-events: none;
 }
 
-/* Сетка */
 .grid-layer {
   background-image: linear-gradient(
       0deg,

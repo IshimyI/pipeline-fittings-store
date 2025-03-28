@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Order({ order }) {
   const user = order.user || {
     name: "Неизвестный клиент",

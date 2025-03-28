@@ -185,7 +185,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
     return Object.entries(parsedParams).map(([key, value]) => (
       <div
         key={key}
-        className="flex justify-between items-center py-1 px-1.5 text-xs"
+        className="flex justify-between md:items-center items-start py-1 px-1.5 text-xs"
       >
         <span className="text-gray-400 truncate">{key}</span>
         <span className="text-blue-300 ml-2 max-w-[60%] text-right truncate">
@@ -233,7 +233,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
       <dialog
         ref={dialogRef}
         open={isOpen}
-        className="dialog m-auto p-8 bg-krio-background text-white rounded-lg shadow-lg max-w-250 w-full transform transition-all duration-500 opacity-100"
+        className="dialog m-auto p-8 bg-krio-background text-white rounded-lg shadow-lg max-w-250 w-11/12 transform transition-all duration-500 opacity-100"
         style={{ backdropFilter: "blur(10px)" }}
         aria-labelledby="dialog-title"
         aria-hidden={!isOpen}
@@ -256,11 +256,11 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
             {!bool ? (
               <div className="space-y-4">
                 <div className="flex flex-col md:flex-row gap-4">
-                  <div className="md:w-1/3 flex items-center justify-center">
+                  <div className=" md:w-1/3 flex items-center justify-center">
                     <img
                       src={getImageUrl(product.image)}
                       alt={product.name}
-                      className="w-auto object-contain rounded-lg"
+                      className="w-auto object-contain rounded-lg md:w-auto max-md:max-h-40 max-md:mx-auto"
                       onError={handleImageError}
                     />
                   </div>
@@ -274,7 +274,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                         </p>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols- md:grid-cols-2 gap-2">
                         <div className="bg-krio-foreground p-2 rounded-lg">
                           <p className="text-xs text-gray-400 mb-1">
                             Категория
@@ -286,7 +286,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                           </p>
                         </div>
 
-                        <div className="bg-krio-foreground p-2 rounded-lg">
+                        <div className="bg-krio-foreground p-2 rounded-lg ">
                           <p className="text-xs text-gray-400 mb-1">Наличие</p>
                           <p className="text-sm text-white">
                             {product.availability === "Под заказ за 7 дней"

@@ -1,5 +1,3 @@
-import React from "react";
-
 const Section = ({ title, children }) => (
   <section className="space-y-8">
     <h2 className="text-2xl font-bold text-center text-white">

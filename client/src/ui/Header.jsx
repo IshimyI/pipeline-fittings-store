@@ -8,7 +8,7 @@ export default function Header({ user, handleLogout }) {
           {/* Логотип */}
           <div className="flex-shrink-0 flex items-center">
             <NavLink to="/" className="flex items-center space-x-2 group">
-              <div className="w-9 h-9 bg-krio-primary rounded-lg flex items-center justify-center group-hover:bg-krio-secondary transition-colors duration-300">
+              <div className="w-9 h-9 bg-krio-secondary rounded-lg flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 text-krio-background"
@@ -24,7 +24,7 @@ export default function Header({ user, handleLogout }) {
                   />
                 </svg>
               </div>
-              <span className="text-2xl font-bold text-krio-primary group-hover:text-krio-secondary transition-colors duration-300">
+              <span className="text-2xl font-bold text-krio-secondary">
                 Криоарматура
               </span>
             </NavLink>

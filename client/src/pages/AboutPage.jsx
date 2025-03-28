@@ -1,5 +1,3 @@
-import React from "react";
-
 const Section = ({ title, children }) => (
   <section className="space-y-6">
     <h2 className="text-2xl font-bold text-center text-white glow-text">
@@ -69,7 +67,10 @@ export default function AboutPage() {
           <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8">
             <div className="space-y-4">
               <p className="text-gray-300 leading-relaxed">
-                <strong className="text-krio-primary">"Криоарматура"</strong>{" "}
+                <strong className="text-krio-primary">
+                  {" "}
+                  &quot;Криоарматура&quot;
+                </strong>{" "}
                 уже более 20 лет успешно работает на рынке поставок
                 высокотехнологичной стендовой, воздушной и криогенной арматуры.
                 Мы гордимся тем, что являемся надежным партнером для ведущих
@@ -140,7 +141,7 @@ export default function AboutPage() {
               <div className="space-y-3">
                 <p className="text-gray-300 leading-relaxed text-lg">
                   <strong className="text-krio-primary font-semibold">
-                    "Криоарматура"
+                    &quot;Криоарматура&quot;
                   </strong>{" "}
                   не ограничивается лишь поставками арматуры. Мы предлагаем
                   своим клиентам{" "}
