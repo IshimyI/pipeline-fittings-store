@@ -412,10 +412,121 @@ export default function ProductsPage({ user, category }) {
 
   return (
     <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
-      <main className="w-full max-w-[1280px] 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 flex mx-auto">
-        <aside className="h-96 w-72 min-w-[288px] mt-16 p-6 bg-krio-background rounded-lg mr-6 sticky top-6">
-          <h3 className="text-2xl font-semibold text-gray-300 mb-4">Фильтры</h3>
-          <div className="mb-4">
+      <main className="w-full max-w-[1280px] 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 mx-auto">
+        <h2 className="text-3xl font-bold text-center text-gray-300 mb-8 2xl:text-4xl 4k:text-5xl">
+          Товары в категории
+        </h2>
+        <div className="flex flex-col md:flex-row gap-10">
+          <aside className="block md:hidden w-full max-w-md mx-auto mb-5">
+            <div className="bg-krio-background rounded-lg p-6">
+              <h3 className="text-2xl font-semibold text-gray-300 mb-4 text-center">
+                Фильтры
+              </h3>
+              <div className="mb-4">
+                <div className="mb-4">
+                  {getUniqueValues(products, "Рабочее давление Рр, кгс/см2")
+                    .length > 0 && (
+                    <select
+                      value={workingPressureFilter}
+                      onChange={(e) => setWorkingPressureFilter(e.target.value)}
+                      className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
+                    >
+                      <option value="all">Все значения давления</option>
+                      {getUniqueValues(
+                        products,
+                        "Рабочее давление Рр, кгс/см2"
+                      ).map((value) => (
+                        <option key={value} value={value}>
+                          {value}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                  {getUniqueValues(
+                    products,
+                    "Условный проходной диаметр Ду, мм"
+                  ).length > 0 && (
+                    <select
+                      value={nominalDiameterFilter}
+                      onChange={(e) => setNominalDiameterFilter(e.target.value)}
+                      className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
+                    >
+                      <option value="all">Все значения диаметра</option>
+                      {getUniqueValues(
+                        products,
+                        "Условный проходной диаметр Ду, мм"
+                      ).map((value) => (
+                        <option key={value} value={value}>
+                          {value}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                  {getUniqueValues(products, "Направление потока").length >
+                    0 && (
+                    <select
+                      value={flowDirectionFilter}
+                      onChange={(e) => setFlowDirectionFilter(e.target.value)}
+                      className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
+                    >
+                      <option value="all">Все направления потока</option>
+                      {getUniqueValues(products, "Направление потока").map(
+                        (value) => (
+                          <option key={value} value={value}>
+                            {value}
+                          </option>
+                        )
+                      )}
+                    </select>
+                  )}
+                  {getUniqueValues(products, "Тип присоединения").length >
+                    0 && (
+                    <select
+                      value={connectionTypeFilter}
+                      onChange={(e) => setConnectionTypeFilter(e.target.value)}
+                      className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
+                    >
+                      <option value="all">Все типы присоединения</option>
+                      {getUniqueValues(products, "Тип присоединения").map(
+                        (value) => (
+                          <option key={value} value={value}>
+                            {value}
+                          </option>
+                        )
+                      )}
+                    </select>
+                  )}
+                  {getUniqueValues(products, "Габаритные размеры, мм").length >
+                    0 && (
+                    <select
+                      value={dimensionsFilter}
+                      onChange={(e) => setDimensionsFilter(e.target.value)}
+                      className="w-full p-3 bg-krio-foreground text-white rounded-lg mb-4"
+                    >
+                      <option value="all">Все габаритные размеры</option>
+                      {getUniqueValues(products, "Габаритные размеры, мм").map(
+                        (value) => (
+                          <option key={value} value={value}>
+                            {value}
+                          </option>
+                        )
+                      )}
+                    </select>
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={handleResetFilters}
+                className="w-full mt-4 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+              >
+                Сбросить фильтры
+              </button>
+            </div>
+          </aside>
+          <aside className="hidden md:block w-72 min-w-[288px] bg-krio-background rounded-lg p-6 sticky top-6 h-fit mb-10">
+            <h3 className="text-2xl font-semibold text-gray-300 mb-4">
+              Фильтры
+            </h3>
             <div className="mb-4">
               {getUniqueValues(products, "Рабочее давление Рр, кгс/см2")
                 .length > 0 && (
@@ -503,113 +614,111 @@ export default function ProductsPage({ user, category }) {
                 </select>
               )}
             </div>
-          </div>
-          <button
-            onClick={handleResetFilters}
-            className="w-full mt-4 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
-          >
-            Сбросить все фильтры
-          </button>
-        </aside>
-        <section className="flex-1">
-          <h2 className="text-3xl font-bold text-center text-gray-300 mb-8 2xl:text-4xl 4k:text-5xl">
-            Товары в категории
-          </h2>
+            <button
+              onClick={handleResetFilters}
+              className="w-full mt-4 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+            >
+              Сбросить фильтры
+            </button>
+          </aside>
 
-          <div className="mb-8 2xl:mb-12">
-            <input
-              type="text"
-              placeholder="Поиск по названию..."
-              value={searchQuery}
-              onChange={(e) =>
-                dispatch({
-                  type: ACTION.SET_SEARCH_QUERY,
-                  payload: e.target.value,
-                })
-              }
-              className="w-full p-4 2xl:p-5 text-lg 2xl:text-xl bg-krio-background rounded-xl"
-            />
-          </div>
-
-          {loading ? (
-            <div className="text-center text-gray-300">Загрузка...</div>
-          ) : sortedProducts?.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-8 2xl:gap-10">
-              {sortedProducts?.map((product) => (
-                <div
-                  key={product.id}
-                  className="bg-krio-background p-6 rounded-xl shadow-xl transition-transform hover:scale-105 4k:hover:scale-[1.03]"
-                  onClick={() => openModal(product)}
-                >
-                  {user?.isAdmin && (
-                    <button
-                      onClick={() => handleDeleteProduct(product.id)}
-                      className="absolute top-2 right-2 p-2 text-red-500 hover:text-red-700 transition-colors"
-                      title="Удалить товар"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </button>
-                  )}
-
-                  {!user?.isAdmin && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addToCart(product);
-                      }}
-                      className="absolute bottom-2 right-2 p-2 bg-blue-600 rounded-full hover:bg-blue-700"
-                      title="Добавить в корзину"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                        />
-                      </svg>
-                    </button>
-                  )}
-                  <div className="aspect-square flex items-center justify-center relative">
-                    <img
-                      src={getImageUrl(product.image)}
-                      alt={product.name}
-                      className="w-full h-full object-contain hover:object-cover transition-[object-fit] duration-300"
-                      onError={handleImageError}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-krio-background/30 to-transparent pointer-events-none" />
-                  </div>
-                  <p className="text-center text-xl font-semibold">
-                    {product.name}
-                  </p>
-                </div>
-              ))}
+          <section className="flex-1">
+            <div className="mb-8 2xl:mb-12">
+              <input
+                type="text"
+                placeholder="Поиск по названию..."
+                value={searchQuery}
+                onChange={(e) =>
+                  dispatch({
+                    type: ACTION.SET_SEARCH_QUERY,
+                    payload: e.target.value,
+                  })
+                }
+                className="w-full p-4 2xl:p-5 text-lg 2xl:text-xl bg-krio-background rounded-xl"
+              />
             </div>
-          ) : (
-            <p className="text-center text-xl text-gray-300">
-              Товары не найдены
-            </p>
-          )}
-        </section>
+
+            {loading ? (
+              <div className="text-center text-gray-300">Загрузка...</div>
+            ) : sortedProducts?.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-8 2xl:gap-10">
+                {sortedProducts?.map((product) => (
+                  <div
+                    key={product.id}
+                    className="bg-krio-background p-6 rounded-xl shadow-xl transition-transform hover:scale-105 4k:hover:scale-[1.03]"
+                    onClick={() => openModal(product)}
+                  >
+                    {user?.isAdmin && (
+                      <button
+                        onClick={() => handleDeleteProduct(product.id)}
+                        className="absolute top-2 right-2 p-2 text-red-500 hover:text-red-700 transition-colors"
+                        title="Удалить товар"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </button>
+                    )}
+
+                    {!user?.isAdmin && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product);
+                        }}
+                        className="absolute bottom-2 right-2 p-2 bg-blue-600 rounded-full hover:bg-blue-700"
+                        title="Добавить в корзину"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                    <div className="aspect-square flex items-center justify-center relative">
+                      <img
+                        src={getImageUrl(product.image)}
+                        alt={product.name}
+                        className="w-full h-full object-contain hover:object-cover transition-[object-fit] duration-300"
+                        onError={handleImageError}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-krio-background/30 to-transparent pointer-events-none" />
+                    </div>
+                    <p className="text-center text-xl font-semibold">
+                      {product.name}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-xl text-gray-300">
+                Товары не найдены
+              </p>
+            )}
+          </section>
+        </div>
+
         {error && (
           <div className="fixed bottom-4 right-4 p-4 bg-red-800 text-red-100 rounded-lg">
             {error}
