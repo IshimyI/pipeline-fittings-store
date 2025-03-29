@@ -523,7 +523,7 @@ export default function ProductsPage({ user, category }) {
               </button>
             </div>
           </aside>
-          <aside className="hidden md:block w-72 min-w-[288px] bg-krio-background rounded-lg p-6 sticky top-6 h-fit mb-10">
+          <aside className="hidden md:block w-72 min-w-[288px] bg-krio-background rounded-lg p-6 sticky top-20 h-fit mb-10">
             <h3 className="text-2xl font-semibold text-gray-300 mb-4">
               Фильтры
             </h3>

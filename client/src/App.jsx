@@ -15,6 +15,8 @@ import AuthPage from "./pages/AuthPage";
 import ProductsPage from "./pages/ProductsPage";
 import BasketPage from "./pages/BasketPage";
 import Admin from "./pages/Admin";
+import TermsPage from "./pages/TermsPage";
+import PrivacyPage from "./pages/PrivacyPage";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -126,6 +128,8 @@ function App() {
           path="/category"
           element={<ProductsPage user={user} category={category} />}
         />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="*" element={<ErrorPage user={user} />} />
       </Route>
     </Routes>

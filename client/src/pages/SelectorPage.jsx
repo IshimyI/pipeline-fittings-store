@@ -17,7 +17,6 @@ const CardGrid = ({ items, columns = "md:grid-cols-2 lg:grid-cols-2" }) => (
         key={index}
         className="group p-8 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 "
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-krio-primary/5 to-transparent opacity-0 transition-opacity" />
         <div className="flex items-start mb-4 relative z-10">
           <div className="w-12 h-12 bg-krio-primary/10 rounded-xl flex items-center justify-center mr-4 transform transition-transform">
             <span className="text-2xl text-white  bg-clip-text">
