@@ -212,21 +212,19 @@ export default function ProductsPage({ user, category }) {
   // 4. Returns category image path if simple filename
   // 5. Falls back to default image as final resort
   const getImageUrl = (image) => {
-    if (!image) return "/img/no-photo.png";
+    if (!image) return "/uploads/no-photo.png";
     if (isValidUrl(image)) return image;
-    if (image.startsWith('/uploads/')) return image; // Preserve upload paths
+    if (image.startsWith("/uploads/")) return image; // Preserve upload paths
     if (image) {
-      return `/img/categories/${image}.jpg`;
+      return `/uploads/categories/${image}.jpg`;
     }
-    return "/img/no-photo.png";
+    return "/uploads/no-photo.png";
   };
 
   const handleImageError = (e) => {
-    console.error('Failed to load image:', e.target.src);
-    e.target.src = "/img/no-photo.png";
+    console.error("Failed to load image:", e.target.src);
+    e.target.src = "/uploads/no-photo.png";
   };
-
-
 
   const handleSortChange = (e) => {
     setSortOption(e.target.value);
@@ -420,7 +418,7 @@ export default function ProductsPage({ user, category }) {
   };
 
   return (
-    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
+    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
       <main className="w-full max-w-[1280px] 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 mx-auto">
         <h2 className="text-3xl font-bold text-center text-gray-300 mb-8 2xl:text-4xl 4k:text-5xl">
           Товары в категории

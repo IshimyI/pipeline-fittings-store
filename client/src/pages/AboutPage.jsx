@@ -28,36 +28,40 @@ export default function AboutPage() {
   const clients = [
     {
       name: "Роскосмос",
-      imgSrc: "/img/companies/Roscosmos.png",
+      imgSrc: "/uploads/companies/Roscosmos.png",
       alt: "Лого Роскосмоса",
     },
     {
       name: "Алмаз-Антей",
-      imgSrc: "/img/companies/Almaz-Antey.jpg",
+      imgSrc: "/uploads/companies/Almaz-Antey.jpg",
       alt: "Лого Алмаз-Антея",
     },
     {
       name: "Прогресс",
-      imgSrc: "/img/companies/Progress.jpg",
+      imgSrc: "/uploads/companies/Progress.jpg",
       alt: "Лого Прогресса",
     },
     {
       name: "Криогенмаш",
-      imgSrc: "/img/companies/Kriogenmash.jpg",
+      imgSrc: "/uploads/companies/Kriogenmash.jpg",
       alt: "Лого Криогенмаша",
     },
     {
       name: "Техгаз",
-      imgSrc: "/img/companies/tech-gas.png",
+      imgSrc: "/uploads/companies/tech-gas.png",
       alt: "Лого Техгаза",
     },
-    { name: "ООО ЗИД", imgSrc: "/img/companies/zid.png", alt: "Лого ООО ЗИД" },
+    {
+      name: "ООО ЗИД",
+      imgSrc: "/uploads/companies/zid.png",
+      alt: "Лого ООО ЗИД",
+    },
     {
       name: "НИИМАШ",
-      imgSrc: "/img/companies/niimash.jpg",
+      imgSrc: "/uploads/companies/niimash.jpg",
       alt: "Лого НИИМАШа",
     },
-    { name: "СЭГЗ", imgSrc: "/img/companies/segs.png", alt: "Лого СЭГЗа" },
+    { name: "СЭГЗ", imgSrc: "/uploads/companies/segs.png", alt: "Лого СЭГЗа" },
   ];
 
   return (

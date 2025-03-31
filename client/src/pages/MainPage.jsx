@@ -198,12 +198,12 @@ export default function MainPage({ user, category }) {
 
   return (
     <div
-      className="flex items-center justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8"
+      className="flex items-center justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8"
       role="main"
     >
       <main className="max-w-7xl 2xl:max-w-[1440px] 4k:max-w-[1800px] mx-auto">
         {/* <div
-      className="flex items-center justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8"
+      className="flex items-center justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8"
       role="main"
     >
       <div className="max-w-7xl  mx-auto"> */}
@@ -341,7 +341,7 @@ export default function MainPage({ user, category }) {
                 >
                   <div className="bg-krio-background p-8 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
                     <img
-                      src="/img/categories/all-categories.png"
+                      src="/uploads/categories/all-categories.png"
                       alt="Все категории"
                       className="w-full object-cover rounded-xl mb-6"
                       loading="lazy"

@@ -17355,7 +17355,7 @@ function jx({ user: n }) {
     };
   return d.jsxs("div", {
     className:
-      "flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
+      "flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
     children: [
       d.jsx("h2", {
         className: "text-3xl font-bold text-gray-300 mb-8",
@@ -17373,13 +17373,13 @@ function jx({ user: n }) {
 function Tx({ category: n }) {
   const r = (o) => /^(https?:\/\/)/.test(o),
     c = (o) => {
-      o.target.src = "/img/no-photo.png";
+      o.target.src = "/uploads/no-photo.png";
     },
     s = r(n.image)
       ? n.image
       : n.image && n.image !== "alt"
-      ? `/img/categories/${n.image}.png`
-      : "/img/no-photo.png";
+      ? `/uploads/categories/${n.image}.png`
+      : "/uploads/no-photo.png";
   return d.jsxs("div", {
     className:
       "category bg-krio-background p-6 rounded-lg shadow-lg transform transition-transform hover:scale-105",
@@ -17528,7 +17528,7 @@ function Ax({ user: n, category: r }) {
     }, [r]),
     d.jsx("div", {
       className:
-        "flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
+        "flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
       role: "main",
       children: d.jsxs("div", {
         className: "max-w-7xl mx-auto",
@@ -17746,7 +17746,7 @@ function Ax({ user: n, category: r }) {
                               "bg-krio-background p-6 rounded-lg shadow-lg h-full",
                             children: [
                               d.jsx("img", {
-                                src: "/img/categories/all-categories.png",
+                                src: "/uploads/categories/all-categories.png",
                                 alt: "Все категории",
                                 className:
                                   "w-full object-cover rounded-lg mb-4",
@@ -17942,7 +17942,7 @@ function Cx({ user: n }) {
     };
   return d.jsx("div", {
     className:
-      "flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10",
+      "flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10",
     children: d.jsx("main", {
       className:
         "w-full max-w-4xl p-8 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 opacity-100",
@@ -18177,7 +18177,7 @@ function Cx({ user: n }) {
 function zx() {
   return d.jsx("div", {
     className:
-      "flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
+      "flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
     children: d.jsxs("main", {
       className:
         "w-full max-w-4xl p-8 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8",
@@ -18227,7 +18227,7 @@ function zx() {
                       children: "Роскосмос",
                     }),
                     d.jsx("img", {
-                      src: "/img/companies/Roscosmos.png",
+                      src: "/uploads/companies/Roscosmos.png",
                       alt: "Лого Роскосмоса",
                       className: "w-32 h-32 object-contain rounded-md",
                     }),
@@ -18242,7 +18242,7 @@ function zx() {
                       children: "Алмаз-Антей",
                     }),
                     d.jsx("img", {
-                      src: "/img/companies/Almaz-Antey.jpg",
+                      src: "/uploads/companies/Almaz-Antey.jpg",
                       alt: "Лого Алмаз-Антея",
                       className: "w-32 h-32 object-contain rounded-md",
                     }),
@@ -18257,7 +18257,7 @@ function zx() {
                       children: "Прогресс",
                     }),
                     d.jsx("img", {
-                      src: "/img/companies/Progress.jpg",
+                      src: "/uploads/companies/Progress.jpg",
                       alt: "Лого Прогресса",
                       className: "w-32 h-32 object-contain rounded-md",
                     }),
@@ -18272,7 +18272,7 @@ function zx() {
                       children: "Криогенмаш",
                     }),
                     d.jsx("img", {
-                      src: "/img/companies/Kriogenmash.jpg",
+                      src: "/uploads/companies/Kriogenmash.jpg",
                       alt: "Лого Криогенмаша",
                       className: "w-32 h-32 object-contain rounded-md",
                     }),
@@ -18287,7 +18287,7 @@ function zx() {
                       children: "Техгаз",
                     }),
                     d.jsx("img", {
-                      src: "/img/companies/tech-gas.png",
+                      src: "/uploads/companies/tech-gas.png",
                       alt: "Лого Техгаза",
                       className: "w-32 h-32 object-contain rounded-md",
                     }),
@@ -18302,7 +18302,7 @@ function zx() {
                       children: "ООО ЗИД",
                     }),
                     d.jsx("img", {
-                      src: "/img/companies/zid.png",
+                      src: "/uploads/companies/zid.png",
                       alt: "Лого ООО ЗИД",
                       className: "w-32 h-32 object-contain rounded-md",
                     }),
@@ -18317,7 +18317,7 @@ function zx() {
                       children: "НИИМАШ",
                     }),
                     d.jsx("img", {
-                      src: "/img/companies/niimash.jpg",
+                      src: "/uploads/companies/niimash.jpg",
                       alt: "Лого НИИМАШа",
                       className: "w-32 h-32 object-contain rounded-md",
                     }),
@@ -18332,7 +18332,7 @@ function zx() {
                       children: "СЭГЗ",
                     }),
                     d.jsx("img", {
-                      src: "/img/companies/segs.png",
+                      src: "/uploads/companies/segs.png",
                       alt: "Лого СЭГЗа",
                       className: "w-32 h-32 object-contain rounded-md",
                     }),
@@ -18394,7 +18394,7 @@ function zx() {
 function _x() {
   return d.jsx("div", {
     className:
-      "flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
+      "flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
     children: d.jsxs("main", {
       className:
         "w-full max-w-4xl p-8 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8",
@@ -18548,7 +18548,7 @@ function Dx({ handleLogin: n, handleSignUp: r }) {
     };
   return d.jsx("div", {
     className:
-      "flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
+      "flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
     children: d.jsxs("div", {
       className:
         "w-full max-w-md p-8 space-y-6 bg-krio-foreground rounded-lg shadow-xl border border-gray-700",
@@ -18767,9 +18767,9 @@ function Mx({ isOpen: n, onClose: r, product: c, user: s, category: o }) {
     },
     C = (U) => /^(https?:\/\/)/.test(U),
     M = (U) =>
-      C(U) ? U : U ? `/img/categories/${U}.jpg` : "/img/no-photo.png",
+      C(U) ? U : U ? `/uploads/categories/${U}.jpg` : "/uploads/no-photo.png",
     X = (U) => {
-      U.target.src = "/img/no-photo.png";
+      U.target.src = "/uploads/no-photo.png";
     };
   O.useEffect(() => {
     const U = (re) => {
@@ -19418,9 +19418,9 @@ function tm({ user: n, category: r }) {
     },
     Ge = (K) => /^(https?:\/\/)/.test(K),
     _e = (K) =>
-      Ge(K) ? K : K ? `/img/categories/${K}.jpg` : "/img/no-photo.png",
+      Ge(K) ? K : K ? `/uploads/categories/${K}.jpg` : "/uploads/no-photo.png",
     Y = (K) => {
-      K.target.src = "/img/no-photo.png";
+      K.target.src = "/uploads/no-photo.png";
     },
     ce = (K) => {
       o(K.target.value);
@@ -19526,7 +19526,7 @@ function tm({ user: n, category: r }) {
     };
   return d.jsxs("div", {
     className:
-      "flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
+      "flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
     children: [
       d.jsxs("main", {
         className: "w-full max-w-[1280px] p-6 flex",
@@ -19876,7 +19876,7 @@ function Bx({ user: n }) {
       ? d.jsx("div", { className: "text-red-500 p-8", children: s })
       : d.jsx("div", {
           className:
-            "flex text-black justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
+            "flex text-black justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
           children: n.isAdmin
             ? d.jsx("div", {
                 className:
@@ -19923,7 +19923,8 @@ function Bx({ user: n }) {
                                           "flex items-center space-x-4",
                                         children: [
                                           d.jsx("img", {
-                                            src: T.img || "/img/no-photo.png",
+                                            src:
+                                              T.img || "/uploads/no-photo.png",
                                             alt: T.name,
                                             className:
                                               "w-20 h-20 object-cover rounded",
@@ -20052,7 +20053,7 @@ function Lx() {
     ? d.jsx("div", { className: "text-red-500 p-8", children: o })
     : d.jsx("div", {
         className:
-          "flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
+          "flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8",
         children: d.jsxs("div", {
           className: "max-w-6xl mx-auto",
           children: [

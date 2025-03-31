@@ -183,16 +183,15 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
   // Handles image URL resolution with fallback to no-photo image
   // Supports direct URLs, upload paths, and default fallback
   const getImageUrl = (image) => {
-    if (!image) return "/img/no-photo.png";
+    if (!image) return "/uploads/no-photo.png";
     if (isValidUrl(image)) return image;
     if (image.startsWith("/uploads/")) return image;
-    return "/img/no-photo.png";
+    return "/uploads/no-photo.png";
   };
 
   const handleImageError = (e) => {
-    e.target.src = "/img/no-photo.png";
+    e.target.src = "/uploads/no-photo.png";
   };
-
 
   useEffect(() => {
     const handleCancel = (event) => {

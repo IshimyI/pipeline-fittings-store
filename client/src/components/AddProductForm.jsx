@@ -235,7 +235,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
               </label>
               <ImageUploader
                 onImageSelected={handleImageSelected}
-                image="/img/no-photo.png"
+                image="/uploads/no-photo.png"
                 className="mt-2"
               />
             </div>

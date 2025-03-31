@@ -8,13 +8,13 @@ const isValidUrl = (str) => {
 };
 
 const getImageUrl = (image) => {
-  if (!image) return "/img/no-photo.png";
+  if (!image) return "/uploads/no-photo.png";
   if (isValidUrl(image)) return image;
   if (image.startsWith("/uploads/")) return image; // Preserve upload paths
   if (image) {
-    return `/img/categories/${image}.jpg`;
+    return `/uploads/categories/${image}.jpg`;
   }
-  return "/img/no-photo.png";
+  return "/uploads/no-photo.png";
 };
 
 export default function AdminAvailability({ user }) {
@@ -204,7 +204,7 @@ const ProductItem = ({ product, onQuantityChange, quantityUpdates }) => (
       src={getImageUrl(product.image)}
       alt={product.name}
       className="w-full h-48 object-cover rounded-lg mb-3"
-      onError={(e) => (e.target.src = "/img/no-photo.png")}
+      onError={(e) => (e.target.src = "/uploads/no-photo.png")}
     />
     <h3 className="font-medium text-lg mb-2">{product.name}</h3>
 

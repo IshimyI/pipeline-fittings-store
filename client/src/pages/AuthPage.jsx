@@ -26,7 +26,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
   };
 
   return (
-    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/img/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
+    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
       <div className="w-full max-w-md p-8 space-y-6 bg-krio-foreground rounded-lg shadow-xl border border-gray-700">
         <h2 className="text-2xl font-semibold text-center text-gray-300 uppercase tracking-wide">
           {log ? "Вход" : "Регистрация"}

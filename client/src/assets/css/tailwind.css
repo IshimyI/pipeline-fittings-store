@@ -119,7 +119,7 @@ body {
 
 /* Спутник */
 .sputnik-layer {
-  background: url("/img/sputnik.png") no-repeat;
+  background: url("/uploads/sputnik.png") no-repeat;
   background-size: contain;
   width: 350px;
   height: 350px;

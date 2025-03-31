@@ -64,7 +64,7 @@ const ImageUploader = ({
               className="w-full max-w-[200px] h-auto rounded-lg object-cover"
               onError={(e) => {
                 console.error("Image load error:", e.target.src);
-                setPreview("/img/no-photo.png");
+                setPreview("/uploads/no-photo.png");
                 setError(`Не удалось загрузить изображение: ${preview}`);
               }}
             />
