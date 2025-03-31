@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback, memo } from "react";
 import Category from "../ui/Category";
 import axiosInstance from "../axiosInstance";
+import AddProductForm from "../components/AddProductForm";
 const MemoizedCategory = memo(Category);
 
 export default function MainPage({ user, category }) {
@@ -14,10 +15,45 @@ export default function MainPage({ user, category }) {
     name: "",
     categoryId: "",
     price: "",
-    image: "",
+    image: null,
     availability: "",
     params: "",
   });
+
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const extractQuantity = useCallback((availability) => {
+    const value = parseInt(availability.replace(/\D/g, "")) || 0;
+    return Math.max(value, 0);
+  }, []);
+
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [categoriesRes, productsRes] = await Promise.all([
+        axiosInstance.get("/ListCategories"),
+        axiosInstance.get("/ListProducts"),
+      ]);
+
+      setCategories(categoriesRes.data);
+      setProducts(
+        productsRes.data.map((p) => ({
+          ...p,
+          availability: extractQuantity(p.availability),
+        }))
+      );
+    } catch (error) {
+      setError("Ошибка при загрузке данных");
+    } finally {
+      setLoading(false);
+    }
+  }, [extractQuantity]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   const navigate = useNavigate();
   const goToCategory = useCallback(
     (categoryId) => {
@@ -64,7 +100,7 @@ export default function MainPage({ user, category }) {
           name: "",
           categoryId: "",
           price: "",
-          image: "",
+          image: null,
           availability: "",
           params: "",
         });
@@ -76,8 +112,14 @@ export default function MainPage({ user, category }) {
     }
   };
   const handleInputChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, files } = e.target;
+
+    if (name === "image") {
+      setFormData((prev) => ({ ...prev, [name]: files[0] }));
+    } else {
+      const { value } = e.target;
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   }, []);
 
   const handleCreate = async (type) => {
@@ -137,7 +179,7 @@ export default function MainPage({ user, category }) {
         name: "",
         categoryId: "",
         price: "",
-        image: "",
+        image: null,
         availability: "",
         params: "",
       });
@@ -209,6 +251,7 @@ export default function MainPage({ user, category }) {
                       required
                     >
                       <option value="">Выберите категорию</option>
+
                       {categories.map((category) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
@@ -241,10 +284,10 @@ export default function MainPage({ user, category }) {
                 <label className="block text-gray-300 mb-2">Изображение</label>
                 <input
                   name="image"
-                  value={formData.image}
+                  type="file"
+                  accept="image/png, image/jpeg image/jpg"
                   onChange={handleInputChange}
                   className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="URL или имя файла"
                 />
               </div>
               <div className="flex justify-end gap-4">
@@ -256,7 +299,7 @@ export default function MainPage({ user, category }) {
                       name: "",
                       categoryId: "",
                       price: "",
-                      image: "",
+                      image: null,
                       availability: "",
                       params: "",
                     });
@@ -279,40 +322,13 @@ export default function MainPage({ user, category }) {
           <div className="max-w-7xl 2xl:max-w-[1440px] 4k:max-w-[1800px] mx-auto">
             {/* <div className="text-white min-h-screen p-6">
           <div className="max-w-7xl mx-auto"> */}
-            {user?.isAdmin && (
-              <div className="mb-8 flex gap-6 justify-end">
-                <button
-                  onClick={() => setShowForm("product")}
-                  className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
-                  disabled={isLoading}
-                  aria-label="Добавить новый товар"
-                >
-                  {isLoading ? "Загрузка..." : "+ Новый товар"}
-                </button>
-                <button
-                  onClick={() => setShowForm("category")}
-                  className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  disabled={isLoading}
-                  aria-label="Добавить новую категорию"
-                >
-                  {isLoading ? "Загрузка..." : "+ Новая категория"}
-                </button>
-              </div>
-            )}
-            {error && (
-              <div
-                className="mb-6 p-6 bg-red-800 text-red-100 rounded-lg shadow-xl"
-                role="alert"
-                aria-live="polite"
-              >
-                {error}
-              </div>
-            )}
-            {isLoading && (
-              <div className="flex justify-center items-center py-8">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
-              </div>
-            )}
+            <div>
+              <AddProductForm
+                categories={categories}
+                onProductCreated={fetchData}
+                user={user}
+              />
+            </div>
             <section>
               <h2 className="text-4xl font-bold text-center text-gray-300 mb-12">
                 Каталог
@@ -335,6 +351,7 @@ export default function MainPage({ user, category }) {
                     </p>
                   </div>
                 </button>
+                {console.log(categories)}
                 {categories.map((category) => (
                   <div key={category.id} className="relative group">
                     {user?.isAdmin && (

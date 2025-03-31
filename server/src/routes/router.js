@@ -1,4 +1,6 @@
 const express = require("express");
+const path = require("path");
+const fs = require("fs");
 const {
   User,
   Category,
@@ -12,6 +14,10 @@ const verifyRefreshToken = require("../middlewares/verifyRefreshToken");
 require("dotenv").config();
 const sendMsg = require("../configs/telegramMsg");
 const sendEmail = require("../services/emailService");
+const {
+  uploadProductImage,
+  uploadCategoryImage,
+} = require("../middlewares/fileUpload");
 
 const router = express.Router();
 
@@ -103,86 +109,105 @@ router.post("/changeProduct/:id", verifyRefreshToken, async (req, res) => {
   }
 });
 
-router.post("/createProduct", verifyRefreshToken, async (req, res) => {
-  const {
-    name,
-    categoryId,
-    price,
-    image = "default-product.jpg",
-    availability = "",
-    params = { Размер: "M", Цвет: "Красный" },
-    user,
-  } = req.body;
+router.post(
+  "/createProduct",
+  verifyRefreshToken,
+  uploadProductImage,
+  async (req, res) => {
+    const {
+      name,
+      categoryId,
+      price,
+      image = "default-product.jpg",
+      availability = "",
+      params = { Размер: "M", Цвет: "Красный" },
+    } = req.body;
 
-  try {
-    if (!user?.isAdmin) {
-      return res.status(403).send({ message: "Доступ запрещен" });
-    }
+    try {
+      if (!res.locals.user.isAdmin) {
+        return res.status(403).send({ message: "Доступ запрещен" });
+      }
 
-    const errors = [];
-    if (!name) errors.push("name");
-    if (!categoryId) errors.push("categoryId");
-    if (!price) errors.push("price");
+      const errors = [];
+      if (!name) errors.push("name");
+      if (!categoryId) errors.push("categoryId");
+      if (!price) errors.push("price");
 
-    if (errors.length > 0) {
-      return res.status(400).json({
-        message: `Обязательные поля: ${errors.join(", ")}`,
-        errorType: "VALIDATION_ERROR",
+      if (errors.length > 0) {
+        return res.status(400).json({
+          message: `Обязательные поля: ${errors.join(", ")}`,
+          errorType: "VALIDATION_ERROR",
+        });
+      }
+
+      let imagePath = "/uploads/products/default-product.jpg";
+      if (req.file) {
+        imagePath = `/uploads/products/${req.file.filename}`;
+      }
+
+      const newProduct = await Product.create({
+        name,
+        categoryId: Number(categoryId),
+        price: price,
+        image: imagePath,
+        availability,
+        params: typeof params === "string" ? JSON.parse(params) : params,
+      });
+
+      res.status(201).json({
+        message: "Товар успешно создан",
+        product: newProduct,
+      });
+    } catch (error) {
+      console.error("Ошибка создания товара:", error);
+      res.status(500).json({
+        message: error.message.includes("VALIDATION")
+          ? "Ошибка валидации данных"
+          : "Ошибка сервера",
+        error: error.message,
       });
     }
-
-    const newProduct = await Product.create({
-      name,
-      categoryId: Number(categoryId),
-      price: price,
-      image,
-      availability,
-      params: typeof params === "string" ? JSON.parse(params) : params,
-    });
-
-    res.status(201).json({
-      message: "Товар успешно создан",
-      product: newProduct,
-    });
-  } catch (error) {
-    console.error("Ошибка создания товара:", error);
-    res.status(500).json({
-      message: error.message.includes("VALIDATION")
-        ? "Ошибка валидации данных"
-        : "Ошибка сервера",
-      error: error.message,
-    });
   }
-});
+);
 
-router.post("/createCategory", verifyRefreshToken, async (req, res) => {
-  const { name, image, user } = req.body;
+router.post(
+  "/createCategory",
+  verifyRefreshToken,
+  uploadCategoryImage,
+  async (req, res) => {
+    const { name, image } = req.body;
 
-  try {
-    if (!user.isAdmin) {
-      return res.status(403).send({ message: "Доступ запрещен" });
-    }
+    try {
+      if (!res.locals.user.isAdmin) {
+        return res.status(403).send({ message: "Доступ запрещен" });
+      }
 
-    if (!name) {
-      return res.status(400).send({
-        message: "Поле name обязательно",
+      if (!name) {
+        return res.status(400).send({
+          message: "Поле name обязательно",
+        });
+      }
+
+      let imagePath = `/uploads/categories/default-category.jpg`;
+      if (req.file) {
+        imagePath = `/uploads/categories/${req.file.filename}`;
+      }
+
+      const newCategory = await Category.create({
+        name,
+        image: imagePath,
       });
+
+      res.status(201).send({
+        message: "Категория успешно создана",
+        category: newCategory,
+      });
+    } catch (error) {
+      console.error("Ошибка создания категории:", error);
+      res.status(500).send(error.message);
     }
-
-    const newCategory = await Category.create({
-      name,
-      image: image || "default-category.jpg",
-    });
-
-    res.status(201).send({
-      message: "Категория успешно создана",
-      category: newCategory,
-    });
-  } catch (error) {
-    console.error("Ошибка создания категории:", error);
-    res.status(500).send(error.message);
   }
-});
+);
 
 router.put(
   "/updateCategory/:id/:userId",
@@ -209,7 +234,7 @@ router.put(
 
       const updatedCategory = await category.update({
         name: name.trim(),
-        img: img || "default-category.jpg",
+        img: img || "/uploads/categories/default-category.jpg",
         updatedAt: new Date(),
       });
 

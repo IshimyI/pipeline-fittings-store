@@ -1,10 +1,12 @@
 require("dotenv").config();
 const express = require("express");
+const multer = require("multer");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const https = require("https");
 const fs = require("fs");
+const path = require("path");
 const session = require("express-session");
 const config = require("./configs/config.json");
 const router = require("./routes/router");
@@ -12,6 +14,12 @@ const authRouter = require("./routes/authRouter");
 const tokensRouter = require("./routes/tokensRouter");
 const app = express();
 const { PORT } = process.env || 3000;
+
+const uploadsDir = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log("Created uploads directory:", uploadsDir);
+}
 
 const corsConfig = {
   origin: [
@@ -31,6 +39,7 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(
   session({
     secret: config.telegram.secretKey,
@@ -51,10 +60,17 @@ app.use((err, req, res, next) => {
   }
   next(err);
 });
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res
+      .status(400)
+      .json({ error: "Ошибка загрузки файла", message: err.message });
+  }
+  next(err);
+});
 app.use("/api", router);
 app.use("/api/auth", authRouter);
 app.use("/api/tokens", tokensRouter);
-const path = require("path");
 let server;
 try {
   const sslPath = path.join(__dirname, "../configs/ssl");

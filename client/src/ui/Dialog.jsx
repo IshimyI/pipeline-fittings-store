@@ -7,7 +7,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
   const [formData, setFormData] = useState({
     categoryId: product?.categoryId || "",
     name: product?.name || "",
-    image: product?.image || "",
+    image: product?.image || null,
     price: product?.price || "",
     availability: product?.availability || "",
     params: product?.params || { Размер: "M", Цвет: "Красный" },
@@ -280,9 +280,8 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                             Категория
                           </p>
                           <p className="text-sm text-white truncate">
-                            {category && category[product.categoryId]
-                              ? category[product.categoryId].name
-                              : "Категория не указана"}
+                            {category?.find((c) => c.id === product.categoryId)
+                              ?.name || "Категория не указана"}
                           </p>
                         </div>
 
@@ -296,7 +295,6 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                         </div>
                       </div>
                     </div>
-
                     <div className="bg-krio-foreground p-3 rounded-lg">
                       <h4 className="text-sm font-semibold text-white mb-2 border-b border-gray-600 pb-1">
                         Характеристики
@@ -386,7 +384,8 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                       </label>
                       <input
                         name="image"
-                        value={formData.image}
+                        type="file"
+                        accept="image/png, image/jpeg image/jpg"
                         onChange={handleInputChange}
                         className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
