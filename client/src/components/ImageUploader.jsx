@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import axiosInstance from "../axiosInstance";
+
 const ImageUploader = ({
   onImageSelected,
   className = "",
@@ -9,15 +9,30 @@ const ImageUploader = ({
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState("");
   const fileInputRef = useRef(null);
+
   // Handle initial image
   useEffect(() => {
     if (image) {
-      const imageUrl = image.startsWith("http")
-        ? image
-        : image.startsWith("/uploads")
-        ? `${import.meta.env.VITE_TARGET}${image}`
-        : image;
-      setPreview(imageUrl);
+      try {
+        // Определяем источник изображения
+        const imageUrl = image.startsWith("http")
+          ? image
+          : image.startsWith("/uploads")
+          ? `${import.meta.env.VITE_TARGET || ""}${image}`
+          : image;
+
+        console.log("Loading image from URL:", imageUrl);
+        console.log(
+          "Environment VITE_TARGET:",
+          import.meta.env.VITE_TARGET || "not set"
+        );
+
+        setPreview(imageUrl);
+      } catch (err) {
+        console.error("Error setting image preview:", err);
+        setError(`Ошибка при загрузке изображения: ${err.message}`);
+        setPreview("/uploads/no-photo.png");
+      }
     }
   }, [image]);
 
@@ -53,6 +68,24 @@ const ImageUploader = ({
     onImageSelected(file);
     setError("");
   };
+
+  // Функция для обработки ошибок загрузки изображений
+  const handleImageError = (e) => {
+    const failedSrc = e.target.src;
+    console.error("Image load error:", failedSrc);
+
+    // Проверка, содержит ли URL переменную окружения
+    if (failedSrc.includes(import.meta.env.VITE_TARGET)) {
+      console.warn("Возможно неправильно настроена переменная VITE_TARGET");
+    }
+
+    // Сброс на дефолтное изображение
+    if (!failedSrc.includes("no-photo.png")) {
+      setPreview("/uploads/no-photo.png");
+      setError(`Не удалось загрузить изображение. URL: ${failedSrc}`);
+    }
+  };
+
   return (
     <div className={`w-full ${className}`}>
       <div className="flex flex-col items-center">
@@ -62,11 +95,7 @@ const ImageUploader = ({
               src={preview}
               alt="Предпросмотр"
               className="w-full max-w-[200px] h-auto rounded-lg object-cover"
-              onError={(e) => {
-                console.error("Image load error:", e.target.src);
-                setPreview("/uploads/no-photo.png");
-                setError(`Не удалось загрузить изображение: ${preview}`);
-              }}
+              onError={handleImageError}
             />
           </div>
         )}
@@ -89,4 +118,5 @@ const ImageUploader = ({
     </div>
   );
 };
+
 export default ImageUploader;
