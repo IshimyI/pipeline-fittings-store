@@ -2,14 +2,19 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import axiosInstance from "../axiosInstance";
 import AddProductForm from "../components/AddProductForm";
 
+const isValidUrl = (str) => {
+  const pattern = /^(https?:\/\/)/;
+  return pattern.test(str);
+};
+
 const getImageUrl = (image) => {
   if (!image) return "/img/no-photo.png";
-  if (/^(https?:\/\/)/.test(image)) return image;
-  if (image.startsWith("products/") || image.startsWith("categories/"))
-    return `/uploads/${image}`;
-  return image === "default-product.jpg" || image === "default-category.jpg"
-    ? `/img/${image}`
-    : `/img/categories/${image}.jpg`;
+  if (isValidUrl(image)) return image;
+  if (image.startsWith("/uploads/")) return image; // Preserve upload paths
+  if (image) {
+    return `/img/categories/${image}.jpg`;
+  }
+  return "/img/no-photo.png";
 };
 
 export default function AdminAvailability({ user }) {

@@ -15,10 +15,11 @@ const tokensRouter = require("./routes/tokensRouter");
 const app = express();
 const { PORT } = process.env || 3000;
 
-const uploadsDir = path.join(__dirname, "../uploads");
+// Store uploaded files in client/public/uploads for direct access through the frontend
+const uploadsDir = path.join(__dirname, "../../client/public/uploads");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
-  console.log("Created uploads directory:", uploadsDir);
+  console.log("Created uploads directory in client/public:", uploadsDir);
 }
 
 const corsConfig = {
@@ -39,7 +40,7 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "../../client/public/uploads")));
 app.use(
   session({
     secret: config.telegram.secretKey,

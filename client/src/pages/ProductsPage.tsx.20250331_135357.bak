@@ -205,16 +205,10 @@ export default function ProductsPage({ user, category }) {
     return pattern.test(str);
   };
 
-  // Handles image path resolution with fallbacks:
-  // 1. Returns default image if no image provided
-  // 2. Returns URL directly if valid URL
-  // 3. Returns uploads path if from uploads directory
-  // 4. Returns category image path if simple filename
-  // 5. Falls back to default image as final resort
   const getImageUrl = (image) => {
     if (!image) return "/img/no-photo.png";
     if (isValidUrl(image)) return image;
-    if (image.startsWith('/uploads/')) return image; // Preserve upload paths
+    if (image.startsWith('/uploads/')) return image;
     if (image) {
       return `/img/categories/${image}.jpg`;
     }
@@ -222,11 +216,8 @@ export default function ProductsPage({ user, category }) {
   };
 
   const handleImageError = (e) => {
-    console.error('Failed to load image:', e.target.src);
     e.target.src = "/img/no-photo.png";
   };
-
-
 
   const handleSortChange = (e) => {
     setSortOption(e.target.value);

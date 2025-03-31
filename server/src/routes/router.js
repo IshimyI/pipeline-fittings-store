@@ -19,6 +19,9 @@ const {
   uploadCategoryImage,
 } = require("../middlewares/fileUpload");
 
+// Изображения теперь хранятся в client/public/uploads для прямого доступа из клиента
+// Пути к изображениям в базе данных начинаются с /uploads/
+
 const router = express.Router();
 
 router.get("/users", async (req, res) => {
@@ -79,35 +82,51 @@ router.post("/cta", async (req, res) => {
   }
 });
 
-router.post("/changeProduct/:id", verifyRefreshToken, async (req, res) => {
-  const { id } = req.params;
-  const { categoryId, name, image, price, availability, params, user } =
-    req.body;
+router.post(
+  "/changeProduct/:id",
+  verifyRefreshToken,
+  uploadProductImage,
+  async (req, res) => {
+    const { id } = req.params;
+    const { categoryId, name, price, availability, params, user, imagePath } =
+      req.body;
 
-  try {
-    if (user.isAdmin) {
-      const product = await Product.findByPk(id);
+    try {
+      // Парсим user из строки JSON, если он был отправлен как строка
+      const userData = typeof user === "string" ? JSON.parse(user) : user;
 
-      if (!product) {
-        return res.status(404).send({ message: "Продукт не найден" });
-      }
+      if (userData.isAdmin) {
+        const product = await Product.findByPk(id);
 
-      product.categoryId = categoryId ?? product.categoryId;
-      product.name = name ?? product.name;
-      product.image = image ?? product.image;
-      product.price = price ?? product.price;
-      product.availability = availability ?? product.availability;
-      product.params = params ?? product.params;
+        if (!product) {
+          return res.status(404).send({ message: "Продукт не найден" });
+        }
 
-      await product.save();
+        product.categoryId = categoryId ?? product.categoryId;
+        product.name = name ?? product.name;
+        product.price = price ?? product.price;
+        product.availability = availability ?? product.availability;
+        product.params = params ?? product.params;
 
-      res.status(200).send({ message: "Изменение успешно", product });
-    } else return res.status(400).send({ message: "У вас нет прав" });
-  } catch (error) {
-    console.error("Ошибка при изменении продукта:", error);
-    res.status(500).send({ message: "Ошибка сервера", error: error.message });
+        // Обработка изображения
+        if (req.file) {
+          // Если загружен новый файл, сохраняем путь к нему
+          product.image = `/uploads/products/${req.file.filename}`;
+        } else if (imagePath) {
+          // Если файл не загружен, но передан путь, используем его
+          product.image = imagePath;
+        }
+
+        await product.save();
+
+        res.status(200).send({ message: "Изменение успешно", product });
+      } else return res.status(400).send({ message: "У вас нет прав" });
+    } catch (error) {
+      console.error("Ошибка при изменении продукта:", error);
+      res.status(500).send({ message: "Ошибка сервера", error: error.message });
+    }
   }
-});
+);
 
 router.post(
   "/createProduct",
@@ -455,7 +474,7 @@ router.post("/createOrder", async (req, res) => {
 Новый заказ #${order.id}
 От: ${userInfo}
 Товары:
-${itemDetails.join("\n")}
+${itemDetails.join("")}
 Итого: ${total || "По запросу"} ₽
   `.trim();
     await sendMsg({
@@ -500,7 +519,10 @@ router.post("/feedback", async (req, res) => {
     await sendEmail({
       to: process.env.ADMIN_EMAIL,
       subject: "Новое сообщение от пользователя",
-      text: `Имя: ${name}\nEmail: ${email}\nТелефон: ${phone}\nСообщение: ${message}`,
+      text: `Имя: ${name}
+Email: ${email}
+Телефон: ${phone}
+Сообщение: ${message}`,
     });
 
     const telegramMessage = `
