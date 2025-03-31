@@ -110,8 +110,8 @@ router.post(
 
         // Обработка изображения
         if (req.file) {
-          // Если загружен новый файл, сохраняем URL из Cloudinary
-          product.image = req.file.cloudinaryUrl;
+          // Если загружен новый файл, сохраняем путь к нему
+          product.image = `/uploads/products/${req.file.filename}`;
         } else if (imagePath) {
           // Если файл не загружен, но передан путь, используем его
           product.image = imagePath;
@@ -161,7 +161,7 @@ router.post(
 
       let imagePath = "/uploads/products/default-product.jpg";
       if (req.file) {
-        imagePath = req.file.cloudinaryUrl;
+        imagePath = `/uploads/products/${req.file.filename}`;
       }
 
       const newProduct = await Product.create({
@@ -209,7 +209,7 @@ router.post(
 
       let imagePath = `/uploads/categories/default-category.jpg`;
       if (req.file) {
-        imagePath = req.file.cloudinaryUrl;
+        imagePath = `/uploads/categories/${req.file.filename}`;
       }
 
       const newCategory = await Category.create({

@@ -1,45 +1,12 @@
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs");
+const cloudinary = require("../configs/cloudinaryConfig");
+const { Readable } = require("stream");
 
-// Создаем директории для хранения изображений, если они не существуют
-const createDirectories = () => {
-  const productImagesDir = path.join(__dirname, "../../../client/public/uploads/products");
-  const categoryImagesDir = path.join(__dirname, "../../../client/public/uploads/categories");
+// Configure storage for temporary file upload
+const storage = multer.memoryStorage();
 
-  if (!fs.existsSync(path.join(__dirname, "../../../client/public/uploads"))) {
-    fs.mkdirSync(path.join(__dirname, "../../../client/public/uploads"));
-  }
-
-  if (!fs.existsSync(productImagesDir)) {
-    fs.mkdirSync(productImagesDir, { recursive: true });
-  }
-
-  if (!fs.existsSync(categoryImagesDir)) {
-    fs.mkdirSync(categoryImagesDir, { recursive: true });
-  }
-};
-
-// Создаем директории при инициализации
-createDirectories();
-
-// Настройка хранилища для multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // Определяем директорию в зависимости от типа загрузки (продукт или категория)
-    const uploadType = req.path.includes("Product") ? "products" : "categories";
-    const dest = path.join(__dirname, `../../../client/public/uploads/${uploadType}`);
-    cb(null, dest);
-  },
-  filename: function (req, file, cb) {
-    // Генерируем уникальное имя файла с оригинальным расширением
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
-  },
-});
-
-// Фильтр файлов для проверки типа изображения
+// File filter for image types
 const fileFilter = (req, file, cb) => {
   const allowedTypes = [
     "image/jpeg",
@@ -61,16 +28,128 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Настройка multer с ограничениями
+// Configure multer with memory storage
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB максимальный размер файла
+    fileSize: 5 * 1024 * 1024, // 5MB max file size
   },
   fileFilter: fileFilter,
 });
 
+// Middleware for uploading product images to Cloudinary
+const uploadProductImage = async (req, res, next) => {
+  // First use multer to handle the file upload to memory
+  upload.single("image")(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({
+        message: "Ошибка при загрузке файла",
+        error: err.message,
+      });
+    }
+
+    // If no file was uploaded, just continue
+    if (!req.file) {
+      return next();
+    }
+
+    try {
+      // Create a readable stream from the buffer
+      const stream = Readable.from(req.file.buffer);
+      
+      // Create a promise to handle the Cloudinary upload
+      const cloudinaryUpload = new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: "products",
+            resource_type: "image",
+          },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        
+        // Pipe the readable stream to the Cloudinary upload stream
+        stream.pipe(uploadStream);
+      });
+
+      // Wait for the upload to complete
+      const result = await cloudinaryUpload;
+      
+      // Add the Cloudinary URL to the request
+      req.file.cloudinaryUrl = result.secure_url;
+      req.file.cloudinaryPublicId = result.public_id;
+      req.file.filename = path.basename(result.secure_url);
+      
+      next();
+    } catch (error) {
+      console.error("Cloudinary upload error:", error);
+      return res.status(500).json({
+        message: "Ошибка при загрузке изображения в облако",
+        error: error.message,
+      });
+    }
+  });
+};
+
+// Middleware for uploading category images to Cloudinary
+const uploadCategoryImage = async (req, res, next) => {
+  // First use multer to handle the file upload to memory
+  upload.single("image")(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({
+        message: "Ошибка при загрузке файла",
+        error: err.message,
+      });
+    }
+
+    // If no file was uploaded, just continue
+    if (!req.file) {
+      return next();
+    }
+
+    try {
+      // Create a readable stream from the buffer
+      const stream = Readable.from(req.file.buffer);
+      
+      // Create a promise to handle the Cloudinary upload
+      const cloudinaryUpload = new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: "categories",
+            resource_type: "image",
+          },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        
+        // Pipe the readable stream to the Cloudinary upload stream
+        stream.pipe(uploadStream);
+      });
+
+      // Wait for the upload to complete
+      const result = await cloudinaryUpload;
+      
+      // Add the Cloudinary URL to the request
+      req.file.cloudinaryUrl = result.secure_url;
+      req.file.cloudinaryPublicId = result.public_id;
+      req.file.filename = path.basename(result.secure_url);
+      
+      next();
+    } catch (error) {
+      console.error("Cloudinary upload error:", error);
+      return res.status(500).json({
+        message: "Ошибка при загрузке изображения в облако",
+        error: error.message,
+      });
+    }
+  });
+};
+
 module.exports = {
-  uploadProductImage: upload.single("image"),
-  uploadCategoryImage: upload.single("image"),
+  uploadProductImage,
+  uploadCategoryImage,
 };
