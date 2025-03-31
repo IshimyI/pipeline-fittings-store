@@ -183,32 +183,14 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
   // Handles image URL resolution with fallback to no-photo image
   // Supports direct URLs, upload paths, and default fallback
   const getImageUrl = (image) => {
-    try {
-      if (!image) return "/uploads/no-photo.png";
-      if (isValidUrl(image)) return image;
-
-      const apiUrl = import.meta.env.VITE_TARGET || "";
-      console.log("API URL for image:", apiUrl);
-
-      if (image.startsWith("/uploads/")) {
-        const fullUrl = `${apiUrl}${image}`;
-        console.log("Full image URL:", fullUrl);
-        return fullUrl;
-      }
-
-      return "/uploads/no-photo.png";
-    } catch (err) {
-      console.error("Error generating image URL:", err);
-      return "/uploads/no-photo.png";
-    }
+    if (!image) return "/uploads/no-photo.png";
+    if (isValidUrl(image)) return image;
+    if (image.startsWith("/uploads/")) return image;
+    return "/uploads/no-photo.png";
   };
 
   const handleImageError = (e) => {
-    console.error("Image load error:", e.target.src);
-    // Проверка на бесконечную рекурсию
-    if (!e.target.src.includes("no-photo.png")) {
-      e.target.src = "/uploads/no-photo.png";
-    }
+    e.target.src = "/uploads/no-photo.png";
   };
 
   useEffect(() => {
