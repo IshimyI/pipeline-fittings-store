@@ -216,7 +216,7 @@ export default function ProductsPage({ user, category }) {
     if (isValidUrl(image)) return image;
     if (image.startsWith("/uploads/")) return image; // Preserve upload paths
     if (image) {
-      return `/uploads/categories/${image}.jpg`;
+      return `/uploads/categories/${image}.jpg?v=${Date.now()}`;
     }
     return "/uploads/no-photo.png";
   };
