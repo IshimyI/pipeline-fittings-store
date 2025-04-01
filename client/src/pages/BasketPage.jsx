@@ -244,7 +244,7 @@ export default function BasketPage({ user }) {
                     <div className="flex items-start space-x-4 2xl:space-x-6">
                       <div className="flex-shrink-0">
                         <img
-                          src={item.img || "/uploads/no-photo.png"}
+                          src={`/uploads/categories/${item.image}.jpg`}
                           alt={item.name}
                           className="h-16 w-16 2xl:h-24 2xl:w-24 object-cover rounded"
                         />
