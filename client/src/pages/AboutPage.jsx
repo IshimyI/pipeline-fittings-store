@@ -141,7 +141,7 @@ export default function AboutPage() {
 
         <Section title="Услуги">
           <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8 border border-krio-primary/20">
-            <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8">
+            <div className="grid grid-cols-1 gap-6 2xl:gap-8">
               <div className="space-y-3">
                 <p className="text-gray-300 leading-relaxed text-lg">
                   <strong className="text-krio-primary font-semibold">
