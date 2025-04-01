@@ -186,7 +186,9 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
     if (!image) return "/uploads/no-photo.png";
     if (isValidUrl(image)) return image;
     if (image.startsWith("/uploads/")) return image;
-    return "/uploads/no-photo.png";
+    if (image.startsWith("categories/")) return `/uploads/${image}`;
+    if (image === "default-category.jpg") return `/uploads/${image}`;
+    return `/uploads/categories/${image}.jpg`;
   };
 
   const handleImageError = (e) => {

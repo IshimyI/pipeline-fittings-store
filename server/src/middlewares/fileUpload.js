@@ -1,6 +1,6 @@
 const multer = require("multer");
 const path = require("path");
-const cloudinary = require("../configs/cloudinaryConfig");
+const { cloudinary, createWatermarkOptions } = require("../configs/cloudinaryConfig");
 const { Readable } = require("stream");
 
 // Configure storage for temporary file upload
@@ -63,6 +63,10 @@ const uploadProductImage = async (req, res, next) => {
           {
             folder: "products",
             resource_type: "image",
+            transformation: [
+              { width: 800, crop: "scale" },
+              createWatermarkOptions()
+            ]
           },
           (error, result) => {
             if (error) return reject(error);
@@ -117,8 +121,12 @@ const uploadCategoryImage = async (req, res, next) => {
       const cloudinaryUpload = new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
-            folder: "categories",
-            resource_type: "image",
+          folder: "categories",
+          resource_type: "image",
+          transformation: [
+            { width: 800, crop: "scale" },
+            createWatermarkOptions()
+          ]
           },
           (error, result) => {
             if (error) return reject(error);
