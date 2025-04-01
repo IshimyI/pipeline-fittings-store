@@ -15,8 +15,6 @@ const tokensRouter = require("./routes/tokensRouter");
 const app = express();
 const { PORT } = process.env || 3000;
 
-
-
 const corsConfig = {
   origin: [
     "http://localhost:5173",
@@ -45,7 +43,7 @@ app.use(
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       secure: process.env.NODE_ENV === "production",
       path: "/",
-      maxAge: 12 * 60 * 60 * 1000, // 12 часов, как в jwtConfig
+      maxAge: 12 * 60 * 60 * 1000,
     },
   })
 );

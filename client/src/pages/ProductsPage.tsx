@@ -205,16 +205,10 @@ export default function ProductsPage({ user, category }) {
     return pattern.test(str);
   };
 
-  // Handles image path resolution with fallbacks:
-  // 1. Returns default image if no image provided
-  // 2. Returns URL directly if valid URL
-  // 3. Returns uploads path if from uploads directory
-  // 4. Returns category image path if simple filename
-  // 5. Falls back to default image as final resort
   const getImageUrl = (image) => {
     if (!image) return "/uploads/no-photo.png";
     if (isValidUrl(image)) return image;
-    if (image.startsWith("/uploads/")) return image; // Preserve upload paths
+    if (image.startsWith("/uploads/")) return image;
     if (image) {
       return `/uploads/categories/${image}.jpg?v=${Date.now()}`;
     }
@@ -259,9 +253,7 @@ export default function ProductsPage({ user, category }) {
           return priceA - priceB;
         case "availability":
           if (a.availability === b.availability) return 0;
-          if (a.availability === "в наличии") return -1;
-          if (b.availability === "в наличии") return 1;
-          return a.availability.localeCompare(b.availability);
+          return b.availability - a.availability;
         default:
           return 0;
       }
@@ -648,7 +640,6 @@ export default function ProductsPage({ user, category }) {
               <div className="text-center text-gray-300">Загрузка...</div>
             ) : sortedProducts?.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-8 2xl:gap-10">
-                {console.log(sortedProducts)}
                 {sortedProducts?.map((product) => (
                   <div
                     key={product.id}

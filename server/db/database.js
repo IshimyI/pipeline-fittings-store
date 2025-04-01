@@ -1,4 +1,4 @@
-require("dotenv").config(); // Загружаем переменные окружения
+require("dotenv").config();
 
 module.exports = {
   development: {

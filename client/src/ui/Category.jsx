@@ -1,24 +1,14 @@
 export default function Category({ category }) {
-  // Проверяет, является ли строка полным URL
   const isValidUrl = (str) => {
-    const pattern = /^(https?:\/\/)/; // Правильное экранирование
+    const pattern = /^(https?:\/\/)/;
     return pattern.test(str);
   };
 
-  // Обработчик ошибок при загрузке изображения
   const handleImageError = (e) => {
     console.error("Image load error:", e.target.src);
     e.target.src = "/uploads/no-photo.png";
   };
 
-  // Функция для получения правильного URL изображения
-  // Приоритет:
-  // 1. Если нет изображения - заглушка
-  // 2. Если полный URL - используем как есть
-  // 3. Если путь начинается с /uploads/ - используем как есть (файлы хранятся в public)
-  // 4. Если начинается с categories/ - добавляем /uploads/
-  // 5. Если это default-category.jpg - используем из /uploads/
-  // 6. Иначе пытаемся сформировать путь из /uploads/categories/ или используем заглушку
   const imageUrl = () => {
     if (!category.image) return "/uploads/no-photo.png";
     if (isValidUrl(category.image)) return category.image;

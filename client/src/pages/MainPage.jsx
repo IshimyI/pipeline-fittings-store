@@ -16,17 +16,12 @@ export default function MainPage({ user, category }) {
     categoryId: "",
     price: "",
     image: null,
-    availability: "",
+    availability: 0,
     params: "",
   });
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const extractQuantity = useCallback((availability) => {
-    const value = parseInt(availability.replace(/\D/g, "")) || 0;
-    return Math.max(value, 0);
-  }, []);
 
   const fetchData = useCallback(async () => {
     try {
@@ -37,18 +32,13 @@ export default function MainPage({ user, category }) {
       ]);
 
       setCategories(categoriesRes.data);
-      setProducts(
-        productsRes.data.map((p) => ({
-          ...p,
-          availability: extractQuantity(p.availability),
-        }))
-      );
+      setProducts(productsRes.data);
     } catch (error) {
       setError("Ошибка при загрузке данных");
     } finally {
       setLoading(false);
     }
-  }, [extractQuantity]);
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -101,7 +91,7 @@ export default function MainPage({ user, category }) {
           categoryId: "",
           price: "",
           image: null,
-          availability: "",
+          availability: 0,
           params: "",
         });
       }
@@ -141,7 +131,7 @@ export default function MainPage({ user, category }) {
           categoryId: Number(formData.categoryId),
           price: formData.price,
           image: formData.image || "default-product.jpg",
-          availability: formData.availability || "в наличии",
+          availability: formData.availability || 0,
           params: tryParseJSON(formData.params),
           user: { isAdmin: user?.isAdmin },
         };
@@ -180,7 +170,7 @@ export default function MainPage({ user, category }) {
         categoryId: "",
         price: "",
         image: null,
-        availability: "",
+        availability: 0,
         params: "",
       });
     } catch (error) {
@@ -272,6 +262,7 @@ export default function MainPage({ user, category }) {
                   <div>
                     <label className="block text-gray-300 mb-2">Наличие</label>
                     <input
+                      type="number"
                       name="availability"
                       value={formData.availability}
                       onChange={handleInputChange}
@@ -300,7 +291,7 @@ export default function MainPage({ user, category }) {
                       categoryId: "",
                       price: "",
                       image: null,
-                      availability: "",
+                      availability: 0,
                       params: "",
                     });
                   }}
@@ -351,7 +342,6 @@ export default function MainPage({ user, category }) {
                     </p>
                   </div>
                 </button>
-                {console.log(categories)}
                 {categories.map((category) => (
                   <div key={category.id} className="relative group">
                     {user?.isAdmin && (

@@ -10,7 +10,7 @@ const isValidUrl = (str) => {
 const getImageUrl = (image) => {
   if (!image) return "/uploads/no-photo.png";
   if (isValidUrl(image)) return image;
-  if (image.startsWith("/uploads/")) return image; // Preserve upload paths
+  if (image.startsWith("/uploads/")) return image;
   if (image) {
     return `/uploads/categories/${image}.jpg`;
   }
@@ -26,12 +26,6 @@ export default function AdminAvailability({ user }) {
   const [searchProduct, setSearchProduct] = useState("");
   const [quantityUpdates, setQuantityUpdates] = useState({});
 
-  const extractQuantity = useCallback((availability) => {
-    const value = parseInt(availability.replace(/\D/g, "")) || 0;
-    return Math.max(value, 0);
-  }, []);
-
-  // Загрузка данных
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
@@ -40,19 +34,20 @@ export default function AdminAvailability({ user }) {
         axiosInstance.get("/ListProducts"),
       ]);
 
+      const productsWithNumbers = productsRes.data.map((product) => ({
+        ...product,
+        availability: Number(product.availability) || 0,
+        price: Number(product.price) || 0,
+      }));
+
       setCategories(categoriesRes.data);
-      setProducts(
-        productsRes.data.map((p) => ({
-          ...p,
-          availability: extractQuantity(p.availability),
-        }))
-      );
+      setProducts(productsWithNumbers);
     } catch (error) {
       setError("Ошибка при загрузке данных");
     } finally {
       setLoading(false);
     }
-  }, [extractQuantity]);
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -62,14 +57,17 @@ export default function AdminAvailability({ user }) {
     try {
       setQuantityUpdates((prev) => ({ ...prev, [productId]: true }));
 
-      await axiosInstance.patch(`/products/${productId}`, {
-        availability: newQuantity,
+      const numericValue = Number(newQuantity) || 0;
+
+      await axiosInstance.post(`/changeProduct/${productId}`, {
+        availability: numericValue,
+        user: user,
       });
 
       setProducts((prev) =>
         prev.map((product) =>
           product.id === productId
-            ? { ...product, availability: newQuantity }
+            ? { ...product, availability: numericValue }
             : product
         )
       );
@@ -80,7 +78,6 @@ export default function AdminAvailability({ user }) {
     }
   }, []);
 
-  // Оптимизированные вычисления
   const filteredData = useMemo(() => {
     const lowerSearchQuery = searchQuery.toLowerCase();
     const lowerProductQuery = searchProduct.toLowerCase();
@@ -138,7 +135,6 @@ export default function AdminAvailability({ user }) {
   );
 }
 
-// Вынесенные компоненты
 const LoadingIndicator = () => (
   <div className="text-center p-8">Загрузка...</div>
 );
@@ -198,59 +194,110 @@ const CategorySection = ({ category, onQuantityChange, quantityUpdates }) => (
   </div>
 );
 
-const ProductItem = ({ product, onQuantityChange, quantityUpdates }) => (
-  <div className="bg-gray-700 p-4 rounded-lg">
-    <img
-      src={getImageUrl(product.image)}
-      alt={product.name}
-      className="w-full h-48 object-cover rounded-lg mb-3"
-      onError={(e) => (e.target.src = "/uploads/no-photo.png")}
-    />
-    <h3 className="font-medium text-lg mb-2">{product.name}</h3>
+const ProductItem = ({ product, onQuantityChange, quantityUpdates }) => {
+  const [localQuantity, setLocalQuantity] = useState(
+    product.availability.toString()
+  );
 
-    <ProductInfo
-      price={product.price}
-      availability={product.availability}
-      onQuantityChange={(value) => onQuantityChange(product.id, value)}
-      isUpdating={quantityUpdates[product.id]}
-    />
-  </div>
-);
+  useEffect(() => {
+    setLocalQuantity(product.availability.toString());
+  }, [product.availability]);
 
-const ProductInfo = ({ price, availability, onQuantityChange, isUpdating }) => (
-  <div className="space-y-2">
-    <p>Цена: {price}₽</p>
+  const handleSave = () => {
+    const numericValue = parseInt(localQuantity, 10) || 0;
+    onQuantityChange(product.id, numericValue);
+  };
 
-    <div className="flex flex-col items-center gap-2">
-      <QuantityInput
-        value={availability}
-        onChange={onQuantityChange}
-        disabled={isUpdating}
+  return (
+    <div className="bg-gray-700 p-4 rounded-lg">
+      <img
+        src={getImageUrl(product.image)}
+        alt={product.name}
+        className="w-full h-48 object-cover rounded-lg mb-3"
+        onError={(e) => (e.target.src = "/uploads/no-photo.png")}
       />
+      <h3 className="font-medium text-lg mb-2">{product.name}</h3>
 
-      <SaveButton
-        onClick={() => onQuantityChange(availability)}
-        isUpdating={isUpdating}
+      <ProductInfo
+        localQuantity={localQuantity}
+        setLocalQuantity={setLocalQuantity}
+        onSave={handleSave}
+        isUpdating={quantityUpdates[product.id]}
+        currentQuantity={product.availability}
       />
-
-      <CurrentQuantity value={availability} />
     </div>
-  </div>
-);
+  );
+};
 
-const QuantityInput = ({ value, onChange, disabled }) => (
-  <input
-    type="number"
-    value={value}
-    min="0"
-    onChange={(e) => {
-      const newValue = Math.max(parseInt(e.target.value) || 0, 0);
-      onChange(newValue);
-    }}
-    className="w-20 px-2 py-1 bg-gray-600 rounded text-white"
-    disabled={disabled}
-  />
-);
+const ProductInfo = ({
+  localQuantity,
+  setLocalQuantity,
+  onSave,
+  isUpdating,
+  currentQuantity,
+}) => {
+  const handleChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setLocalQuantity(value);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <div className="flex flex-col items-center gap-2">
+        <input
+          type="text"
+          value={localQuantity}
+          onChange={handleChange}
+          className="w-20 px-2 py-1 bg-gray-600 rounded text-white"
+          disabled={isUpdating}
+        />
+
+        <button
+          onClick={onSave}
+          disabled={isUpdating}
+          className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-white disabled:bg-gray-500"
+        >
+          {isUpdating ? "Сохранение..." : "Сохранить"}
+        </button>
+
+        <p className="text-sm text-gray-400">
+          Текущее количество: {currentQuantity}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const QuantityInput = ({ value, onChange, disabled }) => {
+  const [inputValue, setInputValue] = useState(value.toString());
+
+  useEffect(() => {
+    setInputValue(value.toString());
+  }, [value]);
+
+  const handleChange = (e) => {
+    const rawValue = e.target.value;
+    setInputValue(rawValue);
+
+    if (/^\d*$/.test(rawValue)) {
+      const numericValue = parseInt(rawValue, 10) || 0;
+      onChange(numericValue);
+    }
+  };
+
+  return (
+    <input
+      type="text"
+      value={inputValue}
+      onChange={handleChange}
+      className="w-20 px-2 py-1 bg-gray-600 rounded text-white"
+      disabled={disabled}
+      pattern="\d*"
+    />
+  );
+};
 
 const SaveButton = ({ onClick, isUpdating }) => (
   <button

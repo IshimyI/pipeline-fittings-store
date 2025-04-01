@@ -14,7 +14,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
     name: "",
     categoryId: "",
     price: "",
-    availability: "",
+    availability: 0,
     params: {},
   });
 
@@ -33,7 +33,6 @@ const AddProductForm = ({ user, onProductCreated }) => {
   }, []);
 
   const handleInputChange = (e) => {
-    // Переименовано в handleInputChange
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -77,7 +76,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
         name: "",
         categoryId: "",
         price: "",
-        availability: "",
+        availability: 0,
         params: {},
       });
       setSelectedImage(null);
@@ -136,7 +135,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
         name: "",
         categoryId: "",
         price: "",
-        availability: "",
+        availability: 0,
         params: {},
       });
       setSelectedImage(null);
@@ -249,7 +248,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
                     categoryId: "",
                     price: "",
                     image: null,
-                    availability: "",
+                    availability: 0,
                     params: "",
                   });
                 }}

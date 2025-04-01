@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       availability: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
       params: {
         type: Sequelize.JSON,

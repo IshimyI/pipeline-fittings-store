@@ -83,7 +83,7 @@ module.exports = {
           name: "Вентиль АВ-011",
           image: "valves-AB/av-011",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "5",
@@ -101,7 +101,7 @@ module.exports = {
           name: "Вентиль АВ-011М",
           image: "valves-AB/av-011m",
           price: "12 900.00РУБ",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "от 5х10-3 мм рт. ст. до 400",
             "Условный проходной диаметр Ду, мм": "5",
@@ -120,7 +120,7 @@ module.exports = {
           name: "Вентиль АВ-013",
           image: "valves-AB/av-013",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -139,7 +139,7 @@ module.exports = {
           name: "Вентиль АВ-013М",
           image: "valves-AB/av-013m",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "от 5х10-3 мм рт. ст. до 400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -158,7 +158,7 @@ module.exports = {
           name: "Вентиль АВ-018",
           image: "valves-AB/av-018",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "8",
@@ -177,7 +177,7 @@ module.exports = {
           name: "Вентиль АВ-019",
           image: "valves-AB/av-019",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "8",
@@ -196,7 +196,7 @@ module.exports = {
           name: "Вентиль АВ-020",
           image: "valves-AB/av-020",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "350",
             "Условный проходной диаметр Ду, мм": "8",
@@ -214,7 +214,7 @@ module.exports = {
           name: "Вентиль АВ-025",
           image: "valves-AB/av-025",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "100",
             "Условный проходной диаметр Ду, мм": "5",
@@ -232,7 +232,7 @@ module.exports = {
           name: "Вентиль АВ-027",
           image: "valves-AB/av-027",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "100",
             "Условный проходной диаметр Ду, мм": "10",
@@ -251,7 +251,7 @@ module.exports = {
           name: "Вентиль АВ-043",
           image: "valves-AB/av-043",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "25",
@@ -270,7 +270,7 @@ module.exports = {
           name: "Вентиль АВ-046",
           image: "valves-AB/av-046",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "230",
             "Условный проходной диаметр Ду, мм": "10",
@@ -288,7 +288,7 @@ module.exports = {
           name: "Вентиль АВ-048",
           image: "valves-AB/av-048",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "1,4",
@@ -306,7 +306,7 @@ module.exports = {
           name: "Вентиль АВ-049М",
           image: "valves-AB/av-049m",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "от 5х10-3 мм рт. ст. до 400",
             "Условный проходной диаметр Ду, мм": "15",
@@ -325,7 +325,7 @@ module.exports = {
           name: "Вентиль АВ-053",
           image: "valves-AB/av-053",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "20",
             "Условный проходной диаметр Ду, мм": "20",
@@ -343,7 +343,7 @@ module.exports = {
           name: "Вентиль АВ-054",
           image: "valves-AB/av-054",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "16",
             "Условный проходной диаметр Ду, мм": "32",
@@ -361,7 +361,7 @@ module.exports = {
           name: "Вентиль АВ-055",
           image: "valves-AB/av-055",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "32",
@@ -378,7 +378,7 @@ module.exports = {
           name: "Вентиль АВ-061",
           image: "valves-AB/av-061",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "3",
@@ -396,7 +396,7 @@ module.exports = {
           name: "Вентиль АВ-071",
           image: "valves-AB/av-071",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "32",
@@ -414,7 +414,7 @@ module.exports = {
           name: "Вентиль АВ-074",
           image: "valves-AB/av-074",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "4",
@@ -432,7 +432,7 @@ module.exports = {
           name: "Вентиль АВ-075",
           image: "valves-AB/av-075",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -450,7 +450,7 @@ module.exports = {
           name: "Вентиль АВ-077",
           image: "valves-AB/av-077",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "32",
@@ -468,7 +468,7 @@ module.exports = {
           name: "Вентиль АВ-090",
           image: "valves-AB/av-090",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "100-400",
             "Условный проходной диаметр Ду, мм": "6",
@@ -486,7 +486,7 @@ module.exports = {
           name: "Вентиль АВ-091",
           image: "valves-AB/av-091",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "4",
@@ -504,7 +504,7 @@ module.exports = {
           name: "Вентиль АВ-092",
           image: "valves-AB/av-092",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "15",
@@ -522,7 +522,7 @@ module.exports = {
           name: "Вентиль АВ-093",
           image: "valves-AB/av-093",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "32",
@@ -540,7 +540,7 @@ module.exports = {
           name: "Вентиль АВ-094",
           image: "valves-AB/av-094",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "60",
@@ -558,7 +558,7 @@ module.exports = {
           name: "Вентиль АВ-096",
           image: "valves-AB/av-096",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "200",
             "Условный проходной диаметр Ду, мм": "10",
@@ -576,7 +576,7 @@ module.exports = {
           name: "Вентиль АВ-097",
           image: "valves-AB/av-097",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "6",
@@ -594,7 +594,7 @@ module.exports = {
           name: "Вентиль АВ-100",
           image: "valves-AB/av-100",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "32",
@@ -612,7 +612,7 @@ module.exports = {
           name: "Вентиль АВ-106",
           image: "valves-AB/av-106",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "1,4",
@@ -629,7 +629,7 @@ module.exports = {
           name: "Вентиль АВ-107",
           image: "valves-AB/av-107",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "4",
@@ -647,7 +647,7 @@ module.exports = {
           name: "Вентиль Т100",
           image: "valves-T/t-100",
           price: "10 500.00РУБ",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "4",
@@ -664,7 +664,7 @@ module.exports = {
           name: "Вентиль Т102",
           image: "valves-T/t-102",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400-1000",
             "Условный проходной диаметр Ду, мм": "4",
@@ -681,7 +681,7 @@ module.exports = {
           name: "Вентиль Т106",
           image: "valves-T/t-106",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             Наименование: "Вентиль высокого давления Т106",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -699,7 +699,7 @@ module.exports = {
           name: "Вентиль Т114",
           image: "valves-T/t-114",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -717,7 +717,7 @@ module.exports = {
           name: "Вентиль Т122",
           image: "valves-T/t-122",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "20",
@@ -734,7 +734,7 @@ module.exports = {
           name: "Вентиль Т124",
           image: "valves-T/t-124",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "32",
@@ -751,7 +751,7 @@ module.exports = {
           name: "Вентиль Т126",
           image: "valves-T/t-126",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "200",
             "Условный проходной диаметр Ду, мм": "32",
@@ -768,7 +768,7 @@ module.exports = {
           name: "Вентиль Т130",
           image: "valves-T/t-130",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "200-400",
             "Условный проходной диаметр Ду, мм": "32",
@@ -785,7 +785,7 @@ module.exports = {
           name: "Вентиль Т134",
           image: "valves-T/t-134",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "50",
@@ -802,7 +802,7 @@ module.exports = {
           name: "Вентиль Т136",
           image: "valves-T/t-136",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "200",
             "Условный проходной диаметр Ду, мм": "50",
@@ -819,7 +819,7 @@ module.exports = {
           name: "Вентиль Т140",
           image: "valves-T/t-140",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "200-400",
             "Условный проходной диаметр Ду, мм": "50",
@@ -836,7 +836,7 @@ module.exports = {
           name: "Вентиль Т144",
           image: "valves-T/t-144",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "80",
@@ -853,7 +853,7 @@ module.exports = {
           name: "Вентиль Т146",
           image: "valves-T/t-146",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "25",
             "Условный проходной диаметр Ду, мм": "80",
@@ -870,7 +870,7 @@ module.exports = {
           name: "Вентиль Т150",
           image: "valves-T/t-150",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "25-200",
             "Условный проходной диаметр Ду, мм": "80",
@@ -887,7 +887,7 @@ module.exports = {
           name: "Вентиль Т154",
           image: "valves-T/t-154",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "200-400",
             "Условный проходной диаметр Ду, мм": "80",
@@ -903,7 +903,7 @@ module.exports = {
           name: "Вентиль Т158",
           image: "valves-T/t-158",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "100",
@@ -920,7 +920,7 @@ module.exports = {
           name: "Вентиль Т160",
           image: "valves-T/t-160",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "25",
             "Условный проходной диаметр Ду, мм": "100",
@@ -937,7 +937,7 @@ module.exports = {
           name: "Вентиль Т164",
           image: "valves-T/t-164",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "25-200",
             "Условный проходной диаметр Ду, мм": "100",
@@ -953,7 +953,7 @@ module.exports = {
           name: "Вентиль Т168",
           image: "valves-T/t-168",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "200-400",
             "Условный проходной диаметр Ду, мм": "100",
@@ -970,7 +970,7 @@ module.exports = {
           name: "Вентиль Т174",
           image: "valves-T/t-174",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "12",
             "Условный проходной диаметр Ду, мм": "150",
@@ -986,7 +986,7 @@ module.exports = {
           name: "Вентиль Т180",
           image: "valves-T/t-180",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "12",
             "Условный проходной диаметр Ду, мм": "200",
@@ -1002,7 +1002,7 @@ module.exports = {
           name: "Вентиль Т184",
           image: "valves-T/t-184",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "12",
             "Условный проходной диаметр Ду, мм": "300",
@@ -1019,7 +1019,7 @@ module.exports = {
           name: "Клапан обратный АО-002М",
           image: "valves-check-AO/check-ao-002m",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "230",
@@ -1036,7 +1036,7 @@ module.exports = {
           name: "Клапан обратный АО-003М",
           image: "valves-check-AO/check-ao-003m",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -1053,7 +1053,7 @@ module.exports = {
           name: "Клапан обратный АО-004",
           image: "valves-check-AO/check-ao-004",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "8",
             "Рабочее давление Рр, кгс/см2": "20",
@@ -1069,7 +1069,7 @@ module.exports = {
           name: "Клапан обратный АО-010",
           image: "valves-check-AO/check-ao-010",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "15",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -1086,7 +1086,7 @@ module.exports = {
           name: "Клапан обратный АО-012",
           image: "valves-check-AO/check-ao-012",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "20",
@@ -1102,7 +1102,7 @@ module.exports = {
           name: "Клапан обратный АО-013",
           image: "valves-check-AO/check-ao-013",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "2",
@@ -1118,7 +1118,7 @@ module.exports = {
           name: "Клапан обратный АО-014",
           image: "valves-check-AO/check-ao-014",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "25",
             "Рабочее давление Рр, кгс/см2": "50-400",
@@ -1135,7 +1135,7 @@ module.exports = {
           name: "Клапан обратный АО-015",
           image: "valves-check-AO/check-ao-015",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "60",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -1152,7 +1152,7 @@ module.exports = {
           name: "Клапан обратный АО-019",
           image: "valves-check-AO/check-ao-019",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "45",
             "Рабочее давление Рр, кгс/см2": "50-400",
@@ -1168,7 +1168,7 @@ module.exports = {
           name: "Клапан обратный АО-023",
           image: "valves-check-AO/check-ao-023",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "0,5-20",
@@ -1184,7 +1184,7 @@ module.exports = {
           name: "Клапан обратный АО-033",
           image: "valves-check-AO/check-ao-033",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "15",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -1200,7 +1200,7 @@ module.exports = {
           name: "Клапан обратный АО-034",
           image: "valves-check-AO/check-ao-034",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -1216,7 +1216,7 @@ module.exports = {
           name: "Клапан обратный АО-035",
           image: "valves-check-AO/check-ao-035",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "8",
             "Рабочее давление Рр, кгс/см2": "20",
@@ -1232,7 +1232,7 @@ module.exports = {
           name: "Клапан обратный АО-036",
           image: "valves-check-AO/check-ao-036",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "15",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -1248,7 +1248,7 @@ module.exports = {
           name: "Клапан обратный АО-037",
           image: "valves-check-AO/check-ao-037",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "25",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -1264,7 +1264,7 @@ module.exports = {
           name: "Клапан обратный АО-038",
           image: "valves-check-AO/check-ao-038",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "70-230",
@@ -1281,7 +1281,7 @@ module.exports = {
           name: "Клапан обратный АО-040",
           image: "valves-check-AO/check-ao-040",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "0,4-15",
@@ -1298,7 +1298,7 @@ module.exports = {
           name: "Клапан обратный АО-041",
           image: "valves-check-AO/check-ao-041",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "300",
@@ -1314,7 +1314,7 @@ module.exports = {
           name: "Клапан обратный АО-042",
           image: "valves-check-AO/check-ao-042",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "25",
             "Рабочее давление Рр, кгс/см2": "300",
@@ -1330,7 +1330,7 @@ module.exports = {
           name: "Клапан обратный АО-043",
           image: "valves-check-AO/check-ao-043",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "40",
             "Рабочее давление Рр, кгс/см2": "300",
@@ -1346,7 +1346,7 @@ module.exports = {
           name: "Клапан обратный АО-044",
           image: "valves-check-AO/check-ao-044",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "60",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -1362,7 +1362,7 @@ module.exports = {
           name: "Клапан обратный АО-050",
           image: "valves-check-AO/check-ao-050",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "5-200",
@@ -1378,7 +1378,7 @@ module.exports = {
           name: "Клапан обратный АО-069",
           image: "valves-check-AO/check-ao-069",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "1-10",
@@ -1395,7 +1395,7 @@ module.exports = {
           name: "Клапан обратный АО-070",
           image: "valves-check-AO/check-ao-070",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "15-400",
@@ -1410,7 +1410,7 @@ module.exports = {
           name: "Клапан обратный АО-083",
           image: "valves-check-AO/check-ao-083",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "20-50",
@@ -1428,7 +1428,7 @@ module.exports = {
           name: "Клапан обратный АО-084",
           image: "valves-check-AO/check-ao-084",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "30",
             "Рабочее давление Рр, кгс/см2": "100-200",
@@ -1446,7 +1446,7 @@ module.exports = {
           name: "Клапан обратный АО-087",
           image: "valves-check-AO/check-ao-087",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "0,4-20",
@@ -1464,7 +1464,7 @@ module.exports = {
           name: "Клапан обратный АО-088",
           image: "valves-check-AO/check-ao-088",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "0,4-20",
@@ -1481,7 +1481,7 @@ module.exports = {
           name: "Клапан обратный АО-089",
           image: "valves-check-AO/check-ao-089",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -1497,7 +1497,7 @@ module.exports = {
           name: "Клапан обратный АО-090",
           image: "valves-check-AO/check-ao-090",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "15",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -1513,7 +1513,7 @@ module.exports = {
           name: "Клапан обратный АО-091",
           image: "valves-check-AO/check-ao-091",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "25",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -1529,7 +1529,7 @@ module.exports = {
           name: "Клапан обратный АО-095",
           image: "valves-check-AO/check-ao-095",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "320",
@@ -1545,7 +1545,7 @@ module.exports = {
           name: "Клапан обратный АО-096",
           image: "valves-check-AO/check-ao-096",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "25",
             "Рабочее давление Рр, кгс/см2": "250",
@@ -1561,7 +1561,7 @@ module.exports = {
           name: "Клапан обратный АО-097",
           image: "valves-check-AO/check-ao-097",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "25",
             "Рабочее давление Рр, кгс/см2": "5-400",
@@ -1578,7 +1578,7 @@ module.exports = {
           name: "Клапан обратный АО-098",
           image: "valves-check-AO/check-ao-098",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "25",
             "Рабочее давление Рр, кгс/см2": "2-30",
@@ -1594,7 +1594,7 @@ module.exports = {
           name: "Клапан обратный Т300",
           image: "valves-check-T/check-t-300",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "4",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -1609,7 +1609,7 @@ module.exports = {
           name: "Клапан обратный Т302",
           image: "valves-check-T/check-t-302",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "4",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -1624,7 +1624,7 @@ module.exports = {
           name: "Клапан обратный Т306",
           image: "valves-check-T/check-t-306",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "6",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -1639,7 +1639,7 @@ module.exports = {
           name: "Клапан обратный Т308",
           image: "valves-check-T/check-t-308",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "6",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -1654,7 +1654,7 @@ module.exports = {
           name: "Клапан обратный Т314",
           image: "valves-check-T/check-t-314",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -1669,7 +1669,7 @@ module.exports = {
           name: "Клапан обратный Т316",
           image: "valves-check-T/check-t-316",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -1684,7 +1684,7 @@ module.exports = {
           name: "Клапан обратный Т318",
           image: "valves-check-T/check-t-318",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -1699,7 +1699,7 @@ module.exports = {
           name: "Клапан обратный Т322",
           image: "valves-check-T/check-t-322",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -1714,7 +1714,7 @@ module.exports = {
           name: "Клапан обратный Т325",
           image: "valves-check-T/check-t-325",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -1729,7 +1729,7 @@ module.exports = {
           name: "Клапан обратный Т326",
           image: "valves-check-T/check-t-326",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -1744,7 +1744,7 @@ module.exports = {
           name: "Клапан обратный Т330",
           image: "valves-check-T/check-t-330",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -1759,7 +1759,7 @@ module.exports = {
           name: "Клапан обратный Т335",
           image: "valves-check-T/check-t-335",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -1774,7 +1774,7 @@ module.exports = {
           name: "Клапан обратный Т336",
           image: "valves-check-T/check-t-336",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -1789,7 +1789,7 @@ module.exports = {
           name: "Клапан обратный Т340",
           image: "valves-check-T/check-t-340",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -1804,7 +1804,7 @@ module.exports = {
           name: "Клапан обратный Т346",
           image: "valves-check-T/check-t-346",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "80",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -1818,7 +1818,7 @@ module.exports = {
           name: "Клапан обратный Т350",
           image: "valves-check-T/check-t-350",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "80",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -1833,7 +1833,7 @@ module.exports = {
           name: "Клапан обратный Т360",
           image: "valves-check-T/check-t-360",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -1848,7 +1848,7 @@ module.exports = {
           name: "Клапан обратный Т364",
           image: "valves-check-T/check-t-364",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -1863,7 +1863,7 @@ module.exports = {
           name: "Редуктор АР-003",
           image: "gearboxes-AP/ar-003",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "55-40",
@@ -1880,7 +1880,7 @@ module.exports = {
           name: "Редуктор АР-004",
           image: "gearboxes-AP/ar-004",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "230-25",
@@ -1897,7 +1897,7 @@ module.exports = {
           name: "Редуктор АР-005",
           image: "gearboxes-AP/ar-005",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий, аргон",
             "Давление входное Рвх, кгс/см2": "400-120",
@@ -1913,7 +1913,7 @@ module.exports = {
           name: "Редуктор АР-006",
           image: "gearboxes-AP/ar-006",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "55-40",
@@ -1930,7 +1930,7 @@ module.exports = {
           name: "Редуктор АР-008",
           image: "gearboxes-AP/ar-008",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "55-40",
@@ -1947,7 +1947,7 @@ module.exports = {
           name: "Редуктор АР-009",
           image: "gearboxes-AP/ar-009",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "230-70",
@@ -1964,7 +1964,7 @@ module.exports = {
           name: "Редуктор АР-011",
           image: "gearboxes-AP/ar-011",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "230-100",
@@ -1980,7 +1980,7 @@ module.exports = {
           name: "Редуктор АР-012",
           image: "gearboxes-AP/ar-012",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "400",
@@ -1996,7 +1996,7 @@ module.exports = {
           name: "Редуктор АР-013",
           image: "gearboxes-AP/ar-013",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "100",
@@ -2012,7 +2012,7 @@ module.exports = {
           name: "Редуктор АР-014А",
           image: "gearboxes-AP/ar-014a",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "400-200",
@@ -2029,7 +2029,7 @@ module.exports = {
           name: "Редуктор АР-015А",
           image: "gearboxes-AP/ar-015a",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "110-90",
@@ -2046,7 +2046,7 @@ module.exports = {
           name: "Редуктор АР-016",
           image: "gearboxes-AP/ar-016",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "110-90",
@@ -2063,7 +2063,7 @@ module.exports = {
           name: "Редуктор АР-018",
           image: "gearboxes-AP/ar-018",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "400-70",
@@ -2081,7 +2081,7 @@ module.exports = {
           name: "Редуктор АР-020",
           image: "gearboxes-AP/ar-020",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "55-25",
@@ -2098,7 +2098,7 @@ module.exports = {
           name: "Редуктор АР-021",
           image: "gearboxes-AP/ar-021",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "60-10",
@@ -2116,7 +2116,7 @@ module.exports = {
           name: "Редуктор АР-023",
           image: "gearboxes-AP/ar-023",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "230-70",
@@ -2133,7 +2133,7 @@ module.exports = {
           name: "Редуктор АР-025",
           image: "gearboxes-AP/ar-025",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "230-70",
@@ -2149,7 +2149,7 @@ module.exports = {
           name: "Редуктор АР-031",
           image: "gearboxes-AP/ar-031",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "400-100",
@@ -2166,7 +2166,7 @@ module.exports = {
           name: "Редуктор АР-033",
           image: "gearboxes-AP/ar-033",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "230-70",
@@ -2184,7 +2184,7 @@ module.exports = {
           name: "Редуктор АР-034",
           image: "gearboxes-AP/ar-034",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "400-100",
@@ -2198,7 +2198,7 @@ module.exports = {
           name: "Редуктор АР-034М1",
           image: "gearboxes-AP/ar-034m1",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "400-25",
@@ -2213,7 +2213,7 @@ module.exports = {
           name: "Редуктор АР-036",
           image: "gearboxes-AP/ar-036",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "400-60",
@@ -2231,7 +2231,7 @@ module.exports = {
           name: "Редуктор АР-037",
           image: "gearboxes-AP/ar-037",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "400-60",
@@ -2249,7 +2249,7 @@ module.exports = {
           name: "Редуктор АР-045",
           image: "gearboxes-AP/ar-045",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "400-60",
@@ -2267,7 +2267,7 @@ module.exports = {
           name: "Редуктор АР-050",
           image: "gearboxes-AP/ar-050",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "400-260",
@@ -2285,7 +2285,7 @@ module.exports = {
           name: "Редуктор АР-054",
           image: "gearboxes-AP/ar-054",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот",
             "Давление входное Рвх, кгс/см2": "230-50",
@@ -2301,7 +2301,7 @@ module.exports = {
           name: "Редуктор АР-058",
           image: "gearboxes-AP/ar-058",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "230-70",
@@ -2318,7 +2318,7 @@ module.exports = {
           name: "Редуктор АР-077",
           image: "gearboxes-AP/ar-077",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий, аргон",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2334,7 +2334,7 @@ module.exports = {
           name: "Редуктор АР-077-02",
           image: "gearboxes-AP/ar-077-02",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий, аргон",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2350,7 +2350,7 @@ module.exports = {
           name: "Редуктор АР-079",
           image: "gearboxes-AP/ar-079",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "400-60",
@@ -2366,7 +2366,7 @@ module.exports = {
           name: "Редуктор АР-081",
           image: "gearboxes-AP/ar-081",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух",
             "Давление входное Рвх, кгс/см2": "400-50",
@@ -2382,7 +2382,7 @@ module.exports = {
           name: "Редуктор АР-082",
           image: "gearboxes-AP/ar-082",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "400-60",
@@ -2400,7 +2400,7 @@ module.exports = {
           name: "Редуктор АР-091",
           image: "gearboxes-AP/ar-091",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2416,7 +2416,7 @@ module.exports = {
           name: "Редуктор АР-092",
           image: "gearboxes-AP/ar-092",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух",
             "Давление входное Рвх, кгс/см2": "16",
@@ -2432,7 +2432,7 @@ module.exports = {
           name: "Редуктор АР-097",
           image: "gearboxes-AP/ar-097",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2449,7 +2449,7 @@ module.exports = {
           name: "Редуктор АР-098",
           image: "gearboxes-AP/ar-098",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "400-370",
@@ -2465,7 +2465,7 @@ module.exports = {
           name: "Редуктор АР-099",
           image: "gearboxes-AP/ar-099",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2481,7 +2481,7 @@ module.exports = {
           name: "Редуктор АР-104",
           image: "gearboxes-AP/ar-104",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий, аргон",
             "Давление входное Рвх, кгс/см2": "230",
@@ -2497,7 +2497,7 @@ module.exports = {
           name: "Редуктор АР-108",
           image: "gearboxes-AP/ar-108",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, гелий",
             "Давление входное Рвх, кгс/см2": "400-265",
@@ -2513,7 +2513,7 @@ module.exports = {
           name: "Редуктор АР-111",
           image: "gearboxes-AP/ar-111",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух, азот, аргон",
             "Давление входное Рвх, кгс/см2": "400-2",
@@ -2529,7 +2529,7 @@ module.exports = {
           name: "Редуктор АР-132",
           image: "gearboxes-AP/ar-132",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух",
             "Давление входное Рвх, кгс/см2": "7-6",
@@ -2545,7 +2545,7 @@ module.exports = {
           name: "Редуктор АР-143-01",
           image: "gearboxes-AP/ar-143-01",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "азот",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2561,7 +2561,7 @@ module.exports = {
           name: "Редуктор АР-144",
           image: "gearboxes-AP/ar-144",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух",
             "Давление входное Рвх, кгс/см2": "400-50",
@@ -2577,7 +2577,7 @@ module.exports = {
           name: "Редуктор АР-146",
           image: "gearboxes-AP/ar-146",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух",
             "Давление входное Рвх, кгс/см2": "400-25",
@@ -2594,7 +2594,7 @@ module.exports = {
           name: "Редуктор АР-153",
           image: "gearboxes-AP/ar-153",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочая среда": "воздух",
             "Давление входное Рвх, кгс/см2": "230-25",
@@ -2610,7 +2610,7 @@ module.exports = {
           name: "Редуктор Т600",
           image: "gearboxes-T/t-600",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "4",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2624,7 +2624,7 @@ module.exports = {
           name: "Редуктор Т608",
           image: "gearboxes-T/t-608",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Давление входное Рвх, кгс/см2": "55",
@@ -2638,7 +2638,7 @@ module.exports = {
           name: "Редуктор Т610",
           image: "gearboxes-T/t-610",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2652,7 +2652,7 @@ module.exports = {
           name: "Редуктор Т614",
           image: "gearboxes-T/t-614",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2666,7 +2666,7 @@ module.exports = {
           name: "Редуктор Т616",
           image: "gearboxes-T/t-616",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2680,7 +2680,7 @@ module.exports = {
           name: "Редуктор Т618",
           image: "gearboxes-T/t-618",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2694,7 +2694,7 @@ module.exports = {
           name: "Редуктор Т620",
           image: "gearboxes-T/t-620",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2708,7 +2708,7 @@ module.exports = {
           name: "Редуктор Т622",
           image: "gearboxes-T/t-622",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2722,7 +2722,7 @@ module.exports = {
           name: "Редуктор Т626",
           image: "gearboxes-T/t-626",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2736,7 +2736,7 @@ module.exports = {
           name: "Редуктор Т630",
           image: "gearboxes-T/t-630",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2750,7 +2750,7 @@ module.exports = {
           name: "Редуктор Т636",
           image: "gearboxes-T/t-636",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2764,7 +2764,7 @@ module.exports = {
           name: "Редуктор Т640",
           image: "gearboxes-T/t-640",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Давление входное Рвх, кгс/см2": "400",
@@ -2778,7 +2778,7 @@ module.exports = {
           name: "Клапан предохранительный АУ-111-500",
           image: "valves-safety-AP/au-111-500",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "20-90",
             "Условный проходной диаметр Ду, мм": "8",
@@ -2794,7 +2794,7 @@ module.exports = {
           name: "Клапан предохранительный АП-003",
           image: "valves-safety-AP/ap-003",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "0,2-0,7",
             "Условный проходной диаметр Ду, мм": "14",
@@ -2810,7 +2810,7 @@ module.exports = {
           name: "Клапан предохранительный АП-003А",
           image: "valves-safety-AP/ap-003a",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "0,2-0,7",
             "Условный проходной диаметр Ду, мм": "14",
@@ -2826,7 +2826,7 @@ module.exports = {
           name: "Клапан предохранительный АП-008",
           image: "valves-safety-AP/ap-008",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "3-12",
             "Условный проходной диаметр Ду, мм": "14",
@@ -2842,7 +2842,7 @@ module.exports = {
           name: "Клапан предохранительный АП-009",
           image: "valves-safety-AP/ap-009",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "15-25",
             "Условный проходной диаметр Ду, мм": "20",
@@ -2858,7 +2858,7 @@ module.exports = {
           name: "Клапан предохранительный АП-009Д",
           image: "valves-safety-AP/ap-009d",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "15-25",
             "Условный проходной диаметр Ду, мм": "20",
@@ -2874,7 +2874,7 @@ module.exports = {
           name: "Клапан предохранительный АП-012",
           image: "valves-safety-AP/ap-012",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "1,7-6",
             "Условный проходной диаметр Ду, мм": "32",
@@ -2890,7 +2890,7 @@ module.exports = {
           name: "Клапан предохранительный АП-013",
           image: "valves-safety-AP/ap-013",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "3-10",
             "Условный проходной диаметр Ду, мм": "6",
@@ -2906,7 +2906,7 @@ module.exports = {
           name: "Клапан предохранительный АП-014",
           image: "valves-safety-AP/ap-014",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "50-180",
             "Условный проходной диаметр Ду, мм": "6",
@@ -2922,7 +2922,7 @@ module.exports = {
           name: "Клапан предохранительный АП-014Д",
           image: "valves-safety-AP/ap-014d",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "50-180",
             "Условный проходной диаметр Ду, мм": "6",
@@ -2938,7 +2938,7 @@ module.exports = {
           name: "Клапан предохранительный АП-018",
           image: "valves-safety-AP/ap-018",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "12-25",
             "Условный проходной диаметр Ду, мм": "56",
@@ -2954,7 +2954,7 @@ module.exports = {
           name: "Клапан предохранительный АП-020",
           image: "valves-safety-AP/ap-020",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "100-250",
             "Условный проходной диаметр Ду, мм": "6",
@@ -2970,7 +2970,7 @@ module.exports = {
           name: "Клапан предохранительный АП-020Д",
           image: "valves-safety-AP/ap-020d",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "100-250",
             "Условный проходной диаметр Ду, мм": "6",
@@ -2986,7 +2986,7 @@ module.exports = {
           name: "Клапан предохранительный АП-021",
           image: "valves-safety-AP/ap-021",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "250-400",
             "Условный проходной диаметр Ду, мм": "6",
@@ -3002,7 +3002,7 @@ module.exports = {
           name: "Клапан предохранительный АП-021Д",
           image: "valves-safety-AP/ap-021d",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "250-400",
             "Условный проходной диаметр Ду, мм": "6",
@@ -3018,7 +3018,7 @@ module.exports = {
           name: "Клапан предохранительный АП-023",
           image: "valves-safety-AP/ap-023",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "100-250",
             "Условный проходной диаметр Ду, мм": "18",
@@ -3034,7 +3034,7 @@ module.exports = {
           name: "Клапан предохранительный АП-027Д",
           image: "valves-safety-AP/ap-027d",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "3-20",
             "Условный проходной диаметр Ду, мм": "25",
@@ -3050,7 +3050,7 @@ module.exports = {
           name: "Клапан предохранительный АП-033",
           image: "valves-safety-AP/ap-033",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "6-35",
             "Условный проходной диаметр Ду, мм": "16",
@@ -3066,7 +3066,7 @@ module.exports = {
           name: "Клапан предохранительный АП-037",
           image: "valves-safety-AP/ap-037",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "10-55",
             "Условный проходной диаметр Ду, мм": "8",
@@ -3082,7 +3082,7 @@ module.exports = {
           name: "Клапан предохранительный АП-045",
           image: "valves-safety-AP/ap-045",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "0,7-6",
             "Условный проходной диаметр Ду, мм": "16",
@@ -3098,7 +3098,7 @@ module.exports = {
           name: "Клапан предохранительный АП-046",
           image: "valves-safety-AP/ap-046",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "2,5-3,5",
             "Условный проходной диаметр Ду, мм": "5",
@@ -3114,7 +3114,7 @@ module.exports = {
           name: "Клапан предохранительный АП-049",
           image: "valves-safety-AP/ap-049",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "60-120",
             "Условный проходной диаметр Ду, мм": "14",
@@ -3130,7 +3130,7 @@ module.exports = {
           name: "Клапан предохранительный АП-050",
           image: "valves-safety-AP/ap-050",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "100-250",
             "Условный проходной диаметр Ду, мм": "6",
@@ -3146,7 +3146,7 @@ module.exports = {
           name: "Клапан предохранительный АП-051",
           image: "valves-safety-AP/ap-051",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "6-35",
             "Условный проходной диаметр Ду, мм": "16",
@@ -3162,7 +3162,7 @@ module.exports = {
           name: "Клапан предохранительный АП-052",
           image: "valves-safety-AP/ap-052",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "0,5-6",
             "Условный проходной диаметр Ду, мм": "32",
@@ -3178,7 +3178,7 @@ module.exports = {
           name: "Клапан предохранительный АП-054",
           image: "valves-safety-AP/ap-054",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "1-20",
             "Условный проходной диаметр Ду, мм": "8",
@@ -3194,7 +3194,7 @@ module.exports = {
           name: "Клапан предохранительный АП-055",
           image: "valves-safety-AP/ap-055",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "0,7-6",
             "Условный проходной диаметр Ду, мм": "16",
@@ -3210,7 +3210,7 @@ module.exports = {
           name: "Клапан предохранительный АП-061",
           image: "valves-safety-AP/ap-061",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "1-20",
             "Условный проходной диаметр Ду, мм": "8",
@@ -3226,7 +3226,7 @@ module.exports = {
           name: "Клапан предохранительный АП-063",
           image: "valves-safety-AP/ap-063",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "6-25",
             "Условный проходной диаметр Ду, мм": "10",
@@ -3242,7 +3242,7 @@ module.exports = {
           name: "Клапан предохранительный АП-094",
           image: "valves-safety-AP/ap-094",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "200-270",
             "Условный проходной диаметр Ду, мм": "6",
@@ -3258,7 +3258,7 @@ module.exports = {
           name: "Клапан предохранительный АП-096",
           image: "valves-safety-AP/ap-096",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "3-10",
             "Условный проходной диаметр Ду, мм": "6",
@@ -3274,7 +3274,7 @@ module.exports = {
           name: "Клапан предохранительный АП-098",
           image: "valves-safety-AP/ap-098",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "25-120",
             "Условный проходной диаметр Ду, мм": "12",
@@ -3290,7 +3290,7 @@ module.exports = {
           name: "Клапан предохранительный АП-099",
           image: "valves-safety-AP/ap-099",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "450-500",
             "Условный проходной диаметр Ду, мм": "1,3",
@@ -3306,7 +3306,7 @@ module.exports = {
           name: "Клапан предохранительный АП-107",
           image: "valves-safety-AP/ap-107",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Диапазон настройки, кгс/см2": "200-400",
             "Условный проходной диаметр Ду, мм": "15",
@@ -3322,7 +3322,7 @@ module.exports = {
           name: "Клапан предохранительный Т408",
           image: "valves-safety-T/t-408",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "2-12",
@@ -3336,7 +3336,7 @@ module.exports = {
           name: "Клапан предохранительный Т410",
           image: "valves-safety-T/t-410",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "12-50",
@@ -3350,7 +3350,7 @@ module.exports = {
           name: "Клапан предохранительный Т412",
           image: "valves-safety-T/t-412",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "100-400",
@@ -3363,7 +3363,7 @@ module.exports = {
           name: "Клапан предохранительный Т413",
           image: "valves-safety-T/t-413",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "50-100",
@@ -3377,7 +3377,7 @@ module.exports = {
           name: "Клапан предохранительный Т416",
           image: "valves-safety-T/t-416",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "100-400",
@@ -3391,7 +3391,7 @@ module.exports = {
           name: "Клапан предохранительный Т422",
           image: "valves-safety-T/t-422",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -3405,7 +3405,7 @@ module.exports = {
           name: "Клапан предохранительный Т423",
           image: "valves-safety-T/t-423",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "0,7-2",
@@ -3419,7 +3419,7 @@ module.exports = {
           name: "Клапан предохранительный Т424",
           image: "valves-safety-T/t-424",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "2-12",
@@ -3433,7 +3433,7 @@ module.exports = {
           name: "Клапан предохранительный Т425",
           image: "valves-safety-T/t-425",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "12-50",
@@ -3447,7 +3447,7 @@ module.exports = {
           name: "Клапан предохранительный Т426",
           image: "valves-safety-T/t-426",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "50-200",
@@ -3460,7 +3460,7 @@ module.exports = {
           name: "Клапан предохранительный Т430",
           image: "valves-safety-T/t-430",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -3473,7 +3473,7 @@ module.exports = {
           name: "Клапан предохранительный Т432",
           image: "valves-safety-T/t-432",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -3486,7 +3486,7 @@ module.exports = {
           name: "Клапан предохранительный Т436",
           image: "valves-safety-T/t-436",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "2-12",
@@ -3499,7 +3499,7 @@ module.exports = {
           name: "Клапан предохранительный Т460",
           image: "valves-safety-T/t-460",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "2-12",
@@ -3512,7 +3512,7 @@ module.exports = {
           name: "Фильтр АФ-002",
           image: "filters-AF/af-002",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "230",
             "Условный проходной диаметр Ду, мм": "10",
@@ -3531,7 +3531,7 @@ module.exports = {
           name: "Фильтр АФ-003М",
           image: "filters-AF/af-003m",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "25",
@@ -3550,7 +3550,7 @@ module.exports = {
           name: "Фильтр АФ-004М",
           image: "filters-AF/af-004m",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "12",
@@ -3569,7 +3569,7 @@ module.exports = {
           name: "Фильтр АФ-005М",
           image: "filters-AF/af-005m",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "20",
@@ -3588,7 +3588,7 @@ module.exports = {
           name: "Фильтр АФ-006",
           image: "filters-AF/af-006",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "12",
@@ -3607,7 +3607,7 @@ module.exports = {
           name: "Фильтр АФ-007",
           image: "filters-AF/af-007",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "25",
@@ -3626,7 +3626,7 @@ module.exports = {
           name: "Фильтр АФ-010",
           image: "filters-AF/af-010",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "8",
@@ -3645,7 +3645,7 @@ module.exports = {
           name: "Фильтр АФ-012М",
           image: "filters-AF/af-012m",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "100",
             "Условный проходной диаметр Ду, мм": "25",
@@ -3664,7 +3664,7 @@ module.exports = {
           name: "Фильтр АФ-015",
           image: "filters-AF/af-015",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "40",
@@ -3683,7 +3683,7 @@ module.exports = {
           name: "Фильтр АФ-016",
           image: "filters-AF/af-016",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "60",
@@ -3702,7 +3702,7 @@ module.exports = {
           name: "Фильтр АФ-017",
           image: "filters-AF/af-017",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "100",
@@ -3720,7 +3720,7 @@ module.exports = {
           name: "Фильтр АФ-020",
           image: "filters-AF/af-020",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "25",
@@ -3739,7 +3739,7 @@ module.exports = {
           name: "Фильтр АФ-026",
           image: "filters-AF/af-026",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "25",
@@ -3758,7 +3758,7 @@ module.exports = {
           name: "Фильтр АФ-028",
           image: "filters-AF/af-028",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "320",
             "Условный проходной диаметр Ду, мм": "10",
@@ -3776,7 +3776,7 @@ module.exports = {
           name: "Фильтр АФ-031",
           image: "filters-AF/af-031",
           price: "Цена по запросу",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "12",
@@ -3795,7 +3795,7 @@ module.exports = {
           name: "Фильтр АФ-032",
           image: "filters-AF/af-032",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "230",
             "Условный проходной диаметр Ду, мм": "10",
@@ -3814,7 +3814,7 @@ module.exports = {
           name: "Фильтр АФ-034",
           image: "filters-AF/af-034",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "20",
@@ -3831,7 +3831,7 @@ module.exports = {
           name: "Фильтр АФ-044",
           image: "filters-AF/af-044",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "70-220",
             "Условный проходной диаметр Ду, мм": "32",
@@ -3850,7 +3850,7 @@ module.exports = {
           name: "Фильтр АФ-045",
           image: "filters-AF/af-045",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "6",
@@ -3869,7 +3869,7 @@ module.exports = {
           name: "Фильтр АФ-046",
           image: "filters-AF/af-046",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "230",
             "Условный проходной диаметр Ду, мм": "32",
@@ -3888,7 +3888,7 @@ module.exports = {
           name: "Фильтр АФ-047",
           image: "filters-AF/af-047",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "230",
             "Условный проходной диаметр Ду, мм": "12",
@@ -3907,7 +3907,7 @@ module.exports = {
           name: "Фильтр АФ-048",
           image: "filters-AF/af-048",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "200",
             "Условный проходной диаметр Ду, мм": "13",
@@ -3926,7 +3926,7 @@ module.exports = {
           name: "Фильтр АФ-050",
           image: "filters-AF/af-050",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "12",
@@ -3945,7 +3945,7 @@ module.exports = {
           name: "Фильтр АФ-051",
           image: "filters-AF/af-051",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "250",
             "Условный проходной диаметр Ду, мм": "10",
@@ -3964,7 +3964,7 @@ module.exports = {
           name: "Фильтр АФ-052",
           image: "filters-AF/af-052",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "60",
             "Условный проходной диаметр Ду, мм": "15",
@@ -3983,7 +3983,7 @@ module.exports = {
           name: "Фильтр АФ-053",
           image: "filters-AF/af-053",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "4",
@@ -4002,7 +4002,7 @@ module.exports = {
           name: "Фильтр АФ-054",
           image: "filters-AF/af-054",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4021,7 +4021,7 @@ module.exports = {
           name: "Фильтр АФ-055",
           image: "filters-AF/af-055",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "25",
@@ -4040,7 +4040,7 @@ module.exports = {
           name: "Фильтр АФ-056",
           image: "filters-AF/af-056",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "40",
@@ -4059,7 +4059,7 @@ module.exports = {
           name: "Фильтр АФ-057",
           image: "filters-AF/af-057",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "60",
@@ -4077,7 +4077,7 @@ module.exports = {
           name: "Фильтр АФ-058",
           image: "filters-AF/af-058",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "100",
@@ -4096,7 +4096,7 @@ module.exports = {
           name: "Фильтр АФ-059",
           image: "filters-AF/af-059",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "4",
@@ -4115,7 +4115,7 @@ module.exports = {
           name: "Фильтр АФ-060",
           image: "filters-AF/af-060",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4134,7 +4134,7 @@ module.exports = {
           name: "Фильтр АФ-061",
           image: "filters-AF/af-061",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "230",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4153,7 +4153,7 @@ module.exports = {
           name: "Фильтр АФ-063",
           image: "filters-AF/af-063",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4172,7 +4172,7 @@ module.exports = {
           name: "Фильтр АФ-064",
           image: "filters-AF/af-064",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "200",
             "Условный проходной диаметр Ду, мм": "25",
@@ -4191,7 +4191,7 @@ module.exports = {
           name: "Фильтр АФ-065",
           image: "filters-AF/af-065",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4210,7 +4210,7 @@ module.exports = {
           name: "Фильтр АФ-066",
           image: "filters-AF/af-066",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "10",
             "Условный проходной диаметр Ду, мм": "32",
@@ -4229,7 +4229,7 @@ module.exports = {
           name: "Фильтр АФ-069",
           image: "filters-AF/af-069",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "230",
             "Условный проходной диаметр Ду, мм": "20",
@@ -4248,7 +4248,7 @@ module.exports = {
           name: "Фильтр АФ-070",
           image: "filters-AF/af-070",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "230",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4267,7 +4267,7 @@ module.exports = {
           name: "Фильтр АФ-071",
           image: "filters-AF/af-071",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "250",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4286,7 +4286,7 @@ module.exports = {
           name: "Фильтр АФ-075",
           image: "filters-AF/af-075",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "8",
@@ -4305,7 +4305,7 @@ module.exports = {
           name: "Фильтр АФ-079",
           image: "filters-AF/af-079",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4324,7 +4324,7 @@ module.exports = {
           name: "Фильтр АФ-080",
           image: "filters-AF/af-080",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4340,7 +4340,7 @@ module.exports = {
           name: "Фильтр АФ-081",
           image: "filters-AF/af-081",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "16",
@@ -4359,7 +4359,7 @@ module.exports = {
           name: "Фильтр АФ-091",
           image: "filters-AF/af-091",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "230",
             "Условный проходной диаметр Ду, мм": "12",
@@ -4378,7 +4378,7 @@ module.exports = {
           name: "Фильтр АФ-092",
           image: "filters-AF/af-092",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "20",
@@ -4397,7 +4397,7 @@ module.exports = {
           name: "Фильтр АФ-093",
           image: "filters-AF/af-093",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "10",
             "Условный проходной диаметр Ду, мм": "32",
@@ -4416,7 +4416,7 @@ module.exports = {
           name: "Фильтр АФ-094",
           image: "filters-AF/af-094",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4435,7 +4435,7 @@ module.exports = {
           name: "Фильтр Т513",
           image: "filters-T/t-513",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -4449,7 +4449,7 @@ module.exports = {
           name: "Фильтр Т514",
           image: "filters-T/t-514",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -4463,7 +4463,7 @@ module.exports = {
           name: "Фильтр Т520",
           image: "filters-T/t-520",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -4477,7 +4477,7 @@ module.exports = {
           name: "Фильтр Т522",
           image: "filters-T/t-522",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -4491,7 +4491,7 @@ module.exports = {
           name: "Фильтр Т524",
           image: "filters-T/t-524",
           price: "Цена по запросу",
-          availability: "На складе 1 единица",
+          availability: 1,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -4505,7 +4505,7 @@ module.exports = {
           name: "Фильтр Т525",
           image: "filters-T/t-525",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "10",
@@ -4519,7 +4519,7 @@ module.exports = {
           name: "Фильтр Т526",
           image: "filters-T/t-526",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -4533,7 +4533,7 @@ module.exports = {
           name: "Фильтр Т530",
           image: "filters-T/t-530",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -4547,7 +4547,7 @@ module.exports = {
           name: "Фильтр Т532",
           image: "filters-T/t-532",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -4561,7 +4561,7 @@ module.exports = {
           name: "Фильтр Т533",
           image: "filters-T/t-533",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -4575,7 +4575,7 @@ module.exports = {
           name: "Фильтр Т534",
           image: "filters-T/t-534",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -4589,7 +4589,7 @@ module.exports = {
           name: "Фильтр Т535",
           image: "filters-T/t-535",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "10",
@@ -4603,7 +4603,7 @@ module.exports = {
           name: "Фильтр Т536",
           image: "filters-T/t-536",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -4617,7 +4617,7 @@ module.exports = {
           name: "Фильтр Т540",
           image: "filters-T/t-540",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -4631,7 +4631,7 @@ module.exports = {
           name: "Фильтр Т544",
           image: "filters-T/t-544",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "80",
             "Рабочее давление Рр, кгс/см2": "400",
@@ -4645,7 +4645,7 @@ module.exports = {
           name: "Фильтр Т546",
           image: "filters-T/t-546",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "80",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -4659,7 +4659,7 @@ module.exports = {
           name: "Фильтр Т550",
           image: "filters-T/t-550",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "80",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -4673,7 +4673,7 @@ module.exports = {
           name: "Фильтр Т554",
           image: "filters-T/t-554",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -4687,7 +4687,7 @@ module.exports = {
           name: "Фильтр Т558",
           image: "filters-T/t-558",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -4701,7 +4701,7 @@ module.exports = {
           name: "Фильтр Т560",
           image: "filters-T/t-560",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -4715,7 +4715,7 @@ module.exports = {
           name: "Фильтр Т562",
           image: "filters-T/t-562",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -4729,7 +4729,7 @@ module.exports = {
           name: "Фильтр Т565",
           image: "filters-T/t-565",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "10",
@@ -4743,7 +4743,7 @@ module.exports = {
           name: "Фильтр Т574",
           image: "filters-T/t-574",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "150",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -4757,7 +4757,7 @@ module.exports = {
           name: "Фильтр Т580",
           image: "filters-T/t-580",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "200",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -4771,7 +4771,7 @@ module.exports = {
           name: "Фильтр Т584",
           image: "filters-T/t-584",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "300",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -4785,7 +4785,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-003",
           image: "valves-pneumoelectric/ae-003",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "8-50",
             "Условный проходной диаметр Ду, мм": "8",
@@ -4803,7 +4803,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-007",
           image: "valves-pneumoelectric/ae-007",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-400",
             "Условный проходной диаметр Ду, мм": "4",
@@ -4821,7 +4821,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-009",
           image: "valves-pneumoelectric/ae-009",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "3-8",
             "Условный проходной диаметр Ду, мм": "14",
@@ -4839,7 +4839,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-011",
           image: "valves-pneumoelectric/ae-011",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-400",
             "Условный проходной диаметр Ду, мм": "15",
@@ -4856,7 +4856,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-012",
           image: "valves-pneumoelectric/ae-012",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "17-50",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4874,7 +4874,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-013",
           image: "valves-pneumoelectric/ae-013",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-400",
             "Условный проходной диаметр Ду, мм": "15",
@@ -4892,7 +4892,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-014",
           image: "valves-pneumoelectric/ae-014",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "17-50",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4910,7 +4910,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-019",
           image: "valves-pneumoelectric/ae-019",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-400",
             "Условный проходной диаметр Ду, мм": "25",
@@ -4928,7 +4928,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-020",
           image: "valves-pneumoelectric/ae-020",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "1-50",
             "Условный проходной диаметр Ду, мм": "4",
@@ -4946,7 +4946,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-026",
           image: "valves-pneumoelectric/ae-026",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-230",
             "Условный проходной диаметр Ду, мм": "10",
@@ -4964,7 +4964,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-027",
           image: "valves-pneumoelectric/ae-027",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-230",
             "Условный проходной диаметр Ду, мм": "15",
@@ -4982,7 +4982,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-028",
           image: "valves-pneumoelectric/ae-028",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "5-60",
             "Условный проходной диаметр Ду, мм": "20",
@@ -5000,7 +5000,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-029",
           image: "valves-pneumoelectric/ae-029",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "17-60",
             "Условный проходной диаметр Ду, мм": "14",
@@ -5018,7 +5018,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-032",
           image: "valves-pneumoelectric/ae-032",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "5-17",
             "Условный проходной диаметр Ду, мм": "16",
@@ -5036,7 +5036,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-044",
           image: "valves-pneumoelectric/ae-044",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "1-400",
             "Условный проходной диаметр Ду, мм": "0,5",
@@ -5054,7 +5054,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-049",
           image: "valves-pneumoelectric/ae-049",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "1-400",
             "Условный проходной диаметр Ду, мм": "0,5",
@@ -5072,7 +5072,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-050",
           image: "valves-pneumoelectric/ae-050",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "10-235",
             "Условный проходной диаметр Ду, мм": "2",
@@ -5090,7 +5090,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-054А",
           image: "valves-pneumoelectric/ae-054a",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "30-60",
             "Условный проходной диаметр Ду, мм": "8",
@@ -5108,7 +5108,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-056",
           image: "valves-pneumoelectric/ae-056",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -5126,7 +5126,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-058",
           image: "valves-pneumoelectric/ae-058",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -5144,7 +5144,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-060",
           image: "valves-pneumoelectric/ae-060",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "0,1-2,5",
             "Условный проходной диаметр Ду, мм": "8",
@@ -5162,7 +5162,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-098",
           image: "valves-pneumoelectric/ae-098",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "30-400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -5180,7 +5180,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-100",
           image: "valves-pneumoelectric/ae-100",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "1-400",
             "Условный проходной диаметр Ду, мм": "0,5",
@@ -5198,7 +5198,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-102",
           image: "valves-pneumoelectric/ae-102",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "1-400",
             "Условный проходной диаметр Ду, мм": "0,5",
@@ -5216,7 +5216,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-105",
           image: "valves-pneumoelectric/ae-105",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "1-400",
             "Условный проходной диаметр Ду, мм": "0,5",
@@ -5234,7 +5234,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-111",
           image: "valves-pneumoelectric/ae-111",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -5252,7 +5252,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-112",
           image: "valves-pneumoelectric/ae-112",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-400",
             "Условный проходной диаметр Ду, мм": "15",
@@ -5270,7 +5270,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-114",
           image: "valves-pneumoelectric/ae-114",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "50-400",
             "Условный проходной диаметр Ду, мм": "32",
@@ -5288,7 +5288,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-116",
           image: "valves-pneumoelectric/ae-116",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "0-400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -5306,7 +5306,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-117",
           image: "valves-pneumoelectric/ae-117",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "0-400",
             "Условный проходной диаметр Ду, мм": "32",
@@ -5324,7 +5324,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-119",
           image: "valves-pneumoelectric/ae-119",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "40-250",
             "Условный проходной диаметр Ду, мм": "10",
@@ -5342,7 +5342,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-130",
           image: "valves-pneumoelectric/ae-130",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "6-400",
             "Условный проходной диаметр Ду, мм": "10",
@@ -5360,7 +5360,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-138",
           image: "valves-pneumoelectric/ae-138",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "0,1-2,5",
             "Условный проходной диаметр Ду, мм": "8",
@@ -5377,7 +5377,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-143",
           image: "valves-pneumoelectric/ae-143",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "0-6",
             "Условный проходной диаметр Ду, мм": "15",
@@ -5393,7 +5393,7 @@ module.exports = {
           name: "Пневмоэлектроклапан АЭ-144",
           image: "valves-pneumoelectric/ae-144",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Рабочее давление Рр, кгс/см2": "0-6",
             "Рабочая среда": "воздух, пресная вода, водно-воздушная эмульсия",
@@ -5409,7 +5409,7 @@ module.exports = {
           name: "Клапан отсечной Т210",
           image: "off-valves/t-210",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -5424,7 +5424,7 @@ module.exports = {
           name: "Клапан отсечной Т212",
           image: "off-valves/t-212",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -5439,7 +5439,7 @@ module.exports = {
           name: "Клапан отсечной Т216",
           image: "off-valves/t-216",
           price: "Цена по запросу",
-          availability: "На складе 5+ единиц",
+          availability: 5,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "10",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -5454,7 +5454,7 @@ module.exports = {
           name: "Клапан отсечной Т218",
           image: "off-valves/t-218",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -5469,7 +5469,7 @@ module.exports = {
           name: "Клапан отсечной Т220",
           image: "off-valves/t-220",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -5484,7 +5484,7 @@ module.exports = {
           name: "Клапан отсечной Т222",
           image: "off-valves/t-222",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -5499,7 +5499,7 @@ module.exports = {
           name: "Клапан отсечной Т224",
           image: "off-valves/t-224",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "20",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -5514,7 +5514,7 @@ module.exports = {
           name: "Клапан отсечной Т226",
           image: "off-valves/t-226",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -5529,7 +5529,7 @@ module.exports = {
           name: "Клапан отсечной Т228",
           image: "off-valves/t-228",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -5544,7 +5544,7 @@ module.exports = {
           name: "Клапан отсечной Т230",
           image: "off-valves/t-230",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -5558,7 +5558,7 @@ module.exports = {
           name: "Клапан отсечной Т232",
           image: "off-valves/t-232",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "32",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -5572,7 +5572,7 @@ module.exports = {
           name: "Клапан отсечной Т236",
           image: "off-valves/t-236",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -5587,7 +5587,7 @@ module.exports = {
           name: "Клапан отсечной Т238",
           image: "off-valves/t-238",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "200",
@@ -5602,7 +5602,7 @@ module.exports = {
           name: "Клапан отсечной Т240",
           image: "off-valves/t-240",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -5616,7 +5616,7 @@ module.exports = {
           name: "Клапан отсечной Т242",
           image: "off-valves/t-242",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "50",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -5630,7 +5630,7 @@ module.exports = {
           name: "Клапан отсечной Т246",
           image: "off-valves/t-246",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "80",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -5645,7 +5645,7 @@ module.exports = {
           name: "Клапан отсечной Т248",
           image: "off-valves/t-248",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "80",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -5660,7 +5660,7 @@ module.exports = {
           name: "Клапан отсечной Т250",
           image: "off-valves/t-250",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "80",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -5675,7 +5675,7 @@ module.exports = {
           name: "Клапан отсечной Т252",
           image: "off-valves/t-252",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "80",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -5690,7 +5690,7 @@ module.exports = {
           name: "Клапан отсечной Т254",
           image: "off-valves/t-254",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "80",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -5705,7 +5705,7 @@ module.exports = {
           name: "Клапан отсечной Т260",
           image: "off-valves/t-260",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -5720,7 +5720,7 @@ module.exports = {
           name: "Клапан отсечной Т262",
           image: "off-valves/t-262",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "25",
@@ -5735,7 +5735,7 @@ module.exports = {
           name: "Клапан отсечной Т264",
           image: "off-valves/t-264",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -5750,7 +5750,7 @@ module.exports = {
           name: "Клапан отсечной Т266",
           image: "off-valves/t-266",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "25-200",
@@ -5764,7 +5764,7 @@ module.exports = {
           name: "Клапан отсечной Т268",
           image: "off-valves/t-268",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "100",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -5779,7 +5779,7 @@ module.exports = {
           name: "Клапан отсечной Т274",
           image: "off-valves/t-274",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "12",
             "Рабочее давление Рр, кгс/см2": "200-400",
@@ -5794,7 +5794,7 @@ module.exports = {
           name: "Клапан отсечной Т282",
           image: "off-valves/t-282",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "200",
             "Рабочее давление Рр, кгс/см2": "12",
@@ -5809,7 +5809,7 @@ module.exports = {
           name: "Клапан отсечной Т286",
           image: "off-valves/t-286",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "300",
             "Рабочее давление Рр, кгс/см2": "12",
@@ -5824,7 +5824,7 @@ module.exports = {
           name: "Пневмоэлектроклапан ПЭКДД",
           image: "valves-pneumoelectric-PAKDD/PAKDD",
           price: "24 000.00РУБ",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "4",
             "Рабочее давление Рр, кгс/см2": "30-75",
@@ -5842,7 +5842,7 @@ module.exports = {
           name: "Пневмоэлектроклапан ПЭКДД М2",
           image: "valves-pneumoelectric-PAKDD/PAKDD-M2",
           price: "28 000.00РУБ",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Условный проходной диаметр Ду, мм": "4",
             "Рабочее давление Рр, кгс/см2": "47",
@@ -5861,7 +5861,7 @@ module.exports = {
           name: "Клапан КС7154",
           image: "off-valves-bamz/KC7154",
           price: "Цена по запросу",
-          availability: "Под заказ за 7 дней",
+          availability: 0,
           params: JSON.stringify({
             "Наименование изделия": "АЗТ-10-4/250",
             "Условный проходной диаметр Ду, мм": "4",
@@ -5882,7 +5882,7 @@ module.exports = {
           name: "Редуктор РС-250-58",
           image: "off-valves-bamz/PC-250-58",
           price: "22 000.00РУБ",
-          availability: "На складе 10+ единиц",
+          availability: 10,
           params: JSON.stringify({
             "Наименование изделия": "РС-250-58",
             "Давление входное Рвх, кгс/см2": "250-150",

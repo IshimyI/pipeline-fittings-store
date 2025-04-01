@@ -12,6 +12,33 @@ export default function BasketPage({ user }) {
 
   const isEmailValid = email && /^\S+@\S+\.\S+$/.test(email);
 
+  const isValidUrl = (str) => {
+    if (typeof str !== "string") return false;
+
+    try {
+      new URL(str);
+
+      const allowedProtocols = ["http:", "https:"];
+      const url = new URL(str);
+      return allowedProtocols.includes(url.protocol);
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const getImageUrl = (image) => {
+    if (!image) return "/uploads/no-photo.png";
+    if (isValidUrl(image)) return image;
+    if (image.startsWith("/uploads/")) return image;
+    if (image.startsWith("categories/")) return `/uploads/${image}`;
+    if (image === "default-category.jpg") return `/uploads/${image}`;
+    return `/uploads/categories/${image}.jpg?v=${Date.now()}`;
+  };
+
+  const handleImageError = (e) => {
+    e.target.src = "/uploads/no-photo.png";
+  };
+
   useEffect(() => {
     const fetchCart = async () => {
       setLoading(true);
@@ -52,14 +79,18 @@ export default function BasketPage({ user }) {
 
   const handleRemoveFromCart = async (productId) => {
     try {
-      await axiosInstance.delete("/basket", {
-        data: { userId: user.id, productId },
-      });
-
+      if (user?.id) {
+        await axiosInstance.delete("/basket", {
+          data: { userId: user.id, productId },
+        });
+      } else {
+        const newCart = cartItems.filter((item) => item.id !== productId);
+        localStorage.setItem("guestCart", JSON.stringify(newCart));
+        setCartItems(newCart);
+      }
       setCartItems((prev) => prev.filter((item) => item.id !== productId));
     } catch (error) {
-      console.error("Ошибка удаления:", error);
-      setError("Не удалось удалить товар");
+      console.error("Ошибка удаления из корзины:", error);
     }
   };
 
@@ -93,7 +124,6 @@ export default function BasketPage({ user }) {
           ),
         };
 
-        // Сохраняем заказ гостя
         const guestOrders = JSON.parse(
           localStorage.getItem("guestOrders") || "[]"
         );
@@ -102,8 +132,6 @@ export default function BasketPage({ user }) {
           JSON.stringify([...guestOrders, orderData])
         );
         localStorage.removeItem("guestCart");
-
-        // Логика для авторизованного пользователя
       } else {
         orderData = {
           userId: user.id,
@@ -244,11 +272,10 @@ export default function BasketPage({ user }) {
                     <div className="flex items-start space-x-4 2xl:space-x-6">
                       <div className="flex-shrink-0">
                         <img
-                          src={`/uploads/categories/${
-                            item.image
-                          }.jpg?v=${Date.now()}`}
+                          src={getImageUrl(item.image)}
                           alt={item.name}
                           className="h-16 w-16 2xl:h-24 2xl:w-24 object-cover rounded"
+                          onError={handleImageError}
                         />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -260,7 +287,7 @@ export default function BasketPage({ user }) {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-lg 2xl:text-xl font-semibold text-white">
+                        <p className="text-lg 2xl:text-xl font-semibold text-white mr-8">
                           {isNaN(parseFloat(item.price))
                             ? "По запросу"
                             : `${item.price} ₽`}

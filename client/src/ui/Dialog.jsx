@@ -9,8 +9,8 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
     name: product?.name || "",
     image: product?.image || null,
     price: product?.price || "",
-    availability: product?.availability || "",
-    params: product?.params || { Размер: "M", Цвет: "Красный" },
+    availability: product?.availability || 0,
+    params: product?.params || {},
   });
   const [bool, setBool] = useState(false);
   const [imageFile, setImageFile] = useState(null);
@@ -18,13 +18,13 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
 
   useEffect(() => {
     if (product) {
-      let initialParams = product.params || { Размер: "M", Цвет: "Красный" };
+      let initialParams = product.params || {};
       if (typeof initialParams === "string") {
         try {
           initialParams = JSON.parse(initialParams.replace(/"/g, '"'));
         } catch (e) {
           console.error("Ошибка парсинга параметров:", e);
-          initialParams = { Размер: "M", Цвет: "Красный" };
+          initialParams = {};
         }
       }
       setFormData({
@@ -32,7 +32,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
         name: product.name || "",
         image: product.image || "",
         price: product.price || "",
-        availability: product.availability || "",
+        availability: product.availability || 0,
         params: initialParams,
       });
       setImagePreview(product.image ? getImageUrl(product.image) : null);
@@ -50,7 +50,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
         setImagePreview(imageUrl);
         setFormData((prevData) => ({
           ...prevData,
-          image: imageUrl, // Store the preview URL for immediate display
+          image: imageUrl,
         }));
       }
       return;
@@ -117,7 +117,6 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
         throw new Error("Название обязательно");
       }
 
-      // Создаем FormData для отправки файла
       const formDataToSend = new FormData();
       formDataToSend.append("name", formData.name);
       formDataToSend.append("categoryId", formData.categoryId);
@@ -130,14 +129,11 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
           : formData.params;
       formDataToSend.append("params", paramsString);
 
-      // Добавляем информацию о пользователе
       formDataToSend.append("user", JSON.stringify(user));
 
-      // Если есть новый файл изображения, добавляем его
       if (imageFile) {
         formDataToSend.append("image", imageFile);
       } else if (formData.image) {
-        // Если нет нового файла, но есть путь к изображению, отправляем его
         formDataToSend.append("imagePath", formData.image);
       }
 
@@ -157,7 +153,6 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
 
       setIsEditing(false);
       onClose();
-      // Перезагрузка страницы для обновления данных
       window.location.reload();
     } catch (error) {
       console.error("Ошибка сохранения:", error);
@@ -171,7 +166,6 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
     try {
       new URL(str);
 
-      // Дополнительная проверка на допустимые протоколы
       const allowedProtocols = ["http:", "https:"];
       const url = new URL(str);
       return allowedProtocols.includes(url.protocol);
@@ -180,8 +174,6 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
     }
   };
 
-  // Handles image URL resolution with fallback to no-photo image
-  // Supports direct URLs, upload paths, and default fallback
   const getImageUrl = (image) => {
     if (!image) return "/uploads/no-photo.png";
     if (isValidUrl(image)) return image;
@@ -337,7 +329,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                         <div className="bg-krio-foreground p-2 rounded-lg ">
                           <p className="text-xs text-gray-400 mb-1">Наличие</p>
                           <p className="text-sm text-white">
-                            {product.availability === "Под заказ за 7 дней"
+                            {product.availability === 0
                               ? "Под заказ"
                               : "Есть в наличии"}
                           </p>
@@ -455,6 +447,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                         Наличие
                       </label>
                       <input
+                        type="number"
                         name="availability"
                         value={formData.availability}
                         onChange={handleInputChange}

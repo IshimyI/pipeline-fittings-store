@@ -6,11 +6,6 @@ const watermarkConfig = {
   size: process.env.CLOUDINARY_WATERMARK_SIZE,
 };
 
-// Configure Cloudinary with credentials and settings
-// cloud_name: Your cloudinary cloud name from the dashboard
-// api_key: Your cloudinary API key for authentication
-// api_secret: Your cloudinary API secret for authentication
-// secure: Use HTTPS for all cloudinary operations
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,

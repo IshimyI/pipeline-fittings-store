@@ -19,9 +19,6 @@ const {
   uploadCategoryImage,
 } = require("../middlewares/fileUpload");
 
-// Изображения теперь хранятся в client/public/uploads для прямого доступа из клиента
-// Пути к изображениям в базе данных начинаются с /uploads/
-
 const router = express.Router();
 
 router.get("/users", async (req, res) => {
@@ -92,7 +89,6 @@ router.post(
       req.body;
 
     try {
-      // Парсим user из строки JSON, если он был отправлен как строка
       const userData = typeof user === "string" ? JSON.parse(user) : user;
 
       if (userData.isAdmin) {
@@ -108,12 +104,9 @@ router.post(
         product.availability = availability ?? product.availability;
         product.params = params ?? product.params;
 
-        // Обработка изображения
         if (req.file) {
-          // Если загружен новый файл, сохраняем URL из Cloudinary
           product.image = req.file.cloudinaryUrl;
         } else if (imagePath) {
-          // Если файл не загружен, но передан путь, используем его
           product.image = imagePath;
         }
 
@@ -138,8 +131,8 @@ router.post(
       categoryId,
       price,
       image = "default-product.jpg",
-      availability = "",
-      params = { Размер: "M", Цвет: "Красный" },
+      availability = 0,
+      params = {},
     } = req.body;
 
     try {
