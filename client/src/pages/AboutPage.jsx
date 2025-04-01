@@ -217,10 +217,6 @@ export default function AboutPage() {
                     <ul className="space-y-2 text-gray-300 text-sm pl-2">
                       <li className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 bg-krio-primary rounded-full" />
-                        3D-моделирование систем
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-krio-primary rounded-full" />
                         Рабочая документация
                       </li>
                       <li className="flex items-center gap-2">
