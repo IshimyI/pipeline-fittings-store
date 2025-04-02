@@ -66,6 +66,7 @@ function App() {
       if (res && res.status === 200) {
         setUser(res.data.user);
         setAccessToken(res.data.accessToken);
+        navigate("/");
       } else {
         console.error("Ошибка при регистрации:", res);
       }
@@ -82,6 +83,7 @@ function App() {
     if (res.status === 200) {
       setUser(res.data.user);
       setAccessToken(res.data.accessToken);
+      navigate("/");
     }
   };
 
@@ -93,7 +95,6 @@ function App() {
         clearAccessToken();
         localStorage.removeItem("user");
         sessionStorage.removeItem("user");
-        navigate("/login");
       }
     } catch (error) {
       console.error("Ошибка при выходе:", error);
