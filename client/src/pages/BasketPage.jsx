@@ -176,7 +176,10 @@ export default function BasketPage({ user }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <main className="w-full max-w-4xl p-6 space-y-8 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
+        <main
+          className="w-full max-w-[80%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
+                    bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
+        >
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
           <p className="mt-4 text-white">Загрузка корзины...</p>
         </main>
@@ -187,7 +190,10 @@ export default function BasketPage({ user }) {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <main className="w-full max-w-4xl p-6 space-y-8 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
+        <main
+          className="w-full max-w-[80%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
+                    bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
+        >
           <p className="text-red-300 font-medium">{error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -202,7 +208,10 @@ export default function BasketPage({ user }) {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <main className="w-full max-w-4xl 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 2xl:p-8 4k:p-12 space-y-8 2xl:space-y-10 4k:space-y-12 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
+      <main
+        className="w-full max-w-[80%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
+                  bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
+      >
         <h1 className="text-2xl md:text-3xl 2xl:text-4xl 4k:text-5xl font-bold text-white mb-6 2xl:mb-8">
           Ваша корзина
         </h1>

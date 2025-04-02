@@ -411,12 +411,12 @@ export default function ProductsPage({ user, category }) {
 
   return (
     <div className="flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
-      <main className="w-full max-w-[1280px] 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 mx-auto">
+      <main className="w-full max-w-[90%] md:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[80%] 4k:max-w-[80%] p-6 mx-auto">
         <h2 className="text-3xl font-bold text-center text-gray-300 mb-8 2xl:text-4xl 4k:text-5xl">
           Товары в категории
         </h2>
-        <div className="flex flex-col md:flex-row gap-10">
-          <aside className="block md:hidden w-full max-w-md mx-auto mb-5">
+        <div className="flex flex-col xl:flex-row gap-10">
+          <aside className="block xl:hidden w-full max-w-md mx-auto mb-5">
             <div className="bg-krio-background rounded-lg p-6">
               <h3 className="text-2xl font-semibold text-gray-300 mb-4 text-center">
                 Фильтры
@@ -522,7 +522,7 @@ export default function ProductsPage({ user, category }) {
               </button>
             </div>
           </aside>
-          <aside className="hidden md:block w-72 min-w-[288px] bg-krio-background rounded-lg p-6 sticky top-20 h-fit mb-10">
+          <aside className="hidden xl:block w-72 min-w-[288px] bg-krio-background rounded-lg p-6 sticky top-20 h-fit mb-10">
             <h3 className="text-2xl font-semibold text-gray-300 mb-4">
               Фильтры
             </h3>

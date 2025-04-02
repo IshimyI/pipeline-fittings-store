@@ -132,7 +132,7 @@ router.post(
       price,
       image = "default-product.jpg",
       availability = 0,
-      params = {},
+      params = { },
     } = req.body;
 
     try {

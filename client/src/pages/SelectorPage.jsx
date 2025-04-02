@@ -122,7 +122,10 @@ const SelectorPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <main className="w-full max-w-4xl 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 2xl:p-8 4k:p-12 space-y-8 2xl:space-y-12 4k:space-y-16 bg-krio-background rounded-xl shadow-2xl border-2 border-krio-primary/20 my-8 hover:shadow-krio-primary/10 transition-shadow duration-300">
+      <main
+        className="w-full max-w-[80%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
+                    bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
+      >
         <Section title="Арматура высокого давления">
           <div className="p-8 2xl:p-10 4k:p-12 bg-krio-foreground rounded-2xl border-2 border-krio-primary/20 relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-krio-primary/5 to-transparent opacity-40" />
@@ -135,14 +138,12 @@ const SelectorPage = () => {
             </p>
           </div>
         </Section>
-
         <Section title="Классификация">
           <CardGrid
             items={classificationItems}
             className="2xl:grid-cols-3 4k:grid-cols-4"
           />
         </Section>
-
         <Section title="Технические параметры">
           <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8 4k:gap-10">
             {parametersItems.map((item, index) => (
@@ -166,7 +167,6 @@ const SelectorPage = () => {
             ))}
           </div>
         </Section>
-
         <Section title="Отрасли применения">
           <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8 4k:gap-10">
             {applicationsItems.map((item, index) => (

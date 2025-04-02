@@ -8,19 +8,17 @@ const Section = ({ title, children }) => (
 );
 
 const ClientCard = ({ client }) => (
-  <div className="group relative p-6 bg-white rounded-2xl shadow-2xl">
-    <div className="flex flex-col items-center space-y-4">
-      <div className="w-full flex justify-center">
-        <img
-          src={client.imgSrc}
-          alt={client.alt}
-          className="h-24 object-contain filter transition-all"
-        />
-      </div>
-      <p className="text-gray-800 text-lg font-medium text-center">
-        {client.name}
-      </p>
+  <div className="relative p-4 bg-krio-foreground rounded-xl shadow-lg border border-krio-primary/20 flex flex-col items-center">
+    <div className="w-full aspect-square max-w-[160px] flex items-center justify-center overflow-hidden bg-white">
+      <img
+        src={client.imgSrc}
+        alt={client.alt}
+        className="object-contain w-full h-full p-2"
+      />
     </div>
+    <p className="text-krio-secondary text-sm font-medium text-center mt-2 whitespace-nowrap">
+      {client.name}
+    </p>
   </div>
 );
 
@@ -61,12 +59,59 @@ export default function AboutPage() {
       imgSrc: "/uploads/companies/niimash.jpg",
       alt: "Лого НИИМАШа",
     },
-    { name: "СЭГЗ", imgSrc: "/uploads/companies/segs.png", alt: "Лого СЭГЗа" },
+    {
+      name: "СЭГЗ",
+      imgSrc: "/uploads/companies/segs.png",
+      alt: "Лого СЭГЗа",
+    },
+    {
+      name: "ГКНПЦ им. М.В. Хруничева",
+      imgSrc: "/uploads/companies/gknpc-khrunichev.png",
+      alt: "Лого ГКНПЦ им. М.В. Хруничева",
+    },
+    {
+      name: "ДИОКСИД",
+      imgSrc: "/uploads/companies/dioksid.jpg",
+      alt: "Лого ДИОКСИД",
+    },
+    {
+      name: "ЦЭНКИ",
+      imgSrc: "/uploads/companies/tsenki.jpg",
+      alt: "Лого ЦЭНКИ",
+    },
+    {
+      name: "РКЦ Прогресс",
+      imgSrc: "/uploads/companies/rkc-progress.jpg",
+      alt: "Лого РКЦ Прогресс",
+    },
+    {
+      name: "Филиал ФГУП ЦЭНКИ - КБТХМ",
+      imgSrc: "/uploads/companies/kbthm.jpg",
+      alt: "Лого КБТХМ",
+    },
+    {
+      name: "ФКП НИЦ РКП",
+      imgSrc: "/uploads/companies/nic-rkp.png",
+      alt: "Лого НИЦ РКП",
+    },
+    {
+      name: "ЗАО НПО АРКОН",
+      imgSrc: "/uploads/companies/arkon.jpg",
+      alt: "Лого НПО АРКОН",
+    },
+    {
+      name: "НПО Энергомаш",
+      imgSrc: "/uploads/companies/energomash.png",
+      alt: "Лого НПО Энергомаш",
+    },
   ];
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <main className="w-full max-w-4xl 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 space-y-6 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto">
+      <main
+        className="w-full max-w-[80%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
+                    bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
+      >
         <Section title="О компании">
           <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8">
             <div className="space-y-4">
@@ -128,17 +173,18 @@ export default function AboutPage() {
             </div>
           </div>
         </Section>
-
         <Section title="Наши клиенты">
           <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-6 2xl:gap-8">
+            <div
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 
+      2xl:grid-cols-5 4k:grid-cols-6 gap-4 2xl:gap-6 justify-items-center"
+            >
               {clients.map((client, index) => (
                 <ClientCard key={index} client={client} />
               ))}
             </div>
           </div>
         </Section>
-
         <Section title="Услуги">
           <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8 border border-krio-primary/20">
             <div className="grid grid-cols-1 gap-6 2xl:gap-8">
@@ -236,7 +282,6 @@ export default function AboutPage() {
             </div>
           </div>
         </Section>
-
         <Section title="Наша команда">
           <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8 border border-krio-primary/20">
             <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8">

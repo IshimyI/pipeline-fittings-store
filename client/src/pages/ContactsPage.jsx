@@ -193,7 +193,10 @@ export default function ContactsPage({ user }) {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <main className="w-full max-w-4xl 2xl:max-w-[1440px] 4k:max-w-[1800px] p-6 2xl:p-8 4k:p-12 space-y-6 2xl:space-y-10 4k:space-y-14 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto">
+      <main
+        className="w-full max-w-[80%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
+                  bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
+      >
         <section
           id="contacts"
           className="space-y-6 2xl:space-y-10 4k:space-y-14"
