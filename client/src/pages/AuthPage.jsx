@@ -27,7 +27,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4">
-      <div className="w-full max-w-md p-8 space-y-8 bg-krio-foreground rounded-xl shadow-2xl transition-all duration-300">
+      <div className="w-full max-w-md p-8 space-y-8 bg-krio-background rounded-xl shadow-2xl transition-all duration-300">
         <div className="text-center text-krio-secondary">
           <h2 className="text-3xl font-bold mb-2">
             {log ? "Добро пожаловать" : "Создайте аккаунт"}
@@ -78,7 +78,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-krio-secondary"
-                placeholder="Ваш логин"
+                placeholder="Ваше имя"
               />
             </div>
           )}

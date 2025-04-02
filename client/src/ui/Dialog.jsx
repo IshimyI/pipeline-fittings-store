@@ -226,7 +226,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
     return Object.entries(parsedParams).map(([key, value]) => (
       <div
         key={key}
-        className="flex justify-between md:items-center items-start py-1 px-1.5 text-xs"
+        className="flex flex-col md:flex-row justify-between md:items-center items-start py-1 px-1.5 text-xs"
       >
         <span className="text-gray-400 truncate">{key}</span>
         <span className="text-blue-300 ml-2 max-w-[60%] text-right truncate">
@@ -274,7 +274,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
       <dialog
         ref={dialogRef}
         open={isOpen}
-        className="dialog m-auto p-8 bg-krio-background text-white rounded-lg shadow-lg max-w-250 w-11/12 transform transition-all duration-500 opacity-100"
+        className="dialog m-auto p-2 md:p-8 bg-krio-background text-white rounded-lg shadow-lg max-w-250 w-11/12 transform transition-all duration-500 opacity-100"
         style={{ backdropFilter: "blur(10px)" }}
         aria-labelledby="dialog-title"
         aria-hidden={!isOpen}
@@ -290,7 +290,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
           <>
             <h4
               id="dialog-title"
-              className="text-3xl font-semibold mb-6 text-center"
+              className="text-xl md:3xl font-semibold mb-6 text-center"
             >
               {product.name}
             </h4>
@@ -306,7 +306,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                     />
                   </div>
 
-                  <div className="md:w-2/3 space-y-3 overflow-y-auto pr-2">
+                  <div className="md:w-2/3 space-y-3 overflow-y-scroll max-h-[320px] pr-2">
                     <div className="space-y-3">
                       <div className="bg-krio-foreground p-3 rounded-lg">
                         <p className="text-sm text-gray-400 mb-1">Цена</p>
@@ -369,7 +369,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                 <h4 className="text-2xl font-bold text-white mb-4">
                   Редактирование товара
                 </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[420px] overflow-y-scroll">
                   <div className="space-y-4">
                     <div>
                       <label className="block text-gray-300 mb-2">
@@ -467,7 +467,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                             : JSON.stringify(formData.params, null, 2)
                         }
                         onChange={handleInputChange}
-                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[150px]"
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[150px] max-w-[350px]"
                       />
                     </div>
                   </div>

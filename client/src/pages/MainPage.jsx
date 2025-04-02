@@ -317,7 +317,7 @@ export default function MainPage({ user, category }) {
               <h2 className="text-4xl font-bold text-center text-gray-300 mb-12">
                 Каталог
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-12">
                 <button
                   onClick={() => goToCategory()}
                   className="w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-xl transform transition-transform hover:scale-105"
@@ -330,7 +330,7 @@ export default function MainPage({ user, category }) {
                       className="w-full object-cover rounded-xl mb-6"
                       loading="lazy"
                     />
-                    <p className="text-center text-2xl font-semibold text-gray-300">
+                    <p className="text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
                       Все категории
                     </p>
                   </div>

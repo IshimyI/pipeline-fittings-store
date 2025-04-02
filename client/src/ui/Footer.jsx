@@ -152,11 +152,11 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-krio-primary/20">
-          <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-5 md:gap-0">
             <p className="text-krio-primary flex flex-col justify-center text-center md:text-left">
               © {new Date().getFullYear()} Криоарматура. Все права защищены.
             </p>
-            <div className="flex gap-5">
+            <div className="flex flex-col md:flex-row gap-5">
               <Link
                 to="/terms"
                 className="text-krio-primary flex flex-col justify-center text-center md:text-left hover:text-krio-secondary transition-colors duration-300"

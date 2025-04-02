@@ -410,8 +410,8 @@ export default function ProductsPage({ user, category }) {
   };
 
   return (
-    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
-      <main className="w-full max-w-[90%] md:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[80%] 4k:max-w-[80%] p-6 mx-auto">
+    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-2 md:p-8">
+      <main className="w-full max-w-[90%] md:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[80%] 4k:max-w-[80%] p-0 md:p-6 mx-auto">
         <h2 className="text-3xl font-bold text-center text-gray-300 mb-8 2xl:text-4xl 4k:text-5xl">
           Товары в категории
         </h2>
@@ -639,7 +639,7 @@ export default function ProductsPage({ user, category }) {
             {loading ? (
               <div className="text-center text-gray-300">Загрузка...</div>
             ) : sortedProducts?.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-8 2xl:gap-10">
+              <div className="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-8 2xl:gap-10">
                 {sortedProducts?.map((product) => (
                   <div
                     key={product.id}
@@ -703,7 +703,7 @@ export default function ProductsPage({ user, category }) {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-krio-background/30 to-transparent pointer-events-none" />
                     </div>
-                    <p className="text-center text-xl font-semibold">
+                    <p className="text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
                       {product.name}
                     </p>
                   </div>

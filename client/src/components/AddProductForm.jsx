@@ -238,7 +238,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
                 className="mt-2"
               />
             </div>
-            <div className="flex justify-end gap-4">
+            <div className="flex flex-col md:flex-row justify-end gap-4">
               <button
                 type="button"
                 onClick={() => {
@@ -273,7 +273,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
       )}
       <div>
         {user?.isAdmin && (
-          <div className="mb-8 flex gap-6 justify-end">
+          <div className="mb-8 flex flex-col md:flex-row gap-6 justify-end">
             <button
               onClick={() => setShowForm("product")}
               className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"

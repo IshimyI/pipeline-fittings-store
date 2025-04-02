@@ -180,8 +180,10 @@ const ProductGrid = ({ children }) => (
 
 const CategorySection = ({ category, onQuantityChange, quantityUpdates }) => (
   <div key={category.id} className="mb-8">
-    <h2 className="text-2xl font-semibold mb-4">{category.name}</h2>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <h2 className="text-center text-md md:text-2xl font-semibold break-words whitespace-normal">
+      {category.name}
+    </h2>
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
       {category.products.map((product) => (
         <ProductItem
           key={product.id}
@@ -209,14 +211,16 @@ const ProductItem = ({ product, onQuantityChange, quantityUpdates }) => {
   };
 
   return (
-    <div className="bg-gray-700 p-4 rounded-lg">
+    <div>
       <img
         src={getImageUrl(product.image)}
         alt={product.name}
-        className="w-full h-48 object-cover rounded-lg mb-3"
+        className="w-full object-cover rounded-lg mb-3"
         onError={(e) => (e.target.src = "/uploads/no-photo.png")}
       />
-      <h3 className="font-medium text-lg mb-2">{product.name}</h3>
+      <h3 className="text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
+        {product.name}
+      </h3>
 
       <ProductInfo
         localQuantity={localQuantity}

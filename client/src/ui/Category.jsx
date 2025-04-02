@@ -30,7 +30,9 @@ export default function Category({ category }) {
         className="w-full h-full object-cover rounded-lg mb-4"
         onError={handleImageError}
       />
-      <p className="text-center text-xl font-semibold">{category.name}</p>
+      <p className="text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
+        {category.name}
+      </p>
     </div>
   );
 }
