@@ -101,190 +101,171 @@ router.post("/cta", async (req, res) => {
   }
 });
 
-router.post(
-  "/changeProduct/:id",
-  verifyRefreshToken,
-  uploadProductImage,
-  async (req, res) => {
-    const { id } = req.params;
-    const { categoryId, name, price, availability, params, user, imagePath } =
-      req.body;
+router.post("/changeProduct/:id", uploadProductImage, async (req, res) => {
+  const { id } = req.params;
+  const { categoryId, name, price, availability, params, user, imagePath } =
+    req.body;
 
-    try {
-      const userData = typeof user === "string" ? JSON.parse(user) : user;
+  try {
+    const userData = typeof user === "string" ? JSON.parse(user) : user;
 
-      if (userData.isAdmin) {
-        const product = await Product.findByPk(id);
+    if (userData.isAdmin) {
+      const product = await Product.findByPk(id);
 
-        if (!product) {
-          return res.status(404).send({ message: "Продукт не найден" });
-        }
+      if (!product) {
+        return res.status(404).send({ message: "Продукт не найден" });
+      }
 
-        product.categoryId = categoryId ?? product.categoryId;
-        product.name = name ?? product.name;
-        product.price = price ?? product.price;
-        product.availability = availability ?? product.availability;
-        product.params = params ?? product.params;
+      product.categoryId = categoryId ?? product.categoryId;
+      product.name = name ?? product.name;
+      product.price = price ?? product.price;
+      product.availability = availability ?? product.availability;
+      product.params = params ?? product.params;
 
-        if (req.file) {
-          product.image = req.file.cloudinaryUrl;
-        } else if (imagePath) {
-          product.image = imagePath;
-        }
+      if (req.file) {
+        product.image = req.file.cloudinaryUrl;
+      } else if (imagePath) {
+        product.image = imagePath;
+      }
 
-        await product.save();
+      await product.save();
 
-        res.status(200).send({ message: "Изменение успешно", product });
-      } else return res.status(400).send({ message: "У вас нет прав" });
-    } catch (error) {
-      console.error("Ошибка при изменении продукта:", error);
-      res.status(500).send({ message: "Ошибка сервера", error: error.message });
-    }
+      res.status(200).send({ message: "Изменение успешно", product });
+    } else return res.status(400).send({ message: "У вас нет прав" });
+  } catch (error) {
+    console.error("Ошибка при изменении продукта:", error);
+    res.status(500).send({ message: "Ошибка сервера", error: error.message });
   }
-);
+});
 
-router.post(
-  "/createProduct",
-  verifyRefreshToken,
-  uploadProductImage,
-  async (req, res) => {
-    const {
+router.post("/createProduct", uploadProductImage, async (req, res) => {
+  const {
+    name,
+    categoryId,
+    price,
+    image = "default-product.jpg",
+    availability = 0,
+    params = {},
+  } = req.body;
+
+  try {
+    if (!res.locals.user.isAdmin) {
+      return res.status(403).send({ message: "Доступ запрещен" });
+    }
+
+    const errors = [];
+    if (!name) errors.push("name");
+    if (!categoryId) errors.push("categoryId");
+    if (!price) errors.push("price");
+
+    if (errors.length > 0) {
+      return res.status(400).json({
+        message: `Обязательные поля: ${errors.join(", ")}`,
+        errorType: "VALIDATION_ERROR",
+      });
+    }
+
+    let imagePath = "/uploads/products/default-product.jpg";
+    if (req.file) {
+      imagePath = req.file.cloudinaryUrl;
+    }
+
+    const newProduct = await Product.create({
       name,
-      categoryId,
-      price,
-      image = "default-product.jpg",
-      availability = 0,
-      params = {},
-    } = req.body;
+      categoryId: Number(categoryId),
+      price: price,
+      image: imagePath,
+      availability,
+      params: typeof params === "string" ? JSON.parse(params) : params,
+    });
 
-    try {
-      if (!res.locals.user.isAdmin) {
-        return res.status(403).send({ message: "Доступ запрещен" });
-      }
+    res.status(201).json({
+      message: "Товар успешно создан",
+      product: newProduct,
+    });
+  } catch (error) {
+    console.error("Ошибка создания товара:", error);
+    res.status(500).json({
+      message: error.message.includes("VALIDATION")
+        ? "Ошибка валидации данных"
+        : "Ошибка сервера",
+      error: error.message,
+    });
+  }
+});
 
-      const errors = [];
-      if (!name) errors.push("name");
-      if (!categoryId) errors.push("categoryId");
-      if (!price) errors.push("price");
+router.post("/createCategory", uploadCategoryImage, async (req, res) => {
+  const { name, image } = req.body;
 
-      if (errors.length > 0) {
-        return res.status(400).json({
-          message: `Обязательные поля: ${errors.join(", ")}`,
-          errorType: "VALIDATION_ERROR",
-        });
-      }
+  try {
+    if (!res.locals.user.isAdmin) {
+      return res.status(403).send({ message: "Доступ запрещен" });
+    }
 
-      let imagePath = "/uploads/products/default-product.jpg";
-      if (req.file) {
-        imagePath = req.file.cloudinaryUrl;
-      }
-
-      const newProduct = await Product.create({
-        name,
-        categoryId: Number(categoryId),
-        price: price,
-        image: imagePath,
-        availability,
-        params: typeof params === "string" ? JSON.parse(params) : params,
-      });
-
-      res.status(201).json({
-        message: "Товар успешно создан",
-        product: newProduct,
-      });
-    } catch (error) {
-      console.error("Ошибка создания товара:", error);
-      res.status(500).json({
-        message: error.message.includes("VALIDATION")
-          ? "Ошибка валидации данных"
-          : "Ошибка сервера",
-        error: error.message,
+    if (!name) {
+      return res.status(400).send({
+        message: "Поле name обязательно",
       });
     }
-  }
-);
 
-router.post(
-  "/createCategory",
-  verifyRefreshToken,
-  uploadCategoryImage,
-  async (req, res) => {
-    const { name, image } = req.body;
-
-    try {
-      if (!res.locals.user.isAdmin) {
-        return res.status(403).send({ message: "Доступ запрещен" });
-      }
-
-      if (!name) {
-        return res.status(400).send({
-          message: "Поле name обязательно",
-        });
-      }
-
-      let imagePath = `/uploads/categories/default-category.jpg`;
-      if (req.file) {
-        imagePath = req.file.cloudinaryUrl;
-      }
-
-      const newCategory = await Category.create({
-        name,
-        image: imagePath,
-      });
-
-      res.status(201).send({
-        message: "Категория успешно создана",
-        category: newCategory,
-      });
-    } catch (error) {
-      console.error("Ошибка создания категории:", error);
-      res.status(500).send(error.message);
+    let imagePath = `/uploads/categories/default-category.jpg`;
+    if (req.file) {
+      imagePath = req.file.cloudinaryUrl;
     }
+
+    const newCategory = await Category.create({
+      name,
+      image: imagePath,
+    });
+
+    res.status(201).send({
+      message: "Категория успешно создана",
+      category: newCategory,
+    });
+  } catch (error) {
+    console.error("Ошибка создания категории:", error);
+    res.status(500).send(error.message);
   }
-);
+});
 
-router.put(
-  "/updateCategory/:id/:userId",
-  verifyRefreshToken,
-  async (req, res) => {
-    const { id, userId } = req.params;
-    const { name, img } = req.body;
-    try {
-      const user = await User.findByPk(userId);
-      if (!user.isAdmin) {
-        return res.status(403).send({ message: "Доступ запрещен" });
-      }
-
-      if (!name || name.trim() === "") {
-        return res
-          .status(400)
-          .send({ message: "Название категории обязательно" });
-      }
-
-      const category = await Category.findByPk(id);
-      if (!category) {
-        return res.status(404).send({ message: "Категория не найдена" });
-      }
-
-      const updatedCategory = await category.update({
-        name: name.trim(),
-        img: img || "/uploads/categories/default-category.jpg",
-        updatedAt: new Date(),
-      });
-
-      res.status(200).send(updatedCategory);
-    } catch (error) {
-      console.error("Ошибка редактирования категории:", error);
-      res.status(500).send({
-        message: error.message || "Ошибка при обновлении категории",
-      });
+router.put("/updateCategory/:id/:userId", async (req, res) => {
+  const { id, userId } = req.params;
+  const { name, img } = req.body;
+  try {
+    const user = await User.findByPk(userId);
+    if (!user.isAdmin) {
+      return res.status(403).send({ message: "Доступ запрещен" });
     }
+
+    if (!name || name.trim() === "") {
+      return res
+        .status(400)
+        .send({ message: "Название категории обязательно" });
+    }
+
+    const category = await Category.findByPk(id);
+    if (!category) {
+      return res.status(404).send({ message: "Категория не найдена" });
+    }
+
+    const updatedCategory = await category.update({
+      name: name.trim(),
+      img: img || "/uploads/categories/default-category.jpg",
+      updatedAt: new Date(),
+    });
+
+    res.status(200).send(updatedCategory);
+  } catch (error) {
+    console.error("Ошибка редактирования категории:", error);
+    res.status(500).send({
+      message: error.message || "Ошибка при обновлении категории",
+    });
   }
-);
+});
 
 router.delete(
   "/deleteCategory/:id/:userId",
-  verifyRefreshToken,
+
   async (req, res) => {
     const { id, userId } = req.params;
 
@@ -313,7 +294,7 @@ router.delete(
 
 router.delete(
   "/deleteProduct/:id/:userId",
-  verifyRefreshToken,
+
   async (req, res) => {
     const { id, userId } = req.params;
 
@@ -570,7 +551,7 @@ Email: ${email}
   }
 });
 
-router.get("/allOrders", verifyRefreshToken, async (req, res) => {
+router.get("/allOrders", async (req, res) => {
   try {
     const orders = await Order.findAll({
       include: [
@@ -620,7 +601,7 @@ router.get("/feedback", async (req, res) => {
 
 router.post(
   "/createNews",
-  verifyRefreshToken,
+
   uploadNewsImage,
   async (req, res) => {
     try {
@@ -732,7 +713,7 @@ router.get("/news/:id", async (req, res) => {
 
 router.post(
   "/updateNews/:id/:userId",
-  verifyRefreshToken,
+
   uploadNewsImage,
   async (req, res) => {
     const { id, userId } = req.params;
@@ -769,7 +750,7 @@ router.post(
 
 router.delete(
   "/deleteNews/:id/:userId",
-  verifyRefreshToken,
+
   async (req, res) => {
     const { id, userId } = req.params;
 
