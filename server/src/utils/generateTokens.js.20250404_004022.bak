@@ -10,16 +10,12 @@ function generateTokens(payload) {
     if (!payload.user) {
       throw new Error('Invalid payload: user is required');
     }
-    if (typeof payload.user.isAdmin !== 'boolean') {
-      throw new Error('Invalid payload: user.isAdmin must be a boolean');
-    }
     const accessToken = jwt.sign(
       {
         ...payload,
         tokenType: 'access',
         iat: Math.floor(Date.now() / 1000),
-        deviceId: payload.deviceId || 'unknown',
-        isAdmin: payload.user.isAdmin
+        deviceId: payload.deviceId || 'unknown'
       },
       process.env.ACCESS_TOKEN_SECRET,
       {
@@ -27,7 +23,7 @@ function generateTokens(payload) {
       }
     );
     const refreshToken = jwt.sign(
-      { ...payload, isAdmin: payload.user.isAdmin },
+      payload,
       process.env.REFRESH_TOKEN_SECRET,
       {
         expiresIn: jwtConfig.refresh.expiresIn
@@ -41,7 +37,6 @@ function generateTokens(payload) {
     console.log(`Tokens generated successfully for user ${payload.user}`);
     console.log(`Access token expires in: ${jwtConfig.access.expiresIn}`);
     console.log(`Refresh token expires in: ${jwtConfig.refresh.expiresIn}`);
-    console.log(`Token generated with isAdmin: ${payload.user.isAdmin}`);
 
     return { accessToken, refreshToken };
   } catch (error) {
@@ -51,8 +46,6 @@ function generateTokens(payload) {
       throw new Error('Token expired during generation');
     } else if (error.message.includes('Invalid payload')) {
       throw new Error(error.message);
-    } else if (error.message.includes('isAdmin')) {
-      throw new Error('Invalid isAdmin value in user object');
     } else {
       throw new Error(`Token generation failed: ${error.message}`);
     }

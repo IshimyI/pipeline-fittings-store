@@ -7,17 +7,21 @@ const tokensRouter = express.Router();
 
 tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
   try {
+    if (typeof res.locals.user.isAdmin !== 'boolean') {
+      throw new Error('Invalid or missing isAdmin flag in user data');    
+    }
     const { accessToken, refreshToken } = generateTokens({
-      user: res.locals.user,
+      user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin },
     });
 
     // Use cookieConfig directly without any modifications
     res
       .cookie("refreshToken", refreshToken, cookieConfig)
-      .json({ accessToken, user: res.locals.user });
+      .json({ accessToken, user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin } });
     
     console.log('Token refresh successful, new refresh token cookie set:', {
       email: res.locals.user.email,
+      isAdmin: res.locals.user.isAdmin,
       cookieSettings: {
         sameSite: cookieConfig.sameSite,
         secure: cookieConfig.secure,

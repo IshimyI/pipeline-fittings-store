@@ -34,18 +34,10 @@ const convertJwtTimeToMs = (timeString) => {
   return value * units[unit];
 };
 
-// Helper function to determine if the application is running in a local environment
-const isLocalEnvironment = () => {
-  return !process.env.COOKIE_DOMAIN || 
-         process.env.COOKIE_DOMAIN === 'localhost' || 
-         process.env.COOKIE_DOMAIN.includes('127.0.0.1');
-};
-
 // Configuration for cross-domain authentication cookies
 // These settings are crucial for proper JWT token handling across different domains
 // Cookie settings control security aspects like cross-site access, SSL requirements,
 // and domain-specific behavior for authentication tokens
-
 const domain = process.env.COOKIE_DOMAIN;
 if (process.env.NODE_ENV === "production") {
   if (!domain) {
@@ -63,11 +55,7 @@ if (process.env.NODE_ENV === "production") {
 // For cross-domain cookie sharing in production environments,
 // sameSite must be set to 'none' and secure must be true.
 // This is essential for cookies to work between different domains (e.g., API and client)
-// For localhost development:
-// - secure should be false unless using HTTPS
-// - sameSite can be 'lax' for better development experience
-// - domain should be undefined for localhost
-const cookieConfig = 
+const cookieConfig =
   process.env.NODE_ENV === "production"
     ? {
         httpOnly: true,
@@ -80,12 +68,10 @@ const cookieConfig =
     : {
         httpOnly: true,
         maxAge: convertJwtTimeToMs(jwtConfig.refresh.expiresIn),
-        sameSite: "lax",
-        // For localhost, secure must be false when not using HTTPS
-        secure: isLocalEnvironment() ? false : (process.env.COOKIE_SECURE === "true"),
+        sameSite: process.env.COOKIE_SAME_SITE || "lax",
+        secure: process.env.COOKIE_SECURE === "true",
         path: "/",
-        // For localhost, domain must be undefined
-        domain: isLocalEnvironment() ? undefined : process.env.COOKIE_DOMAIN,
+        domain: process.env.COOKIE_DOMAIN || "localhost",
       };
 
 // Validate that maxAge is a positive number
@@ -94,44 +80,11 @@ if (typeof cookieConfig.maxAge !== "number" || cookieConfig.maxAge <= 0) {
   cookieConfig.maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 }
 
-// Validate cookie configuration settings
-console.log("Cookie validation results:", {
-  // Basic cookie configuration validation
-  cookiePresent: !!cookieConfig,
-  cookieType: typeof cookieConfig,
-  configKeys: Object.keys(cookieConfig),
-  maxAgeValid: typeof cookieConfig.maxAge === "number" && cookieConfig.maxAge > 0,
-  secureAppropriate: cookieConfig.secure === true || process.env.NODE_ENV !== "production",
-  sameSiteValid: ["strict", "lax", "none"].includes(cookieConfig.sameSite),
-  domainValid: !cookieConfig.domain || typeof cookieConfig.domain === "string",
-  crossOriginCompatible: process.env.NODE_ENV === "production" ? 
-    (cookieConfig.sameSite === "none" && cookieConfig.secure === true) : true,
-  subdomainSupport: cookieConfig.domain?.startsWith(".") || false
-});
-
 // Log cookie configuration for debugging purposes
 console.log("Cookie configuration:", {
   ...cookieConfig,
   domain: cookieConfig.domain,
   environment: process.env.NODE_ENV || "development",
-});
-
-// Log cross-origin request handling for development mode
-if (process.env.NODE_ENV !== 'production') {
-  console.log('Development mode CORS settings:', {
-    allowCredentials: true,
-    sameSiteMode: cookieConfig.sameSite,
-    crossDomainEnabled: cookieConfig.domain !== undefined,
-    secureConnection: cookieConfig.secure
-  });
-}
-
-// Debug cookie domain resolution
-console.log("Cookie domain resolution:", {
-  configuredDomain: process.env.COOKIE_DOMAIN,
-  effectiveDomain: cookieConfig.domain,
-  isLocalhost: isLocalEnvironment(),
-  isDevelopment: process.env.NODE_ENV !== "production"
 });
 
 module.exports = cookieConfig;

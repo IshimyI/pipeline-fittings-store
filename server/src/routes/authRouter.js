@@ -29,19 +29,19 @@ authRouter.post("/signup", async (req, res) => {
     delete user.password;
 
     const { accessToken, refreshToken } = generateTokens({ user });
-    
+
     // Use cookieConfig directly without overriding settings
     res
       .cookie("refreshToken", refreshToken, cookieConfig)
-      .json({ accessToken, user });
-    
-    console.log('Signup successful, refresh token cookie set:', {
+      .json({ accessToken, user: { ...user, isAdmin: user.isAdmin } });
+
+    console.log("Signup successful, refresh token cookie set:", {
       email: user.email,
       cookieSettings: {
         sameSite: cookieConfig.sameSite,
         secure: cookieConfig.secure,
-        domain: cookieConfig.domain
-      }
+        domain: cookieConfig.domain,
+      },
     });
   } catch (error) {
     console.error("Signup error:", error);
@@ -52,6 +52,7 @@ authRouter.post("/signup", async (req, res) => {
 authRouter.post("/login", async (req, res) => {
   console.log(`Login attempt for email: ${req.body.email}`);
   const startTime = Date.now();
+  console.log('Token generation will include isAdmin flag');
   const { email, password } = req.body;
   if (!email || !password) return res.sendStatus(400);
 
@@ -88,11 +89,13 @@ authRouter.post("/login", async (req, res) => {
 
   const user = foundUser.get();
   delete user.password;
+  user.isAdmin = foundUser.isAdmin || false;
   const { accessToken, refreshToken } = generateTokens({
     user: {
       id: user.id,
       email: user.email,
       name: user.name,
+      isAdmin: user.isAdmin,
     },
   });
 
@@ -101,25 +104,24 @@ authRouter.post("/login", async (req, res) => {
     .status(200)
     .cookie("refreshToken", refreshToken, cookieConfig)
     .json({ accessToken, user });
-  
-  console.log('Login successful, refresh token cookie set:', {
+
+  console.log("Login successful, refresh token cookie set:", {
     email: user.email,
+    isAdmin: user.isAdmin,
     cookieSettings: {
       sameSite: cookieConfig.sameSite,
       secure: cookieConfig.secure,
-      domain: cookieConfig.domain
-    }
+      domain: cookieConfig.domain,
+    },
   });
 });
 
 authRouter.post("/logout", async (req, res) => {
   try {
     // Use cookieConfig directly without overriding settings
-    res
-      .clearCookie("refreshToken", cookieConfig)
-      .sendStatus(200);
-    
-    console.log('Logout successful, refresh token cookie cleared');
+    res.clearCookie("refreshToken", cookieConfig).sendStatus(200);
+
+    console.log("Logout successful, refresh token cookie cleared");
   } catch (error) {
     console.error("Logout error:", error);
     res.status(500).json({ error: "Failed to logout" });

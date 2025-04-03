@@ -28,9 +28,7 @@ function verifyRefreshToken(req, res, next) {
     // Validate token format
     if (
       typeof refreshToken !== "string" ||
-      !refreshToken.match(
-        /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_+/=]*$/
-      )
+      !refreshToken.match(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_+/=]*$/)
     ) {
       throw new TokenError("Invalid token format");
     }
@@ -40,10 +38,7 @@ function verifyRefreshToken(req, res, next) {
 
     // Double check expiration
     const clockToleranceSeconds = 30;
-    if (
-      decoded.exp &&
-      Date.now() / 1000 >= decoded.exp + clockToleranceSeconds
-    ) {
+    if (decoded.exp && (Date.now() / 1000) >= (decoded.exp + clockToleranceSeconds)) {
       throw new TokenError("Token has expired");
     }
 
@@ -66,13 +61,7 @@ function verifyRefreshToken(req, res, next) {
       method: req.method,
       cookies: req.cookies,
       headers: req.headers,
-      path: req.path,
-    });
-
-    // Clear cookie before sending response - do this only once
-    res.clearCookie("refreshToken", {
-      ...cookieConfig,
-      maxAge: 0,
+      path: req.path
     });
 
     // Handle specific error types
@@ -81,21 +70,19 @@ function verifyRefreshToken(req, res, next) {
     } else if (error.name === "JsonWebTokenError") {
       res.status(401).json({ error: "Invalid token", details: error.message });
     } else if (error.name === "TokenExpiredError") {
-      res
-        .status(401)
-        .json({ error: "Token expired", expiredAt: error.expiredAt });
+      res.status(401).json({ error: "Token expired", expiredAt: error.expiredAt });
     } else if (error.name === "NotBeforeError") {
       res.status(401).json({ error: "Token not yet active", date: error.date });
     } else if (error.name === "SessionError") {
       res.status(403).json({ error: error.message });
     } else {
-      res
-        .status(500)
-        .json({
-          error: "Internal server error",
-          message: "An unexpected error occurred",
-        });
+      res.status(500).json({ error: "Internal server error", message: "An unexpected error occurred" });
     }
+
+    res.clearCookie("refreshToken", {
+      ...cookieConfig,
+      maxAge: 0
+    });
   }
 }
 
