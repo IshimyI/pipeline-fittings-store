@@ -35,11 +35,6 @@ export default function AboutPage() {
       alt: "Лого Алмаз-Антея",
     },
     {
-      name: "Прогресс",
-      imgSrc: "/uploads/companies/Progress.jpg",
-      alt: "Лого Прогресса",
-    },
-    {
       name: "Криогенмаш",
       imgSrc: "/uploads/companies/Kriogenmash.jpg",
       alt: "Лого Криогенмаша",
@@ -48,11 +43,6 @@ export default function AboutPage() {
       name: "Техгаз",
       imgSrc: "/uploads/companies/tech-gas.png",
       alt: "Лого Техгаза",
-    },
-    {
-      name: "ООО ЗИД",
-      imgSrc: "/uploads/companies/zid.png",
-      alt: "Лого ООО ЗИД",
     },
     {
       name: "НИИМАШ",
