@@ -16,12 +16,14 @@ export function clearAccessToken() {
 }
 
 export function getUserData() {
-  return JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || 'null');
+  return JSON.parse(
+    localStorage.getItem("user") || sessionStorage.getItem("user") || "null"
+  );
 }
 
 export function saveUserData(userData) {
-  localStorage.setItem('user', JSON.stringify(userData));
-  sessionStorage.setItem('user', JSON.stringify(userData));
+  localStorage.setItem("user", JSON.stringify(userData));
+  sessionStorage.setItem("user", JSON.stringify(userData));
 }
 
 axiosInstance.interceptors.request.use(
@@ -40,26 +42,65 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     const prevReq = error.config;
-    if (error.response?.status === 401 && !prevReq.sent) {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
-          { withCredentials: true }
-        );
-        accessToken = response.data.accessToken;
-        if (response.data.user) {
-          saveUserData(response.data.user);
+    console.error("API Error:", {
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      url: prevReq?.url,
+      method: prevReq?.method,
+      message: error.message,
+      data: error.response?.data,
+      headers: prevReq?.headers,
+    });
+
+    if (
+      error.response?.status === 401 &&
+      !prevReq.sent &&
+      accessToken &&
+      typeof accessToken === "string" &&
+      accessToken.length > 0
+    ) {
+      let retryCount = 0;
+      const maxRetries = 3;
+      const retryDelay = 1000; // 1 second
+
+      async function attemptRefresh() {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
+            { withCredentials: true }
+          );
+          accessToken = response.data.accessToken;
+          if (response.data.user) {
+            saveUserData(response.data.user);
+          }
+          prevReq.sent = true;
+          prevReq.headers.Authorization = `Bearer ${accessToken}`;
+          return axiosInstance(prevReq);
+        } catch (refreshError) {
+          if (retryCount < maxRetries) {
+            retryCount++;
+            await new Promise((resolve) =>
+              setTimeout(resolve, retryDelay * retryCount)
+            );
+            return attemptRefresh();
+          }
+          console.error("Token refresh failed:", {
+            error: refreshError,
+            message: refreshError.message,
+            status: refreshError.response?.status,
+            data: refreshError.response?.data,
+            timestamp: new Date().toISOString(),
+          });
+          clearAccessToken();
+          localStorage.removeItem("user");
+          sessionStorage.removeItem("user");
+          window.location.href = "/login";
+          return Promise.reject(
+            new Error("Authentication failed. Please login again.")
+          );
         }
-        prevReq.sent = true;
-        prevReq.headers.Authorization = `Bearer ${accessToken}`;
-        return axiosInstance(prevReq);
-      } catch (refreshError) {
-        clearAccessToken();
-        localStorage.removeItem('user');
-        sessionStorage.removeItem('user');
-        window.location.href = '/login';
-        return Promise.reject(new Error('Authentication failed. Please login again.'));
       }
+      return attemptRefresh();
     }
     return Promise.reject(error);
   }

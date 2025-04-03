@@ -1,1 +1,83 @@
-const express = require(\"express\");\nconst { User, Inventory, User_selected_items } = require(\"../../db/models\");\nconst bcrypt = require(\"bcrypt\");\nconst cookieConfig = require(\"../configs/cookieConfig\");\nconst jwt = require(\"jsonwebtoken\");\nconst generateTokens = require(\"../utils/generateTokens\");\n\nconst authRouter = express.Router();\n\nauthRouter.post(\"/signup\", async (req, res) => {\n  const { email, name, password } = req.body;\n  if (!email || !name || !password) return res.sendStatus(401);\n\n  const hashpass = await bcrypt.hash(password, 10);\n  const [newUser, created] = await User.findOrCreate({\n    where: { email },\n    defaults: {\n      name,\n      password: hashpass,\n    },\n  });\n\n  if (!created) return res.sendStatus(402);\n\n  const user = newUser.get();\n  delete user.password;\n\n  const { accessToken, refreshToken } = generateTokens({ user });\n  res\n    .cookie(\"refreshToken\", refreshToken, cookieConfig)\n    .json({ accessToken, user });\n});\n\nauthRouter.post(\"/login\", async (req, res) => {\n  const { email, password } = req.body;\n  if (!email || !password) return res.sendStatus(400);\n  \n  const existingRefreshToken = req.cookies.refreshToken;\n  if (existingRefreshToken) {\n    try {\n      jwt.verify(existingRefreshToken, process.env.REFRESH_TOKEN_SECRET);\n      return res.sendStatus(409); // Already logged in\n    } catch (err) {\n      res.clearCookie(\"refreshToken\", cookieConfig);\n    }\n  }\n  if (!email || !password) {\n    console.error('Login attempt failed: Missing credentials');\n    return res.sendStatus(400);\n  }\n  const foundUser = await User.findOne({ where: { email } });\n  if (!foundUser) {\n    console.error(`Login attempt failed: User not found for email ${email}`);\n    return res.sendStatus(400);\n  }\n\n  const isValid = await bcrypt.compare(password, foundUser.password);\n  if (!isValid) {\n    console.error(`Login attempt failed: Invalid password for user ${email}`);\n    return res.sendStatus(400);\n  }\n\n  const user = foundUser.get();\n  delete user.password;\n  const { accessToken, refreshToken } = generateTokens({ \n    user: {\n      id: user.id,\n      email: user.email,\n      name: user.name\n    }\n  });\n\n  res\n    .status(200)\n    .cookie(\"refreshToken\", refreshToken, cookieConfig)\n    .json({ accessToken, user });\n});\n\nauthRouter.post(\"/logout\", async (req, res) => {\n  res.clearCookie(\"refreshToken\", cookieConfig).sendStatus(200);\n});\n\nmodule.exports = authRouter;\n
+const express = require("express");
+const { User, Inventory, User_selected_items } = require("../../db/models");
+const bcrypt = require("bcrypt");
+const cookieConfig = require("../configs/cookieConfig");
+const jwt = require("jsonwebtoken");
+const generateTokens = require("../utils/generateTokens");
+
+const authRouter = express.Router();
+
+authRouter.post("/signup", async (req, res) => {
+  const { email, name, password } = req.body;
+  if (!email || !name || !password) return res.sendStatus(401);
+
+  const hashpass = await bcrypt.hash(password, 10);
+  const [newUser, created] = await User.findOrCreate({
+    where: { email },
+    defaults: {
+      name,
+      password: hashpass,
+    },
+  });
+
+  if (!created) return res.sendStatus(402);
+
+  const user = newUser.get();
+  delete user.password;
+
+  const { accessToken, refreshToken } = generateTokens({ user });
+  res
+    .cookie("refreshToken", refreshToken, cookieConfig)
+    .json({ accessToken, user });
+});
+
+authRouter.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.sendStatus(400);
+
+  const existingRefreshToken = req.cookies.refreshToken;
+  if (existingRefreshToken) {
+    try {
+      jwt.verify(existingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+      return res.sendStatus(409); // Already logged in
+    } catch (err) {
+      res.clearCookie("refreshToken", cookieConfig);
+    }
+  }
+  if (!email || !password) {
+    console.error("Login attempt failed: Missing credentials");
+    return res.sendStatus(400);
+  }
+  const foundUser = await User.findOne({ where: { email } });
+  if (!foundUser) {
+    console.error(`Login attempt failed: User not found for email ${email}`);
+    return res.sendStatus(400);
+  }
+
+  const isValid = await bcrypt.compare(password, foundUser.password);
+  if (!isValid) {
+    console.error(`Login attempt failed: Invalid password for user ${email}`);
+    return res.sendStatus(400);
+  }
+
+  const user = foundUser.get();
+  delete user.password;
+  const { accessToken, refreshToken } = generateTokens({
+    user: {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    },
+  });
+
+  res
+    .status(200)
+    .cookie("refreshToken", refreshToken, cookieConfig)
+    .json({ accessToken, user });
+});
+
+authRouter.post("/logout", async (req, res) => {
+  res.clearCookie("refreshToken", cookieConfig).sendStatus(200);
+});
+
+module.exports = authRouter;

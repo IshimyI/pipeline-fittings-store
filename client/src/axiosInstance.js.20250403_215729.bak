@@ -1,0 +1,68 @@
+import axios from "axios";
+
+const axiosInstance = axios.create({
+  baseURL: `${import.meta.env.VITE_TARGET}/api`,
+  withCredentials: true,
+});
+
+let accessToken = "";
+
+export function setAccessToken(newToken) {
+  accessToken = newToken;
+}
+
+export function clearAccessToken() {
+  accessToken = "";
+}
+
+export function getUserData() {
+  return JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || 'null');
+}
+
+export function saveUserData(userData) {
+  localStorage.setItem('user', JSON.stringify(userData));
+  sessionStorage.setItem('user', JSON.stringify(userData));
+}
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    if (!config.headers.Authorization && accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+axiosInstance.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  async (error) => {
+    const prevReq = error.config;
+    if (error.response?.status === 401 && !prevReq.sent) {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
+          { withCredentials: true }
+        );
+        accessToken = response.data.accessToken;
+        if (response.data.user) {
+          saveUserData(response.data.user);
+        }
+        prevReq.sent = true;
+        prevReq.headers.Authorization = `Bearer ${accessToken}`;
+        return axiosInstance(prevReq);
+      } catch (refreshError) {
+        clearAccessToken();
+        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
+        window.location.href = '/login';
+        return Promise.reject(new Error('Authentication failed. Please login again.'));
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default axiosInstance;
