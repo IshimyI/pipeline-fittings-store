@@ -1,0 +1,23 @@
+// JWT configuration for access and refresh tokens
+// Access tokens are short-lived for security
+// Refresh tokens have longer expiry for persistent sessions
+const jwtConfig = {
+  development: {
+    access: {
+      expiresIn: `${60 * 5 * 1000}`,
+    },
+    refresh: {
+      expiresIn: `${12 * 60 * 60 * 1000}`,
+    },
+  },
+  production: {
+    access: {
+      expiresIn: `${60 * 3 * 1000}`,
+    },
+    refresh: {
+      expiresIn: `${6 * 60 * 60 * 1000}`,
+    },
+  },
+};
+
+module.exports = jwtConfig;

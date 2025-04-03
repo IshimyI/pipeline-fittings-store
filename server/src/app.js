@@ -9,12 +9,15 @@ const fs = require("fs");
 const path = require("path");
 const session = require("express-session");
 const config = require("./configs/config.json");
+
 const router = require("./routes/router");
 const authRouter = require("./routes/authRouter");
 const tokensRouter = require("./routes/tokensRouter");
 const app = express();
 const { PORT } = process.env || 3000;
 
+// CORS configuration is critical for handling cross-origin requests and cookies
+// Ensure all client domains are listed in origin array for proper cookie handling
 const corsConfig = {
   origin: [
     "http://localhost:5173",
@@ -25,8 +28,10 @@ const corsConfig = {
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
   exposedHeaders: ["Set-Cookie"],
+  preflightContinue: true,
+  optionsSuccessStatus: 200
 };
 app.use(cors(corsConfig));
 app.use(logger("dev"));
@@ -36,21 +41,30 @@ app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(
   session({
-    secret: config.telegram.secretKey,
+    secret: process.env.SESSION_SECRET || config.telegram.secretKey,
     resave: false,
     saveUninitialized: true,
     cookie: {
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-      secure: process.env.NODE_ENV === "production",
-      path: "/",
-      maxAge: 12 * 60 * 60 * 1000,
-    },
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      sameSite: 'strict',
+      domain: process.env.COOKIE_DOMAIN || 'localhost',
+      path: '/',
+      maxAge: parseInt(process.env.COOKIE_MAX_AGE) || 24 * 60 * 60 * 1000,
+      originalMaxAge: parseInt(process.env.COOKIE_MAX_AGE) || 24 * 60 * 60 * 1000
+    }
   })
 );
 app.options("*", cors(corsConfig));
 app.use((err, req, res, next) => {
   if (err.name === "CORSError") {
-    res.status(403).json({ error: "CORS error", message: err.message });
+    console.error('CORS Error:', err.message);
+    return res.status(403).json({
+      error: "CORS error",
+      message: err.message,
+      origin: req.headers.origin,
+      allowedOrigins: corsConfig.origin
+    });
   }
   next(err);
 });

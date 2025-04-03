@@ -9,24 +9,15 @@ const convertJwtTimeToMs = (timeString) => {
     d: 24 * 60 * 60 * 1000, // days to ms
   };
   
-  const match = timeString.match(/^(\d+)([smhd])$/);
+  const match = timeString.match(/^(\\d+)([smhd])$/);
   if (!match) {
-    console.warn(`Invalid time format: ${timeString}, defaulting to 7 days. Expected format: number followed by s/m/h/d (e.g., 30m, 24h, 7d)`);
-
+    console.warn(`Invalid time format: ${timeString}, defaulting to 7 days`);
     return 7 * 24 * 60 * 60 * 1000; // Default to 7 days in ms
   }
   
   const value = parseInt(match[1], 10);
-  if (isNaN(value)) {
-    console.error(`Failed to parse time value: ${match[1]} is not a valid number`);
-    return 7 * 24 * 60 * 60 * 1000; // Default to 7 days in ms
-  }
   const unit = match[2];
   
-  if (!units[unit]) {
-    console.error(`Invalid time unit: ${unit}. Must be one of: s, m, h, d`);
-    return 7 * 24 * 60 * 60 * 1000; // Default to 7 days in ms
-  }
   return value * units[unit];
 };
 

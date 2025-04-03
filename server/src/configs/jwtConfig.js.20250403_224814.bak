@@ -1,0 +1,59 @@
+// JWT configuration for access and refresh tokens
+// Access tokens are short-lived for security
+// Refresh tokens have longer expiry for persistent sessions
+
+const environments = {
+  development: {
+    access: {
+      expiresIn: '30m', // 30 minutes
+      expiry: 30 * 60 * 1000,
+      secret: process.env.JWT_ACCESS_SECRET || 'dev-access-secret'
+    },
+    refresh: {
+      expiresIn: '30d', // 30 days
+      expiry: 30 * 24 * 60 * 60 * 1000,
+      secret: process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret'
+    },
+    cookieOptions: {
+      secure: false,
+      sameSite: 'lax'
+    }
+  },
+  production: {
+    access: {
+      expiresIn: '15m', // 15 minutes
+      expiry: 15 * 60 * 1000,
+      secret: process.env.JWT_ACCESS_SECRET
+    },
+    refresh: {
+      expiresIn: '7d', // 7 days
+      expiry: 7 * 24 * 60 * 60 * 1000,
+      secret: process.env.JWT_REFRESH_SECRET
+    },
+    cookieOptions: {
+      secure: true,
+      sameSite: 'strict'
+    }
+  },
+  test: {
+    access: {
+      expiresIn: '1h',
+      expiry: 60 * 60 * 1000,
+      secret: 'test-access-secret'
+    },
+    refresh: {
+      expiresIn: '7d', // 7 days
+      expiry: 7 * 24 * 60 * 60 * 1000,
+      secret: 'test-refresh-secret'
+    },
+    cookieOptions: {
+      secure: false,
+      sameSite: 'lax'
+    }
+  }
+};
+
+const env = process.env.NODE_ENV || 'development';
+const jwtConfig = environments[env];
+
+module.exports = jwtConfig;

@@ -55,8 +55,6 @@ function App() {
     fetchCategories();
   }, []);
 
-  if (loadingUser) return <p>Загрузка пользователя...</p>;
-
   const handleSignUp = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);

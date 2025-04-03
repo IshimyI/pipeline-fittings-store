@@ -28,7 +28,7 @@ function verifyRefreshToken(req, res, next) {
     // Validate token format
     if (
       typeof refreshToken !== "string" ||
-      !refreshToken.match(/^[A-Za-z0-9-_]+.[A-Za-z0-9-_]+.[A-Za-z0-9-_]*$/)
+      !refreshToken.match(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_+/=]*$/)
     ) {
       throw new TokenError("Invalid token format");
     }
@@ -37,7 +37,8 @@ function verifyRefreshToken(req, res, next) {
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
     // Double check expiration
-    if (decoded.exp && Date.now() >= decoded.exp * 1000) {
+    const clockToleranceSeconds = 30;
+    if (decoded.exp && (Date.now() / 1000) >= (decoded.exp + clockToleranceSeconds)) {
       throw new TokenError("Token has expired");
     }
 
@@ -57,22 +58,31 @@ function verifyRefreshToken(req, res, next) {
       userAgent: req.headers["user-agent"],
       timestamp: new Date().toISOString(),
       endpoint: req.originalUrl,
+      method: req.method,
+      cookies: req.cookies,
+      headers: req.headers,
+      path: req.path
     });
 
     // Handle specific error types
     if (error.name === "TokenError") {
       res.status(401).json({ error: error.message });
     } else if (error.name === "JsonWebTokenError") {
-      res.status(401).json({ error: "Invalid token" });
+      res.status(401).json({ error: "Invalid token", details: error.message });
     } else if (error.name === "TokenExpiredError") {
-      res.status(401).json({ error: "Token expired" });
+      res.status(401).json({ error: "Token expired", expiredAt: error.expiredAt });
+    } else if (error.name === "NotBeforeError") {
+      res.status(401).json({ error: "Token not yet active", date: error.date });
     } else if (error.name === "SessionError") {
       res.status(403).json({ error: error.message });
     } else {
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: "Internal server error", message: "An unexpected error occurred" });
     }
 
-    res.clearCookie("refreshToken", cookieConfig);
+    res.clearCookie("refreshToken", {
+      ...cookieConfig,
+      maxAge: 0
+    });
   }
 }
 
