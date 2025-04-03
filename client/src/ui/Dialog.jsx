@@ -306,7 +306,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                     />
                   </div>
 
-                  <div className="md:w-2/3 space-y-3 overflow-y-scroll max-h-[320px] pr-2">
+                  <div className="md:w-2/3 space-y-3 overflow-y-scroll max-h-[320px] md:max-h-full pr-2">
                     <div className="space-y-3">
                       <div className="bg-krio-foreground p-3 rounded-lg">
                         <p className="text-sm text-gray-400 mb-1">Цена</p>
@@ -369,7 +369,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
                 <h4 className="text-2xl font-bold text-white mb-4">
                   Редактирование товара
                 </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[420px] overflow-y-scroll">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[420px] md:max-h-full overflow-y-scroll">
                   <div className="space-y-4">
                     <div>
                       <label className="block text-gray-300 mb-2">

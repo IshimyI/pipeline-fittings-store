@@ -115,18 +115,6 @@ export default function Header({ user, handleLogout }) {
               О нас
             </NavLink>
             <NavLink
-              to="/news"
-              className={({ isActive }) =>
-                `px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
-                  isActive
-                    ? "text-krio-secondary bg-krio-foreground/30"
-                    : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20"
-                }`
-              }
-            >
-              Новости
-            </NavLink>
-            <NavLink
               to="/contacts"
               className={({ isActive }) =>
                 `px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
@@ -221,13 +209,7 @@ export default function Header({ user, handleLogout }) {
               {!user ? (
                 <NavLink
                   to="/login"
-                  className={({ isActive }) =>
-                                    `px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
-                                      isActive
-                                        ? "text-krio-secondary bg-krio-foreground/30"
-                                        : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20"
-                                    }`
-                                  }
+                  className="flex items-center space-x-2 px-3 lg:px-4 py-2 bg-krio-primary text-krio-background text-sm font-medium rounded-md shadow-md hover:bg-krio-secondary hover:text-krio-foreground transition-all duration-300"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -304,15 +286,6 @@ export default function Header({ user, handleLogout }) {
               }
             >
               О нас
-            </NavLink>
-            <NavLink
-              to="/news"
-              onClick={() => setIsOpen(false)}
-              className={({ isActive }) =>
-                commonLinkStyles(isActive) + " block mx-4 my-1 rounded-md"
-              }
-            >
-              Новости
             </NavLink>
             <NavLink
               to="/contacts"

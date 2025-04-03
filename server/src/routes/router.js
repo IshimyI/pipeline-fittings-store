@@ -8,6 +8,7 @@ const {
   Basket,
   Order,
   Feedback,
+  News,
 } = require("../../db/models");
 const { where } = require("sequelize");
 const verifyRefreshToken = require("../middlewares/verifyRefreshToken");
@@ -17,6 +18,7 @@ const sendEmail = require("../services/emailService");
 const {
   uploadProductImage,
   uploadCategoryImage,
+  uploadNewsImage,
 } = require("../middlewares/fileUpload");
 
 const router = express.Router();
@@ -47,6 +49,26 @@ router.get("/listProducts", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send(error.message);
+  }
+});
+
+router.get("/latestProduct", async (req, res) => {
+  try {
+    const maxId = await Product.max("id");
+
+    const product = await Product.findByPk(maxId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Продукт не найден" });
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    console.error("Ошибка при получении последнего продукта:", error);
+    res.status(500).json({
+      message: "Ошибка при получении последнего продукта",
+      error: error.message,
+    });
   }
 });
 
@@ -132,7 +154,7 @@ router.post(
       price,
       image = "default-product.jpg",
       availability = 0,
-      params = { },
+      params = {},
     } = req.body;
 
     try {
@@ -596,6 +618,89 @@ router.get("/feedback", async (req, res) => {
   }
 });
 
+router.post(
+  "/createNews",
+  verifyRefreshToken,
+  uploadNewsImage,
+  async (req, res) => {
+    try {
+      if (!res.locals.user.isAdmin) {
+        return res.status(403).json({
+          message: "Доступ запрещен",
+        });
+      }
+
+      const { title, content } = req.body;
+
+      if (!title || !content) {
+        return res.status(400).json({
+          message: "Заполните название и содержание новости",
+        });
+      }
+
+      let imagePath = "/uploads/no-photo.png";
+      if (req.file) {
+        imagePath = req.file.cloudinaryUrl;
+      }
+
+      const news = await News.create({
+        title,
+        content,
+        image: imagePath,
+      });
+
+      res.status(201).json({
+        message: "Новость успешно создана",
+        news: {
+          id: news.id,
+          title: news.title,
+          content: news.content,
+          image: news.image,
+          createdAt: news.createdAt,
+        },
+      });
+    } catch (error) {
+      console.error("Ошибка при создании новости:", error);
+      res.status(500).json({
+        message: "Ошибка сервера при создании новости",
+        error: error.message,
+      });
+    }
+  }
+);
+
+router.get("/listNews", async (req, res) => {
+  try {
+    const news = await News.findAll({
+      order: [["createdAt", "DESC"]],
+    });
+    res.status(200).json(news);
+  } catch (error) {
+    console.error("Ошибка при получении списка новостей:", error);
+    res.status(500).json({
+      message: "Ошибка при получении списка новостей",
+      error: error.message,
+    });
+  }
+});
+
+router.get("/latestNews", async (req, res) => {
+  try {
+    const limit = req.query.limit || 5;
+    const news = await News.findAll({
+      order: [["createdAt", "DESC"]],
+      limit: parseInt(limit),
+    });
+    res.status(200).json(news);
+  } catch (error) {
+    console.error("Ошибка при получении последних новостей:", error);
+    res.status(500).json({
+      message: "Ошибка при получении последних новостей",
+      error: error.message,
+    });
+  }
+});
+
 router.delete("/feedback/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -607,5 +712,88 @@ router.delete("/feedback/:id", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+router.get("/news/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const newsItem = await News.findByPk(id);
+    if (!newsItem) {
+      return res.status(404).json({ message: "Новость не найдена" });
+    }
+    res.status(200).json(newsItem);
+  } catch (error) {
+    console.error("Ошибка при получении новости:", error);
+    res.status(500).json({
+      message: "Ошибка при получении новости",
+      error: error.message,
+    });
+  }
+});
+
+router.post(
+  "/updateNews/:id/:userId",
+  verifyRefreshToken,
+  uploadNewsImage,
+  async (req, res) => {
+    const { id, userId } = req.params;
+    const { title, content } = req.body;
+
+    try {
+      const user = await User.findByPk(userId);
+      if (!user.isAdmin) {
+        return res.status(403).send({ message: "Доступ запрещен" });
+      }
+
+      const news = await News.findByPk(id);
+      if (!news) {
+        return res.status(404).json({ message: "Новость не найдена" });
+      }
+
+      news.title = title || news.title;
+      news.content = content || news.content;
+      if (req.file) {
+        news.image = req.file.cloudinaryUrl;
+      }
+
+      await news.save();
+      res.status(200).json({ message: "Новость успешно обновлена", news });
+    } catch (error) {
+      console.error("Ошибка при обновлении новости:", error);
+      res.status(500).json({
+        message: "Ошибка при обновлении новости",
+        error: error.message,
+      });
+    }
+  }
+);
+
+router.delete(
+  "/deleteNews/:id/:userId",
+  verifyRefreshToken,
+  async (req, res) => {
+    const { id, userId } = req.params;
+
+    try {
+      const user = await User.findByPk(userId);
+
+      if (!user.isAdmin) {
+        return res.status(403).send({ message: "Доступ запрещен" });
+      }
+
+      const news = await News.findByPk(id);
+      if (!news) {
+        return res.status(404).json({ message: "Новость не найдена" });
+      }
+      await news.destroy();
+      res.status(200).json({ message: "Новость успешно удалена" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: "Ошибка при удалении новости",
+        error: error.message,
+      });
+    }
+  }
+);
 
 module.exports = router;

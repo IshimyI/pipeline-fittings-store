@@ -17,6 +17,7 @@ import BasketPage from "./pages/BasketPage";
 import Admin from "./pages/Admin";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
+import NewsPage from "./pages/NewsPage";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -129,6 +130,8 @@ function App() {
           path="/category"
           element={<ProductsPage user={user} category={category} />}
         />
+        <Route path="/news" element={<NewsPage user={user} />} />
+        <Route path="/news/:id" element={<NewsPage user={user} />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="*" element={<ErrorPage user={user} />} />

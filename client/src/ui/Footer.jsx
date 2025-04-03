@@ -40,7 +40,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Каталог */}
           <div className="space-y-6">
             <h3 className="text-2xl font-bold text-krio-secondary relative pb-4 after:absolute after:bottom-0 after:left-0 after:w-16 after:h-1 after:bg-krio-primary after:rounded-full">
               Каталог

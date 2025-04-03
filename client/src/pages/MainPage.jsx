@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback, memo } from "react";
 import Category from "../ui/Category";
 import axiosInstance from "../axiosInstance";
 import AddProductForm from "../components/AddProductForm";
+import Dialog from "../ui/Dialog";
 const MemoizedCategory = memo(Category);
 
 export default function MainPage({ user, category }) {
@@ -19,20 +20,29 @@ export default function MainPage({ user, category }) {
     availability: 0,
     params: "",
   });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [latestNews, setLatestNews] = useState([]);
+  const [latestProduct, setLatestProduct] = useState(null);
 
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const [categoriesRes, productsRes] = await Promise.all([
-        axiosInstance.get("/ListCategories"),
-        axiosInstance.get("/ListProducts"),
-      ]);
+      const [categoriesRes, productsRes, newsRes, latestProductRes] =
+        await Promise.all([
+          axiosInstance.get("/ListCategories"),
+          axiosInstance.get("/ListProducts"),
+          axiosInstance.get("/ListNews"),
+          axiosInstance.get("/latestProduct"),
+        ]);
 
       setCategories(categoriesRes.data);
       setProducts(productsRes.data);
+      setLatestNews(newsRes.data.slice(0, 3));
+      setLatestProduct(latestProductRes.data);
     } catch (error) {
       setError("Ошибка при загрузке данных");
     } finally {
@@ -313,6 +323,86 @@ export default function MainPage({ user, category }) {
                 user={user}
               />
             </div>
+            <section className="mb-16 grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-8">
+              <div>
+                <h2 className="text-4xl font-bold text-center text-gray-300 mb-8 lg:mb-12">
+                  Последние новости
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {latestNews.slice(0, 3).map((news) => (
+                    <article
+                      key={news.id}
+                      className="bg-krio-background rounded-xl p-5 shadow-lg hover:shadow-2xl transition-all duration-300 group"
+                      onClick={() => navigate(`/news/${news.id}`)}
+                    >
+                      <div className="relative overflow-hidden rounded-lg mb-4">
+                        <img
+                          src={news.image || "/uploads/default-news.jpg"}
+                          alt={news.title}
+                          className="w-full h-52 object-contain transform group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-3 line-clamp-2">
+                        {news.title}
+                      </h3>
+                      <p className="text-gray-400 text-sm line-clamp-3 mb-4">
+                        {news.summary}
+                      </p>
+                      <button
+                        onClick={() => navigate(`/news/${news.id}`)}
+                        className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+                      >
+                        Читать далее →
+                      </button>
+                    </article>
+                  ))}
+                </div>
+              </div>
+
+              <div className="lg:pl-4">
+                <h2 className="text-4xl font-bold text-center text-gray-300 mb-8 lg:mb-12">
+                  Новый товар
+                </h2>
+                {latestProduct && (
+                  <div
+                    className="bg-krio-background rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 group sticky top-6 cursor-pointer"
+                    onClick={() => {
+                      setSelectedProduct(latestProduct);
+                      setIsDialogOpen(true);
+                    }}
+                  >
+                    <div className="flex flex-col gap-6">
+                      <div className="relative overflow-hidden rounded-lg">
+                        <img
+                          src={latestProduct.image || "/uploads/no-photo.png"}
+                          alt={latestProduct.name}
+                          className="w-full h-52 object-contain transform group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            e.target.src = "/uploads/no-photo.png";
+                            e.target.onerror = null;
+                          }}
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <h3 className="text-2xl font-semibold mb-2 line-clamp-2">
+                          {latestProduct.name}
+                        </h3>
+                        <div className="flex items-center justify-between mb-4">
+                          <p className="text-xl text-blue-400 font-medium">
+                            По запросу
+                          </p>
+                          <span className="text-sm text-emerald-400 bg-emerald-900/30 px-3 py-1 rounded-full">
+                            {latestProduct.availability > 0
+                              ? "Есть в наличии"
+                              : "Под заказ"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
             <section>
               <h2 className="text-4xl font-bold text-center text-gray-300 mb-12">
                 Каталог
@@ -411,6 +501,13 @@ export default function MainPage({ user, category }) {
           </div>
         </div>
       </main>
+      <Dialog
+        user={user}
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        product={selectedProduct}
+        category={categories}
+      />
     </div>
   );
 }
