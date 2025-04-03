@@ -1,16 +1,1 @@
-const jwt = require("jsonwebtoken");
-
-require("dotenv").config();
-function verifyRefreshToken(req, res, next) {
-  try {
-    const { refreshToken } = req.cookies;
-    const { user } = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-    res.locals.user = user;
-    next();
-  } catch (error) {
-    console.log("invalid refresh token");
-    res.clearCookie("refreshToken", { httpOnly: true, sameSite: "none", secure: true, path: "/" }).sendStatus(401);
-  }
-}
-
-module.exports = verifyRefreshToken;
+const jwt = require(\"jsonwebtoken\");\nconst cookieConfig = require(\"../configs/cookieConfig\");\n\nrequire(\"dotenv\").config();\nfunction verifyRefreshToken(req, res, next) {\n  try {\n    const { refreshToken } = req.cookies;\n    if (!refreshToken) {\n      return res.status(401).json({ error: 'No refresh token found' });\n    }\n    const { user } = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);\n    res.locals.user = user;\n    next();\n  } catch (error) {\n    console.error('Refresh token verification failed:', error.message);\n    res.clearCookie(\"refreshToken\", cookieConfig).sendStatus(401);\n  }\n}\n\nmodule.exports = verifyRefreshToken;\n
