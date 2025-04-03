@@ -29,20 +29,13 @@ authRouter.post("/signup", async (req, res) => {
     delete user.password;
 
     const { accessToken, refreshToken } = generateTokens({ user });
-    
-    // Use cookieConfig directly without overriding settings
     res
-      .cookie("refreshToken", refreshToken, cookieConfig)
+      .cookie("refreshToken", refreshToken, {
+        ...cookieConfig,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict"
+      })
       .json({ accessToken, user });
-    
-    console.log('Signup successful, refresh token cookie set:', {
-      email: user.email,
-      cookieSettings: {
-        sameSite: cookieConfig.sameSite,
-        secure: cookieConfig.secure,
-        domain: cookieConfig.domain
-      }
-    });
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ error: "Failed to signup" });
@@ -96,30 +89,27 @@ authRouter.post("/login", async (req, res) => {
     },
   });
 
-  // Use cookieConfig directly without overriding settings
   res
     .status(200)
-    .cookie("refreshToken", refreshToken, cookieConfig)
+    .cookie("refreshToken", refreshToken, {
+      ...cookieConfig,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict"
+    })
     .json({ accessToken, user });
-  
-  console.log('Login successful, refresh token cookie set:', {
-    email: user.email,
-    cookieSettings: {
-      sameSite: cookieConfig.sameSite,
-      secure: cookieConfig.secure,
-      domain: cookieConfig.domain
-    }
-  });
 });
 
 authRouter.post("/logout", async (req, res) => {
   try {
-    // Use cookieConfig directly without overriding settings
     res
-      .clearCookie("refreshToken", cookieConfig)
+      .clearCookie("refreshToken", {
+        ...cookieConfig,
+        path: "/",
+        domain: process.env.COOKIE_DOMAIN || undefined,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      })
       .sendStatus(200);
-    
-    console.log('Logout successful, refresh token cookie cleared');
   } catch (error) {
     console.error("Logout error:", error);
     res.status(500).json({ error: "Failed to logout" });
