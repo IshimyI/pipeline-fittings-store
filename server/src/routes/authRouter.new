@@ -30,17 +30,15 @@ authRouter.post("/signup", async (req, res) => {
 
     const { accessToken, refreshToken } = generateTokens({ user });
 
-    // Log cookie configuration before setting
-    console.log("Signup - Cookie configuration before setting:", {
-      sameSite: cookieConfig.sameSite,
-      secure: cookieConfig.secure,
-      domain: cookieConfig.domain || 'undefined',
-      path: cookieConfig.path,
-      httpOnly: cookieConfig.httpOnly,
-      maxAge: cookieConfig.maxAge
-    });
-
     try {
+      console.log('Attempting to set signup refresh token cookie with config:', {
+        ...cookieConfig,
+        tokenLength: refreshToken.length,
+        domain: cookieConfig.domain || 'default',
+        sameSite: cookieConfig.sameSite,
+        secure: cookieConfig.secure
+      });
+
       res
         .cookie("refreshToken", refreshToken, cookieConfig)
         .json({ 
@@ -125,20 +123,23 @@ authRouter.post("/login", async (req, res) => {
     },
   });
 
-  // Log cookie configuration before setting
-  console.log("Login - Cookie configuration before setting:", {
-    sameSite: cookieConfig.sameSite,
-    secure: cookieConfig.secure,
-    domain: cookieConfig.domain || 'undefined',
-    path: cookieConfig.path,
-    httpOnly: cookieConfig.httpOnly,
-    maxAge: cookieConfig.maxAge,
-    environment: process.env.NODE_ENV || 'development',
-    isVercel: process.env.VERCEL ? 'yes' : 'no',
-    isRender: process.env.IS_RENDER ? 'yes' : 'no'
-  });
-
   try {
+    console.log('Attempting to set refresh token cookie with config:', {
+      ...cookieConfig,
+      tokenLength: refreshToken.length,
+      domain: cookieConfig.domain || 'default',
+      sameSite: cookieConfig.sameSite,
+      secure: cookieConfig.secure
+    });
+
+    // Verify cookie configuration
+    if (!cookieConfig.secure && process.env.NODE_ENV === 'production') {
+      console.warn('Warning: Cookies are being set without secure flag in production');
+    }
+    if (!cookieConfig.sameSite) {
+      console.warn('Warning: sameSite cookie property not configured');
+    }
+
     res
       .status(200)
       .cookie("refreshToken", refreshToken, cookieConfig)
@@ -147,7 +148,6 @@ authRouter.post("/login", async (req, res) => {
         user,
         cookieStatus: 'success'
       });
-
     console.log("Login successful, refresh token cookie set:", {
       email: user.email,
       isAdmin: user.isAdmin,
@@ -159,7 +159,15 @@ authRouter.post("/login", async (req, res) => {
       },
     });
   } catch (cookieError) {
-    console.error("Cookie setting error during login:", cookieError.message, cookieError.stack);
+    console.error("Cookie setting error during login:", {
+      error: cookieError.message,
+      stack: cookieError.stack,
+      cookieConfig: {
+        domain: cookieConfig.domain || 'default',
+        sameSite: cookieConfig.sameSite,
+        secure: cookieConfig.secure
+      }
+    });
     // If setting cookie fails, still return the access token
     res.status(200).json({ 
       accessToken, 
@@ -172,24 +180,18 @@ authRouter.post("/login", async (req, res) => {
 
 authRouter.post("/logout", async (req, res) => {
   try {
-    // Log cookie configuration before clearing
-    console.log("Logout - Cookie configuration before clearing:", {
-      sameSite: cookieConfig.sameSite,
-      secure: cookieConfig.secure,
-      domain: cookieConfig.domain || 'undefined',
-      path: cookieConfig.path,
-      httpOnly: cookieConfig.httpOnly,
-      maxAge: cookieConfig.maxAge,
-      hasRefreshToken: !!req.cookies.refreshToken
-    });
-
     res.clearCookie("refreshToken", cookieConfig).sendStatus(200);
 
     console.log("Logout successful, refresh token cookie cleared with settings:", {
       sameSite: cookieConfig.sameSite,
       secure: cookieConfig.secure,
       domain: cookieConfig.domain || 'undefined',
-      path: cookieConfig.path
+      path: cookieConfig.path,
+      crossDomain: {
+        allowedOrigins: process.env.ALLOWED_ORIGINS || 'not configured',
+        currentOrigin: req.headers.origin || 'unknown',
+        credentialsSupported: cookieConfig.credentials !== false
+      }
     });
   } catch (error) {
     console.error("Logout error:", error);

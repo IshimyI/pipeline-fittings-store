@@ -20,24 +20,6 @@ class SessionError extends Error {
 
 function verifyRefreshToken(req, res, next) {
   try {
-    // Log detailed request information for debugging
-    const cookieHeader = req.headers.cookie || 'none';
-    const cookieNames = req.cookies ? Object.keys(req.cookies) : [];
-    const hasRefreshToken = req.cookies && req.cookies.refreshToken;
-    
-    console.log("Token verification request details:", {
-      path: req.path,
-      method: req.method,
-      cookieHeader: cookieHeader,
-      cookieNames: cookieNames,
-      hasRefreshToken: hasRefreshToken,
-      origin: req.headers.origin || 'none',
-      userAgent: req.headers["user-agent"],
-      isSecure: req.secure || req.headers['x-forwarded-proto'] === 'https',
-      host: req.headers.host,
-      referer: req.headers.referer || 'none'
-    });
-
     const { refreshToken } = req.cookies;
     if (!refreshToken) {
       throw new TokenError("No refresh token found");

@@ -30,16 +30,6 @@ authRouter.post("/signup", async (req, res) => {
 
     const { accessToken, refreshToken } = generateTokens({ user });
 
-    // Log cookie configuration before setting
-    console.log("Signup - Cookie configuration before setting:", {
-      sameSite: cookieConfig.sameSite,
-      secure: cookieConfig.secure,
-      domain: cookieConfig.domain || 'undefined',
-      path: cookieConfig.path,
-      httpOnly: cookieConfig.httpOnly,
-      maxAge: cookieConfig.maxAge
-    });
-
     try {
       res
         .cookie("refreshToken", refreshToken, cookieConfig)
@@ -125,19 +115,6 @@ authRouter.post("/login", async (req, res) => {
     },
   });
 
-  // Log cookie configuration before setting
-  console.log("Login - Cookie configuration before setting:", {
-    sameSite: cookieConfig.sameSite,
-    secure: cookieConfig.secure,
-    domain: cookieConfig.domain || 'undefined',
-    path: cookieConfig.path,
-    httpOnly: cookieConfig.httpOnly,
-    maxAge: cookieConfig.maxAge,
-    environment: process.env.NODE_ENV || 'development',
-    isVercel: process.env.VERCEL ? 'yes' : 'no',
-    isRender: process.env.IS_RENDER ? 'yes' : 'no'
-  });
-
   try {
     res
       .status(200)
@@ -172,17 +149,6 @@ authRouter.post("/login", async (req, res) => {
 
 authRouter.post("/logout", async (req, res) => {
   try {
-    // Log cookie configuration before clearing
-    console.log("Logout - Cookie configuration before clearing:", {
-      sameSite: cookieConfig.sameSite,
-      secure: cookieConfig.secure,
-      domain: cookieConfig.domain || 'undefined',
-      path: cookieConfig.path,
-      httpOnly: cookieConfig.httpOnly,
-      maxAge: cookieConfig.maxAge,
-      hasRefreshToken: !!req.cookies.refreshToken
-    });
-
     res.clearCookie("refreshToken", cookieConfig).sendStatus(200);
 
     console.log("Logout successful, refresh token cookie cleared with settings:", {

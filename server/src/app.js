@@ -23,7 +23,10 @@ const allowedOrigins = [
   "http://127.0.0.1:5173",
   "https://pipeline-fittings-store-client.vercel.app",
   "https://www.pipeline-fittings-store-client.vercel.app",
-];
+  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : []),
+  process.env.CLIENT_URL,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null
+].filter(Boolean);
 
 // Add CLIENT_URL from environment if it exists
 if (process.env.CLIENT_URL) {
@@ -44,12 +47,12 @@ const corsConfig = {
     }
   },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-  exposedHeaders: ["Set-Cookie"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization", "Cookie", "X-Requested-With"],
+  exposedHeaders: ["Set-Cookie", "Authorization"],
   preflightContinue: false,
   optionsSuccessStatus: 204,
-  maxAge: 3600
+  maxAge: 86400
 };
 
 app.use(cors(corsConfig));
@@ -97,13 +100,13 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: process.env.NODE_ENV === 'production' || !!process.env.VERCEL || !!process.env.VERCEL_URL,
-      httpOnly: true,
-      sameSite: process.env.NODE_ENV === 'production' || !!process.env.VERCEL || !!process.env.VERCEL_URL ? 'none' : 'lax',
-      domain: sessionDomain,
-      path: '/',
-      maxAge: parseInt(process.env.COOKIE_MAX_AGE) || 24 * 60 * 60 * 1000,
-      originalMaxAge: parseInt(process.env.COOKIE_MAX_AGE) || 24 * 60 * 60 * 1000
+    secure: true,
+    httpOnly: true,
+    sameSite: 'none',
+    domain: sessionDomain,
+    path: '/',
+    maxAge: parseInt(process.env.COOKIE_MAX_AGE) || 24 * 60 * 60 * 1000,
+    originalMaxAge: parseInt(process.env.COOKIE_MAX_AGE) || 24 * 60 * 60 * 1000
     }
   })
 );
@@ -119,6 +122,10 @@ app.use((err, req, res, next) => {
     console.error('Request Headers:', JSON.stringify(req.headers));
     console.error('Is Vercel Origin:', req.headers.origin?.endsWith('.vercel.app') || false);
     console.error('Allowed Origins:', allowedOrigins);
+    console.error('Credentials:', req.headers?.credentials);
+    console.error('Access-Control-Request-Headers:', req.headers['access-control-request-headers']);
+    console.error('Access-Control-Request-Method:', req.headers['access-control-request-method']);
+    console.error('CORS Config:', JSON.stringify(corsConfig, null, 2));
     
     return res.status(403).json({
       error: "CORS error",

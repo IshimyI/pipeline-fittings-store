@@ -15,6 +15,16 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
     });
 
     try {
+      // Log cookie configuration details
+      console.log('Attempting to set refresh token cookie with config:', {
+        sameSite: cookieConfig.sameSite,
+        secure: cookieConfig.secure,
+        domain: cookieConfig.domain || 'undefined',
+        path: cookieConfig.path,
+        httpOnly: cookieConfig.httpOnly,
+        maxAge: cookieConfig.maxAge
+      });
+
       // Set the refresh token cookie with proper options
       res
         .cookie("refreshToken", refreshToken, cookieConfig)

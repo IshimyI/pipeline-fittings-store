@@ -44,18 +44,8 @@ const validateDomain = (domain) => {
   // Remove path and query params if present
   cleanDomain = cleanDomain.split('/')[0];
   
-  // Handle Vercel preview domains
-  if (cleanDomain.endsWith('.vercel.app')) {
-    return cleanDomain;
-  }
-  
-  // Handle Render domains
-  if (cleanDomain.endsWith('.onrender.com')) {
-    return cleanDomain;
-  }
-  
-  // Enhanced domain validation with wildcard support
-  const domainRegex = /^(\*\.)?(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
+  // Basic domain validation
+  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/;
   if (!domainRegex.test(cleanDomain)) {
     console.warn(`Invalid domain format: ${cleanDomain}, using undefined`);
     return undefined;
@@ -89,11 +79,7 @@ const isRenderEnvironment = () => {
     process.env.RENDER ||
     process.env.RENDER_EXTERNAL_URL ||
     process.env.RENDER_SERVICE_ID ||
-    process.env.IS_RENDER ||
-    process.env.RENDER_INTERNAL_HOSTNAME ||
-    process.env.RENDER_GIT_BRANCH ||
-    process.env.RENDER_GIT_COMMIT ||
-    process.env.RENDER_INSTANCE_ID
+    process.env.IS_RENDER
   );
 };
 
@@ -104,11 +90,10 @@ let cookieConfig;
 const defaultCookieConfig = {
   httpOnly: true,
   maxAge: convertJwtTimeToMs(jwtConfig.refresh.expiresIn),
-  sameSite: "none", // Required for cross-domain support
-  secure: true,     // Required for cross-domain and when sameSite is 'none'
+  sameSite: "none", // For cross-domain cookies
+  secure: true,     // Required when sameSite is 'none'
   path: "/",
   domain: process.env.COOKIE_DOMAIN || undefined,
-  _crossDomainEnabled: true, // Flag indicating cross-domain support is enabled
 };
 
 // Get the frontend domain from environment variables or use a default
@@ -117,15 +102,6 @@ const frontendDomain = validateDomain(
   process.env.COOKIE_DOMAIN || 
   "pipeline-fittings-store-client.vercel.app"
 );
-
-if (!frontendDomain) {
-  console.warn('Failed to validate frontend domain. This may cause cookie issues.');
-  console.warn('Attempted domains:', {
-    FRONTEND_DOMAIN: process.env.FRONTEND_DOMAIN || 'not set',
-    COOKIE_DOMAIN: process.env.COOKIE_DOMAIN || 'not set',
-    default: 'pipeline-fittings-store-client.vercel.app'
-  });
-}
 
 if (process.env.NODE_ENV === "development") {
   // Local development configuration
@@ -201,27 +177,18 @@ if (!cookieConfig || typeof cookieConfig.maxAge !== "number" || cookieConfig.max
   cookieConfig.maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 }
 
-// Debug mode configuration
-const DEBUG_MODE = process.env.DEBUG_COOKIE_CONFIG === 'true';
-
 // Log cookie configuration for debugging purposes
 // Log if we're using default configuration
 if (cookieConfig === defaultCookieConfig) {
   console.warn("Using default cookie configuration as fallback");
 }
 
-if (DEBUG_MODE) {
-  console.log("Cookie configuration:", {
-    ...cookieConfig,
-    domain: cookieConfig.domain || "undefined",
-    environment: process.env.NODE_ENV || "development",
-    isVercel: isVercelEnvironment() ? "yes" : "no",
-    isRender: isRenderEnvironment() ? "yes" : "no",
-    frontendDomain,
-    cookieDomain: process.env.COOKIE_DOMAIN,
-    vercelUrl: process.env.VERCEL_URL,
-    renderUrl: process.env.RENDER_EXTERNAL_URL
-  });
-}
+console.log("Cookie configuration:", {
+  ...cookieConfig,
+  domain: cookieConfig.domain || "undefined",
+  environment: process.env.NODE_ENV || "development",
+  isVercel: isVercelEnvironment() ? "yes" : "no",
+  isRender: isRenderEnvironment() ? "yes" : "no",
+});
 
 module.exports = cookieConfig || defaultCookieConfig;
