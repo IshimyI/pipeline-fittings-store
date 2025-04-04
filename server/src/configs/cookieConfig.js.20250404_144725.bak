@@ -49,8 +49,8 @@ const isVercelEnvironment = () => {
 
 // Helper to get the appropriate domain for cookies
 const getDomain = () => {
-  // For Vercel environments
-  if (isVercelEnvironment()) {
+  // For Vercel environments, extract domain from VERCEL_URL
+  if (isVercelEnvironment() && process.env.VERCEL_URL) {
     return '.vercel.app';
   }
   
@@ -65,7 +65,7 @@ const getDomain = () => {
   }
   
   // Default fallback
-  return process.env.COOKIE_DOMAIN === '.' ? undefined : process.env.COOKIE_DOMAIN;
+  return process.env.COOKIE_DOMAIN;
 };
 
 // Configuration for cross-domain authentication cookies

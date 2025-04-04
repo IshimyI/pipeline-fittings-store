@@ -44,14 +44,18 @@ const isLocalEnvironment = () => {
 
 // Helper function to determine if running on Vercel
 const isVercelEnvironment = () => {
-  return !!process.env.VERCEL || !!process.env.VERCEL_URL || !!process.env.VERCEL_REGION || !!process.env.VERCEL_ENV;
+  return !!process.env.VERCEL || !!process.env.VERCEL_URL;
 };
 
 // Helper to get the appropriate domain for cookies
 const getDomain = () => {
-  // For Vercel environments
-  if (isVercelEnvironment()) {
-    return '.vercel.app';
+  // For Vercel environments, extract domain from VERCEL_URL
+  if (isVercelEnvironment() && process.env.VERCEL_URL) {
+    // Extract the base domain (vercel.app)
+    const urlParts = process.env.VERCEL_URL.split('.');
+    if (urlParts.length >= 2) {
+      return `.${urlParts.slice(-2).join('.')}`;
+    }
   }
   
   // For production with custom domain
@@ -65,7 +69,7 @@ const getDomain = () => {
   }
   
   // Default fallback
-  return process.env.COOKIE_DOMAIN === '.' ? undefined : process.env.COOKIE_DOMAIN;
+  return process.env.COOKIE_DOMAIN;
 };
 
 // Configuration for cross-domain authentication cookies
@@ -130,7 +134,7 @@ console.log("Cookie validation results:", {
   maxAgeValid: typeof cookieConfig.maxAge === "number" && cookieConfig.maxAge > 0,
   secureAppropriate: cookieConfig.secure === true || process.env.NODE_ENV !== "production",
   sameSiteValid: ["strict", "lax", "none"].includes(cookieConfig.sameSite),
-  domainValid: !cookieConfig.domain || (typeof cookieConfig.domain === 'string' && cookieConfig.domain !== '.' && cookieConfig.domain.indexOf('.') !== -1),
+  domainValid: !cookieConfig.domain || (typeof cookieConfig.domain === "string" && cookieConfig.domain !== '.'),
   crossOriginCompatible: process.env.NODE_ENV === "production" ? 
     (cookieConfig.sameSite === "none" && cookieConfig.secure === true) : true,
   subdomainSupport: cookieConfig.domain?.startsWith(".") || false

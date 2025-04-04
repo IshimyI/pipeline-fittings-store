@@ -67,7 +67,7 @@ const getDomain = () => {
   if (process.env.COOKIE_DOMAIN && process.env.COOKIE_DOMAIN !== '.') {
     return process.env.COOKIE_DOMAIN;
   }
-  return process.env.COOKIE_DOMAIN === '.' ? undefined : (process.env.NODE_ENV === 'production' ? undefined : 'localhost');
+  return process.env.NODE_ENV === 'production' ? undefined : 'localhost';
 };
 
 app.use(
