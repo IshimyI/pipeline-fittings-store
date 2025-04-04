@@ -149,13 +149,10 @@ router.post("/createProduct", uploadProductImage, async (req, res) => {
     params = {},
   } = req.body;
 
-  console.log("req.bodyreq.bodyreq.body", req.body);
-
   try {
     if (!res.locals.user.isAdmin) {
       return res.status(403).send({ message: "Доступ запрещен" });
     }
-    console.log("res.locals.user", res.locals.user);
 
     const errors = [];
     if (!name) errors.push("name");
@@ -170,15 +167,9 @@ router.post("/createProduct", uploadProductImage, async (req, res) => {
     }
 
     let imagePath = "/uploads/products/default-product.jpg";
-    if (req.file) {
-      imagePath = req.file.cloudinaryUrl;
-    }
-
-    console.log("imagePath", imagePath);
-    console.log("categoryId", categoryId);
-    console.log("price", price);
-    console.log("availability", availability);
-    console.log("params", params);
+    // if (req.file) {
+    //   imagePath = req.file.cloudinaryUrl;
+    // }
 
     const newProduct = await Product.create({
       name,
@@ -188,8 +179,6 @@ router.post("/createProduct", uploadProductImage, async (req, res) => {
       availability,
       params: typeof params === "string" ? JSON.parse(params) : params,
     });
-
-    console.log("newProduct", newProduct);
 
     res.status(201).json({
       message: "Товар успешно создан",
