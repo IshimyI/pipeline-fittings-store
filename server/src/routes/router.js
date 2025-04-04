@@ -150,6 +150,8 @@ router.post("/createProduct", uploadProductImage, async (req, res) => {
   } = req.body;
 
   try {
+    console.log("User data:", res.locals.user);
+
     if (!res.locals.user.isAdmin) {
       return res.status(403).send({ message: "Доступ запрещен" });
     }
@@ -167,9 +169,9 @@ router.post("/createProduct", uploadProductImage, async (req, res) => {
     }
 
     let imagePath = "/uploads/products/default-product.jpg";
-    // if (req.file) {
-    //   imagePath = req.file.cloudinaryUrl;
-    // }
+    if (req.file) {
+      imagePath = req.file.cloudinaryUrl;
+    }
 
     const newProduct = await Product.create({
       name,
