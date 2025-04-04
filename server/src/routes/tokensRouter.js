@@ -14,19 +14,11 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
       user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin },
     });
 
-    // Create a copy of cookieConfig without the domain property if it's a single dot
-    const cookieOptions = { ...cookieConfig };
-    
-    // Never use a single dot as domain
-    if (cookieOptions.domain === '.') {
-      console.warn('Invalid domain "." detected in cookie config, removing domain property');
-      delete cookieOptions.domain;
-    }
-
+    // Use the cookie config directly - we've fixed it in the config file
     try {
       // Set the refresh token cookie with proper options
       res
-        .cookie("refreshToken", refreshToken, cookieOptions)
+        .cookie("refreshToken", refreshToken, cookieConfig)
         .json({ 
           accessToken, 
           user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin },
@@ -37,10 +29,10 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
         email: res.locals.user.email,
         isAdmin: res.locals.user.isAdmin,
         cookieSettings: {
-          sameSite: cookieOptions.sameSite,
-          secure: cookieOptions.secure,
-          domain: cookieOptions.domain || 'undefined',
-          path: cookieOptions.path
+          sameSite: cookieConfig.sameSite,
+          secure: cookieConfig.secure,
+          domain: cookieConfig.domain || 'undefined',
+          path: cookieConfig.path
         }
       });
     } catch (cookieError) {
@@ -57,14 +49,8 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
   } catch (error) {
     console.error("Token refresh error:", error.message, error.stack);
     try {
-      // Create a copy of cookieConfig without the domain property if it's a single dot
-      const cookieOptions = { ...cookieConfig };
-      if (cookieOptions.domain === '.') {
-        delete cookieOptions.domain;
-      }
-      
       // Clear the refresh token cookie with proper options
-      res.clearCookie("refreshToken", cookieOptions).status(401).json({
+      res.clearCookie("refreshToken", cookieConfig).status(401).json({
         error: "Authentication failed",
         message: "Failed to refresh token. Please login again.",
       });

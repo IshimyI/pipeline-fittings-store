@@ -30,16 +30,9 @@ authRouter.post("/signup", async (req, res) => {
 
     const { accessToken, refreshToken } = generateTokens({ user });
 
-    // Create a copy of cookieConfig without the domain property if it's a single dot
-    const cookieOptions = { ...cookieConfig };
-    if (cookieOptions.domain === '.') {
-      console.warn('Invalid domain "." detected in cookie config, removing domain property');
-      delete cookieOptions.domain;
-    }
-
     try {
       res
-        .cookie("refreshToken", refreshToken, cookieOptions)
+        .cookie("refreshToken", refreshToken, cookieConfig)
         .json({ 
           accessToken, 
           user: { ...user, isAdmin: user.isAdmin },
@@ -49,10 +42,10 @@ authRouter.post("/signup", async (req, res) => {
       console.log("Signup successful, refresh token cookie set:", {
         email: user.email,
         cookieSettings: {
-          sameSite: cookieOptions.sameSite,
-          secure: cookieOptions.secure,
-          domain: cookieOptions.domain || 'undefined',
-          path: cookieOptions.path
+          sameSite: cookieConfig.sameSite,
+          secure: cookieConfig.secure,
+          domain: cookieConfig.domain || 'undefined',
+          path: cookieConfig.path
         },
       });
     } catch (cookieError) {
@@ -89,23 +82,9 @@ authRouter.post("/login", async (req, res) => {
         return res.sendStatus(409); // Already logged in with same account
       }
       
-      // Create a copy of cookieConfig without the domain property if it's a single dot
-      const cookieOptions = { ...cookieConfig };
-      if (cookieOptions.domain === '.') {
-        console.warn('Invalid domain "." detected in cookie config, removing domain property');
-        delete cookieOptions.domain;
-      }
-      
-      res.clearCookie("refreshToken", cookieOptions); // Clear token if different account
+      res.clearCookie("refreshToken", cookieConfig); // Clear token if different account
     } catch (err) {
-      // Create a copy of cookieConfig without the domain property if it's a single dot
-      const cookieOptions = { ...cookieConfig };
-      if (cookieOptions.domain === '.') {
-        console.warn('Invalid domain "." detected in cookie config, removing domain property');
-        delete cookieOptions.domain;
-      }
-      
-      res.clearCookie("refreshToken", cookieOptions); // Clear invalid token
+      res.clearCookie("refreshToken", cookieConfig); // Clear invalid token
     }
   }
   if (!email || !password) {
@@ -136,17 +115,10 @@ authRouter.post("/login", async (req, res) => {
     },
   });
 
-  // Create a copy of cookieConfig without the domain property if it's a single dot
-  const cookieOptions = { ...cookieConfig };
-  if (cookieOptions.domain === '.') {
-    console.warn('Invalid domain "." detected in cookie config, removing domain property');
-    delete cookieOptions.domain;
-  }
-
   try {
     res
       .status(200)
-      .cookie("refreshToken", refreshToken, cookieOptions)
+      .cookie("refreshToken", refreshToken, cookieConfig)
       .json({ 
         accessToken, 
         user,
@@ -157,10 +129,10 @@ authRouter.post("/login", async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       cookieSettings: {
-        sameSite: cookieOptions.sameSite,
-        secure: cookieOptions.secure,
-        domain: cookieOptions.domain || 'undefined',
-        path: cookieOptions.path
+        sameSite: cookieConfig.sameSite,
+        secure: cookieConfig.secure,
+        domain: cookieConfig.domain || 'undefined',
+        path: cookieConfig.path
       },
     });
   } catch (cookieError) {
@@ -177,20 +149,13 @@ authRouter.post("/login", async (req, res) => {
 
 authRouter.post("/logout", async (req, res) => {
   try {
-    // Create a copy of cookieConfig without the domain property if it's a single dot
-    const cookieOptions = { ...cookieConfig };
-    if (cookieOptions.domain === '.') {
-      console.warn('Invalid domain "." detected in cookie config, removing domain property');
-      delete cookieOptions.domain;
-    }
-    
-    res.clearCookie("refreshToken", cookieOptions).sendStatus(200);
+    res.clearCookie("refreshToken", cookieConfig).sendStatus(200);
 
     console.log("Logout successful, refresh token cookie cleared with settings:", {
-      sameSite: cookieOptions.sameSite,
-      secure: cookieOptions.secure,
-      domain: cookieOptions.domain || 'undefined',
-      path: cookieOptions.path
+      sameSite: cookieConfig.sameSite,
+      secure: cookieConfig.secure,
+      domain: cookieConfig.domain || 'undefined',
+      path: cookieConfig.path
     });
   } catch (error) {
     console.error("Logout error:", error);

@@ -55,24 +55,15 @@ const isVercelEnvironment = () => {
   );
 };
 
-// Extract the domain from VERCEL_URL if available
-const getVercelDomain = () => {
-  if (process.env.VERCEL_URL) {
-    // VERCEL_URL is typically in the format project-name-team.vercel.app
-    return '.vercel.app';
-  }
-  return null;
-};
-
-// Improved helper to get the appropriate domain for cookies
+// Get the appropriate domain for cookies
 const getDomain = () => {
   console.log('Determining cookie domain...');
   
-  // First check if we're on Vercel
+  // For Vercel deployment
   if (isVercelEnvironment()) {
-    const vercelDomain = getVercelDomain();
-    console.log(`Vercel environment detected, using domain: ${vercelDomain || '.vercel.app'}`);
-    return vercelDomain || '.vercel.app';
+    // For Vercel production, use the client domain directly
+    console.log('Vercel environment detected, using vercel.app domain');
+    return 'pipeline-fittings-store-client.vercel.app';
   }
   
   // For production with custom domain
@@ -92,12 +83,6 @@ const getDomain = () => {
     return undefined; // No domain for localhost
   }
   
-  // Default fallback - don't use a single dot
-  if (process.env.COOKIE_DOMAIN === '.') {
-    console.warn('Invalid domain "." detected, using undefined instead');
-    return undefined;
-  }
-  
   console.log(`Using default domain from env: ${process.env.COOKIE_DOMAIN || 'undefined'}`);
   return process.env.COOKIE_DOMAIN;
 };
@@ -105,23 +90,8 @@ const getDomain = () => {
 // Get the domain for cookies
 const domain = getDomain();
 
-// Validate domain configuration in production
-if (process.env.NODE_ENV === "production" && !isVercelEnvironment()) {
-  if (!domain) {
-    console.warn("COOKIE_DOMAIN environment variable is not set in production when not using Vercel");
-  }
-  if (domain === '.') {
-    console.warn("COOKIE_DOMAIN cannot be a single dot (.) in production, will use undefined instead");
-  }
-}
-
 // For cross-domain cookie sharing in production environments,
 // sameSite must be set to 'none' and secure must be true.
-// This is essential for cookies to work between different domains (e.g., API and client)
-// For localhost development:
-// - secure should be false unless using HTTPS
-// - sameSite can be 'lax' for better development experience
-// - domain should be undefined for localhost
 const cookieConfig = 
   process.env.NODE_ENV === "production" || isVercelEnvironment()
       ? {
@@ -130,17 +100,15 @@ const cookieConfig =
           sameSite: "none", // Always use 'none' in production for cross-domain cookies
           secure: true, // Must be true when sameSite is 'none'
           path: "/",
-          domain: domain === '.' ? undefined : domain, // Never use a single dot
+          domain: isVercelEnvironment() ? 'pipeline-fittings-store-client.vercel.app' : domain,
         }
     : {
         httpOnly: true,
         maxAge: convertJwtTimeToMs(jwtConfig.refresh.expiresIn),
         sameSite: "lax",
-        // For localhost, secure must be false when not using HTTPS
-        secure: false,
+        secure: false, // For localhost, secure must be false when not using HTTPS
         path: "/",
-        // For localhost, domain must be undefined
-        domain: domain === '.' ? undefined : domain, // Never use a single dot
+        domain: undefined, // For localhost, domain must be undefined
       };
 
 // Validate that maxAge is a positive number
@@ -149,48 +117,12 @@ if (typeof cookieConfig.maxAge !== "number" || cookieConfig.maxAge <= 0) {
   cookieConfig.maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 }
 
-// Validate cookie configuration settings
-console.log("Cookie validation results:", {
-  // Basic cookie configuration validation
-  cookiePresent: !!cookieConfig,
-  cookieType: typeof cookieConfig,
-  configKeys: Object.keys(cookieConfig),
-  maxAgeValid: typeof cookieConfig.maxAge === "number" && cookieConfig.maxAge > 0,
-  secureAppropriate: cookieConfig.secure === true || process.env.NODE_ENV !== "production",
-  sameSiteValid: ["strict", "lax", "none"].includes(cookieConfig.sameSite),
-  domainValid: !cookieConfig.domain || cookieConfig.domain !== '.',
-  crossOriginCompatible: process.env.NODE_ENV === "production" ? 
-    (cookieConfig.sameSite === "none" && cookieConfig.secure === true) : true,
-  subdomainSupport: cookieConfig.domain?.startsWith(".") || false
-});
-
 // Log cookie configuration for debugging purposes
 console.log("Cookie configuration:", {
   ...cookieConfig,
   domain: cookieConfig.domain || 'undefined',
   environment: process.env.NODE_ENV || "development",
   isVercel: isVercelEnvironment(),
-  vercelUrl: process.env.VERCEL_URL || 'undefined'
-});
-
-// Log cross-origin request handling for development mode
-if (process.env.NODE_ENV !== 'production') {
-  console.log('Development mode CORS settings:', {
-    allowCredentials: true,
-    sameSiteMode: cookieConfig.sameSite,
-    crossDomainEnabled: cookieConfig.domain !== undefined,
-    secureConnection: cookieConfig.secure
-  });
-}
-
-// Debug cookie domain resolution
-console.log("Cookie domain resolution:", {
-  configuredDomain: process.env.COOKIE_DOMAIN || 'undefined',
-  vercelUrl: process.env.VERCEL_URL || 'undefined',
-  effectiveDomain: cookieConfig.domain || 'undefined',
-  isLocalhost: isLocalEnvironment(),
-  isDevelopment: process.env.NODE_ENV !== "production",
-  isVercelDeployment: isVercelEnvironment()
 });
 
 module.exports = cookieConfig;
