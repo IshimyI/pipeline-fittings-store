@@ -12,7 +12,7 @@ const cookieConfig = {
   sameSite: process.env.COOKIE_SAME_SITE || "none",
   secure: true, // Always enabled for cross-origin cookies
   path: "/",
-  domain: "https://pipeline-fittings-store-client.vercel.app/",
+  domain: ".vercel.app",
   partitioned: true, // Support for Safari's partitioned cookies
 };
 
