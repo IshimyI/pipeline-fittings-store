@@ -54,10 +54,6 @@ export default function MainPage({ user, category }) {
     fetchData();
   }, [fetchData]);
 
-  useEffect(() => {
-    console.log(user);
-  }, []);
-
   const navigate = useNavigate();
   const goToCategory = useCallback(
     (categoryId) => {
