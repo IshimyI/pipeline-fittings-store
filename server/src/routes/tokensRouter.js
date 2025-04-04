@@ -14,7 +14,6 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
       user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin },
     });
 
-    // Use the cookie config directly - we've fixed it in the config file
     try {
       // Set the refresh token cookie with proper options
       res

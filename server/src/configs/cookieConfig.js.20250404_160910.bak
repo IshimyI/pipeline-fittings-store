@@ -1,0 +1,101 @@
+const jwtConfig = require("./jwtConfig");
+
+// Helper function to convert JWT time string to milliseconds
+const convertJwtTimeToMs = (timeString) => {
+  const units = {
+    s: 1000, // seconds to ms
+    m: 60 * 1000, // minutes to ms
+    h: 60 * 60 * 1000, // hours to ms
+    d: 24 * 60 * 60 * 1000, // days to ms
+  };
+
+  const match = timeString.match(/^(\d+)([smhd])$/);
+  if (!match) {
+    console.warn(
+      `Invalid time format: ${timeString}, defaulting to 7 days. Expected format: number followed by s/m/h/d (e.g., 30m, 24h, 7d)`
+    );
+
+    return 7 * 24 * 60 * 60 * 1000; // Default to 7 days in ms
+  }
+
+  const value = parseInt(match[1], 10);
+  if (isNaN(value)) {
+    console.error(
+      `Failed to parse time value: ${match[1]} is not a valid number`
+    );
+    return 7 * 24 * 60 * 60 * 1000; // Default to 7 days in ms
+  }
+  const unit = match[2];
+
+  if (!units[unit]) {
+    console.error(`Invalid time unit: ${unit}. Must be one of: s, m, h, d`);
+    return 7 * 24 * 60 * 60 * 1000; // Default to 7 days in ms
+  }
+  return value * units[unit];
+};
+
+// Simplified helper function to determine if running on Vercel
+const isVercelEnvironment = () => {
+  return Boolean(
+    process.env.VERCEL || 
+    process.env.VERCEL_URL || 
+    process.env.VERCEL_ENV
+  );
+};
+
+// Configure cookies based on environment
+let cookieConfig;
+
+if (isVercelEnvironment()) {
+  // Vercel-specific configuration
+  cookieConfig = {
+    httpOnly: true,
+    maxAge: convertJwtTimeToMs(jwtConfig.refresh.expiresIn),
+    sameSite: "none", // Required for cross-domain cookies
+    secure: true,     // Required when sameSite is 'none'
+    path: "/",
+    domain: "pipeline-fittings-store-client.vercel.app" // Hardcoded for Vercel
+  };
+  
+  console.log("Using Vercel cookie configuration");
+} else if (process.env.NODE_ENV === "production") {
+  // Non-Vercel production configuration
+  cookieConfig = {
+    httpOnly: true,
+    maxAge: convertJwtTimeToMs(jwtConfig.refresh.expiresIn),
+    sameSite: "none", // For cross-domain cookies
+    secure: true,     // Required when sameSite is 'none'
+    path: "/",
+    domain: process.env.COOKIE_DOMAIN || undefined
+  };
+  
+  console.log("Using production cookie configuration");
+} else {
+  // Local development configuration
+  cookieConfig = {
+    httpOnly: true,
+    maxAge: convertJwtTimeToMs(jwtConfig.refresh.expiresIn),
+    sameSite: "lax",
+    secure: false, // For localhost, secure must be false when not using HTTPS
+    path: "/",
+    domain: undefined // For localhost, domain must be undefined
+  };
+  
+  console.log("Using local development cookie configuration");
+}
+
+// Validate that maxAge is a positive number
+if (typeof cookieConfig.maxAge !== "number" || cookieConfig.maxAge <= 0) {
+  console.warn("Invalid cookie maxAge value, defaulting to 7 days");
+  cookieConfig.maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+}
+
+// Log cookie configuration for debugging purposes
+console.log("Cookie configuration:", {
+  ...cookieConfig,
+  domain: cookieConfig.domain || 'undefined',
+  environment: process.env.NODE_ENV || "development",
+  isVercel: isVercelEnvironment() ? 'yes' : 'no',
+});
+
+module.exports = cookieConfig;

@@ -64,7 +64,7 @@ const getDomain = () => {
   // For Vercel environments
   if (process.env.VERCEL || process.env.VERCEL_URL) {
     console.log('Vercel environment detected for session cookie');
-    return 'pipeline-fittings-store-client.vercel.app';
+    return '.vercel.app';
   }
   
   // For production with custom domain

@@ -64,40 +64,34 @@ function verifyRefreshToken(req, res, next) {
       timestamp: new Date().toISOString(),
       endpoint: req.originalUrl,
       method: req.method,
-      cookies: req.cookies ? Object.keys(req.cookies) : 'none',
+      cookies: req.cookies ? Object.keys(req.cookies) : [],
       hasCookieHeader: !!req.headers.cookie,
       path: req.path,
-      isVercel: process.env.VERCEL || process.env.VERCEL_URL ? 'yes' : 'no',
+      isVercel: process.env.VERCEL || process.env.VERCEL_URL ? "yes" : "no",
       cookieConfig: {
         sameSite: cookieConfig.sameSite,
         secure: cookieConfig.secure,
-        domain: cookieConfig.domain || 'undefined',
-        path: cookieConfig.path
-      }
+        domain: cookieConfig.domain || "undefined",
+        path: cookieConfig.path,
+      },
     });
 
     try {
-      // Create a copy of cookieConfig without the domain property if it's a single dot
-      const cookieOptions = { ...cookieConfig };
-      if (cookieOptions.domain === '.') {
-        console.warn('Invalid domain "." detected in cookie config, removing domain property');
-        delete cookieOptions.domain;
-      }
-      
-      // Clear cookie before sending response - do this only once
-      res.clearCookie("refreshToken", {
-        ...cookieOptions,
-        maxAge: 0,
-      });
-      
+      // Clear cookie before sending response
+      res.clearCookie("refreshToken", cookieConfig);
+
       console.log("Cleared invalid refresh token cookie with settings:", {
-        sameSite: cookieOptions.sameSite,
-        secure: cookieOptions.secure,
-        domain: cookieOptions.domain || 'undefined',
-        path: cookieOptions.path
+        sameSite: cookieConfig.sameSite,
+        secure: cookieConfig.secure,
+        domain: cookieConfig.domain || "undefined",
+        path: cookieConfig.path,
       });
     } catch (clearCookieError) {
-      console.error("Failed to clear cookie:", clearCookieError.message, clearCookieError.stack);
+      console.error(
+        "Failed to clear cookie:",
+        clearCookieError.message,
+        clearCookieError.stack
+      );
     }
 
     // Handle specific error types

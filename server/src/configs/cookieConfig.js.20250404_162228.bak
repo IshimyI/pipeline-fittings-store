@@ -111,30 +111,15 @@ if (process.env.NODE_ENV === "development") {
   };
 
   console.log("Using production cookie configuration");
-  } else {
-  // Default configuration when NODE_ENV is not set or doesn't match expected values
-  console.warn("NODE_ENV not set or unrecognized, using default cookie configuration");
-  cookieConfig = { ...defaultCookieConfig };
-  }
-
-// Ensure cookieConfig is defined
-if (!cookieConfig) {
-  console.warn("cookieConfig was not properly set, using default configuration");
-  cookieConfig = { ...defaultCookieConfig };
 }
 
 // Validate that maxAge is a positive number
-if (!cookieConfig || typeof cookieConfig.maxAge !== "number" || cookieConfig.maxAge <= 0) {
+if (typeof cookieConfig.maxAge !== "number" || cookieConfig.maxAge <= 0) {
   console.warn("Invalid cookie maxAge value, defaulting to 7 days");
   cookieConfig.maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 }
 
 // Log cookie configuration for debugging purposes
-// Log if we're using default configuration
-if (cookieConfig === defaultCookieConfig) {
-  console.warn("Using default cookie configuration as fallback");
-}
-
 console.log("Cookie configuration:", {
   ...cookieConfig,
   domain: cookieConfig.domain || "undefined",
@@ -142,4 +127,4 @@ console.log("Cookie configuration:", {
   isVercel: isVercelEnvironment() ? "yes" : "no",
 });
 
-module.exports = cookieConfig || defaultCookieConfig;
+module.exports = cookieConfig;
