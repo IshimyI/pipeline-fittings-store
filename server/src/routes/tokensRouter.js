@@ -14,26 +14,56 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
       user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin },
     });
 
-    // Use cookieConfig directly without any modifications
-    res
-      .cookie("refreshToken", refreshToken, cookieConfig)
-      .json({ accessToken, user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin } });
-    
-    console.log('Token refresh successful, new refresh token cookie set:', {
-      email: res.locals.user.email,
-      isAdmin: res.locals.user.isAdmin,
-      cookieSettings: {
-        sameSite: cookieConfig.sameSite,
-        secure: cookieConfig.secure,
-        domain: cookieConfig.domain
-      }
-    });
+    // Create a copy of cookieConfig without the domain property if it's a single dot
+    const cookieOptions = { ...cookieConfig };
+    if (cookieOptions.domain === '.') {
+      delete cookieOptions.domain;
+    }
+
+    try {
+      res
+        .cookie("refreshToken", refreshToken, cookieOptions)
+        .json({ accessToken, user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin } });
+      
+      console.log('Token refresh successful, new refresh token cookie set:', {
+        email: res.locals.user.email,
+        isAdmin: res.locals.user.isAdmin,
+        cookieSettings: {
+          sameSite: cookieOptions.sameSite,
+          secure: cookieOptions.secure,
+          domain: cookieOptions.domain || 'undefined'
+        }
+      });
+    } catch (cookieError) {
+      console.error("Cookie setting error:", cookieError.message);
+      // If setting cookie fails, still return the access token
+      res.json({ 
+        accessToken, 
+        user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin },
+        cookieError: "Failed to set refresh token cookie"
+      });
+    }
   } catch (error) {
     console.error("Token refresh error:", error.message);
-    res.clearCookie("refreshToken", cookieConfig).status(401).json({
-      error: "Authentication failed",
-      message: "Failed to refresh token. Please login again.",
-    });
+    try {
+      // Create a copy of cookieConfig without the domain property if it's a single dot
+      const cookieOptions = { ...cookieConfig };
+      if (cookieOptions.domain === '.') {
+        delete cookieOptions.domain;
+      }
+      
+      res.clearCookie("refreshToken", cookieOptions).status(401).json({
+        error: "Authentication failed",
+        message: "Failed to refresh token. Please login again.",
+      });
+    } catch (clearCookieError) {
+      console.error("Clear cookie error:", clearCookieError.message);
+      res.status(401).json({
+        error: "Authentication failed",
+        message: "Failed to refresh token. Please login again.",
+        cookieError: "Failed to clear refresh token cookie"
+      });
+    }
   }
 });
 

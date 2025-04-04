@@ -30,19 +30,34 @@ authRouter.post("/signup", async (req, res) => {
 
     const { accessToken, refreshToken } = generateTokens({ user });
 
-    // Use cookieConfig directly without overriding settings
-    res
-      .cookie("refreshToken", refreshToken, cookieConfig)
-      .json({ accessToken, user: { ...user, isAdmin: user.isAdmin } });
+    // Create a copy of cookieConfig without the domain property if it's a single dot
+    const cookieOptions = { ...cookieConfig };
+    if (cookieOptions.domain === '.') {
+      delete cookieOptions.domain;
+    }
 
-    console.log("Signup successful, refresh token cookie set:", {
-      email: user.email,
-      cookieSettings: {
-        sameSite: cookieConfig.sameSite,
-        secure: cookieConfig.secure,
-        domain: cookieConfig.domain,
-      },
-    });
+    try {
+      res
+        .cookie("refreshToken", refreshToken, cookieOptions)
+        .json({ accessToken, user: { ...user, isAdmin: user.isAdmin } });
+
+      console.log("Signup successful, refresh token cookie set:", {
+        email: user.email,
+        cookieSettings: {
+          sameSite: cookieOptions.sameSite,
+          secure: cookieOptions.secure,
+          domain: cookieOptions.domain || 'undefined',
+        },
+      });
+    } catch (cookieError) {
+      console.error("Cookie setting error during signup:", cookieError.message);
+      // If setting cookie fails, still return the access token
+      res.json({ 
+        accessToken, 
+        user: { ...user, isAdmin: user.isAdmin },
+        cookieError: "Failed to set refresh token cookie"
+      });
+    }
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ error: "Failed to signup" });
@@ -66,9 +81,22 @@ authRouter.post("/login", async (req, res) => {
       if (decoded.user.email === email) {
         return res.sendStatus(409); // Already logged in with same account
       }
-      res.clearCookie("refreshToken", cookieConfig); // Clear token if different account
+      
+      // Create a copy of cookieConfig without the domain property if it's a single dot
+      const cookieOptions = { ...cookieConfig };
+      if (cookieOptions.domain === '.') {
+        delete cookieOptions.domain;
+      }
+      
+      res.clearCookie("refreshToken", cookieOptions); // Clear token if different account
     } catch (err) {
-      res.clearCookie("refreshToken", cookieConfig); // Clear invalid token
+      // Create a copy of cookieConfig without the domain property if it's a single dot
+      const cookieOptions = { ...cookieConfig };
+      if (cookieOptions.domain === '.') {
+        delete cookieOptions.domain;
+      }
+      
+      res.clearCookie("refreshToken", cookieOptions); // Clear invalid token
     }
   }
   if (!email || !password) {
@@ -99,27 +127,47 @@ authRouter.post("/login", async (req, res) => {
     },
   });
 
-  // Use cookieConfig directly without overriding settings
-  res
-    .status(200)
-    .cookie("refreshToken", refreshToken, cookieConfig)
-    .json({ accessToken, user });
+  // Create a copy of cookieConfig without the domain property if it's a single dot
+  const cookieOptions = { ...cookieConfig };
+  if (cookieOptions.domain === '.') {
+    delete cookieOptions.domain;
+  }
 
-  console.log("Login successful, refresh token cookie set:", {
-    email: user.email,
-    isAdmin: user.isAdmin,
-    cookieSettings: {
-      sameSite: cookieConfig.sameSite,
-      secure: cookieConfig.secure,
-      domain: cookieConfig.domain,
-    },
-  });
+  try {
+    res
+      .status(200)
+      .cookie("refreshToken", refreshToken, cookieOptions)
+      .json({ accessToken, user });
+
+    console.log("Login successful, refresh token cookie set:", {
+      email: user.email,
+      isAdmin: user.isAdmin,
+      cookieSettings: {
+        sameSite: cookieOptions.sameSite,
+        secure: cookieOptions.secure,
+        domain: cookieOptions.domain || 'undefined',
+      },
+    });
+  } catch (cookieError) {
+    console.error("Cookie setting error during login:", cookieError.message);
+    // If setting cookie fails, still return the access token
+    res.status(200).json({ 
+      accessToken, 
+      user,
+      cookieError: "Failed to set refresh token cookie"
+    });
+  }
 });
 
 authRouter.post("/logout", async (req, res) => {
   try {
-    // Use cookieConfig directly without overriding settings
-    res.clearCookie("refreshToken", cookieConfig).sendStatus(200);
+    // Create a copy of cookieConfig without the domain property if it's a single dot
+    const cookieOptions = { ...cookieConfig };
+    if (cookieOptions.domain === '.') {
+      delete cookieOptions.domain;
+    }
+    
+    res.clearCookie("refreshToken", cookieOptions).sendStatus(200);
 
     console.log("Logout successful, refresh token cookie cleared");
   } catch (error) {
