@@ -1,11 +1,1 @@
-const jwtConfig = require("./jwtConfig");
-
-const cookieConfig = {
-  httpOnly: true,
-  maxAge: jwtConfig.refresh.expiresIn,
-  sameSite: "none",
-  secure: true,
-  path: "/",
-};
-
-module.exports = cookieConfig;
+const jwtConfig = require(\"./jwtConfig\");\nrequire(\"dotenv\").config();\n\n// Configure cross-site cookie settings for deployment platforms\nconst cookieConfig = {\n  httpOnly: process.env.COOKIE_HTTP_ONLY === 'true',\n  maxAge: parseInt(process.env.COOKIE_MAX_AGE) || jwtConfig.refresh.expiresIn,\n  sameSite: process.env.COOKIE_SAME_SITE || \"none\",\n  secure: process.env.COOKIE_SECURE === 'true',\n  path: \"/\",\n  domain: process.env.DOMAIN || \".onrender.com\",\n};\n\nmodule.exports = cookieConfig;\n

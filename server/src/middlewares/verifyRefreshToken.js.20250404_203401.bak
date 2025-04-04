@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const cookieConfig = require("../configs/cookieConfig");
 
 require("dotenv").config();
 function verifyRefreshToken(req, res, next) {

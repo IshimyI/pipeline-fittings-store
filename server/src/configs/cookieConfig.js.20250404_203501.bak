@@ -1,0 +1,13 @@
+const jwtConfig = require("./jwtConfig");
+
+// Configure cross-site cookie settings for deployment platforms
+const cookieConfig = {
+  httpOnly: true,
+  maxAge: jwtConfig.refresh.expiresIn,
+  sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
+  secure: process.env.NODE_ENV === 'production',
+  path: "/",
+  domain: process.env.DOMAIN || ".render.com",
+};
+
+module.exports = cookieConfig;
