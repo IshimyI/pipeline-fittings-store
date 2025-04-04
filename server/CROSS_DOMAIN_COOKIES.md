@@ -1,78 +1,80 @@
-# Cross-Domain Cookie Configuration Guide
+# Руководство по настройке междоменных файлов cookie
 
-This document explains how to properly configure cross-domain cookies between your Render backend and Vercel frontend.
+В этом документе объясняется, как правильно настроить междоменные файлы cookie между серверной частью Render и интерфейсом Vercel.
 
-## Problem
+## Проблема
 
-When your backend is hosted on Render and your frontend is on Vercel, you may encounter issues with cookies not being properly set or sent across domains. This is due to:
+Если ваш сервер размещен на Render, а интерфейс - на Vercel, вы можете столкнуться с проблемами, связанными с неправильной настройкой файлов cookie или их отправкой между доменами. Это связано с:
 
-1. Same-origin policy restrictions in browsers
-2. Incorrect cookie configuration
-3. Missing CORS headers
-4. Improper domain settings
+1. Ограничениями политики одного и того же источника в браузерах
+2. Неправильной настройкой файлов cookie
+3. Отсутствием заголовков CORS
+4. Неправильные настройки домена
 
-## Solution
+## Решение
 
-We've implemented several changes to fix these issues:
+Мы внесли несколько изменений, чтобы устранить эти проблемы:
 
-1. Updated cookie configuration to support cross-domain usage
-2. Enhanced CORS settings to allow credentials
-3. Added proper domain validation
-4. Implemented detailed logging for debugging
+1. Обновлена конфигурация файлов cookie для поддержки междоменного использования
+2. Расширены настройки CORS, позволяющие использовать учетные данные
+3. Добавлена правильная проверка домена
+4. Реализовано подробное ведение журнала для отладки
 
-## Environment Variables
+## Переменные среды
 
-To make this work, you need to set these environment variables on your Render deployment:
+Чтобы это работало, вам необходимо установить эти переменные среды в вашем развертывании рендеринга:
 
 ```
-NODE_ENV=production
+NODE_ENV=производственный
 IS_RENDER=true
-FRONTEND_DOMAIN=pipeline-fittings-store-client.vercel.app
-COOKIE_DOMAIN=pipeline-fittings-store-client.vercel.app
-CLIENT_URL=https://pipeline-fittings-store-client.vercel.app
+FRONTEND_DOMAIN=клиентский магазин трубопроводной арматуры.vercel.app
+COOKIE_DOMAIN=клиентский магазин трубопроводной арматуры.vercel.app
+CLIENT_URL=https://магазин трубопроводной арматуры-client.vercel.app
 ```
 
-## Important Cookie Settings
+## Важные настройки файлов cookie
 
-For cross-domain cookies to work:
+Для обеспечения работы междоменных файлов cookie:
 
-1. `sameSite` must be set to `'none'`
-2. `secure` must be `true` (cookies only sent over HTTPS)
-3. `domain` must be set to your frontend domain
-4. The backend must be served over HTTPS
+1. Для параметра `SameSite" должно быть установлено значение "none"
+2. Для параметра "secure" должно быть значение "true" (файлы cookie отправляются только по протоколу HTTPS)
+3. Для параметра "domain" должен быть установлен ваш внешний домен
+4. Серверная часть должна обслуживаться по протоколу HTTPS
 
-## Debugging
+## Отладка
 
-If you're still having issues:
+Если у вас все еще возникают проблемы:
 
-1. Check the server logs for detailed cookie information
-2. Verify that CORS is properly configured
-3. Ensure your frontend is making requests with `credentials: 'include'`
-4. Check that both sites are using HTTPS
-5. Verify the domain settings match exactly
+1. Проверьте журналы сервера на наличие подробной информации о файлах cookie
+2. Убедитесь, что CORS настроен правильно
+3. Убедитесь, что ваш интерфейс отправляет запросы с "учетными данными: "include""
+4. Убедитесь, что оба сайта используют HTTPS
+5. Убедитесь, что настройки домена точно совпадают
 
-## Frontend Configuration
+## Конфигурация внешнего интерфейса
 
-Your frontend fetch requests must include:
+Ваши запросы на выборку из внешнего интерфейса должны включать:
 
-```javascript
-fetch('https://your-render-api.onrender.com/api/endpoint', {
-  method: 'POST',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(data)
+``javascript
+извлекать('https://your-render-api.onrender.com/api/endpoint ', {
+метод: 'POST',
+учетные данные: 'include',
+заголовки: _BOS_
+"Content-Type": "приложение/json"
+},
+тело: JSON.stringify(данные)
 })
+
 ```
 
-The `credentials: 'include'` part is critical for sending cookies with cross-domain requests.
+Раздел "Учетные данные: "включить" имеет решающее значение для отправки файлов cookie с междоменными запросами.
 
-## Testing
+## Тестирование
 
-After deploying these changes, test the authentication flow:
+После внедрения этих изменений протестируйте процесс аутентификации:
 
-1. Login with valid credentials
-2. Check your browser's cookies to verify the refresh token is set
-3. Try refreshing the page to see if your login state persists
-4. Check the network tab for any CORS errors
+1. Войдите в систему с действительными учетными данными
+2. Проверьте файлы cookie вашего браузера, чтобы убедиться, что установлен токен обновления
+3. Попробуйте обновить страницу, чтобы узнать, сохраняется ли состояние вашего входа в систему
+4. Проверьте вкладку сеть на наличие ошибок CORS
+```
