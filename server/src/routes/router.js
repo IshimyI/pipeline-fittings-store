@@ -20,6 +20,7 @@ const {
   uploadCategoryImage,
   uploadNewsImage,
 } = require("../middlewares/fileUpload");
+const { log } = require("console");
 
 const router = express.Router();
 
@@ -148,10 +149,13 @@ router.post("/createProduct", uploadProductImage, async (req, res) => {
     params = {},
   } = req.body;
 
+  console.log("req.bodyreq.bodyreq.body", req.body);
+
   try {
     if (!res.locals.user.isAdmin) {
       return res.status(403).send({ message: "Доступ запрещен" });
     }
+    console.log("res.locals.user", res.locals.user);
 
     const errors = [];
     if (!name) errors.push("name");
@@ -170,6 +174,12 @@ router.post("/createProduct", uploadProductImage, async (req, res) => {
       imagePath = req.file.cloudinaryUrl;
     }
 
+    console.log("imagePath", imagePath);
+    console.log("categoryId", categoryId);
+    console.log("price", price);
+    console.log("availability", availability);
+    console.log("params", params);
+
     const newProduct = await Product.create({
       name,
       categoryId: Number(categoryId),
@@ -178,6 +188,8 @@ router.post("/createProduct", uploadProductImage, async (req, res) => {
       availability,
       params: typeof params === "string" ? JSON.parse(params) : params,
     });
+
+    console.log("newProduct", newProduct);
 
     res.status(201).json({
       message: "Товар успешно создан",

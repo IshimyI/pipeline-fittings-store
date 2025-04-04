@@ -7,9 +7,6 @@ function adminAccess(req, res, next) {
   res.locals.user = {
     isAdmin: true,
     // Другие свойства пользователя, которые могут понадобиться
-    id: 1,
-    name: "Admin",
-    email: "admin@example.com",
   };
 
   next();
