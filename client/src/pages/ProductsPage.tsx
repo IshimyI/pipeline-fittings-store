@@ -639,7 +639,7 @@ export default function ProductsPage({ user, category }) {
             {loading ? (
               <div className="text-center text-gray-300">Загрузка...</div>
             ) : sortedProducts?.length > 0 ? (
-              <div className="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-8 2xl:gap-10">
+              <div className="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-2 md:gap-8 2xl:gap-10">
                 {sortedProducts?.map((product) => (
                   <div
                     key={product.id}
