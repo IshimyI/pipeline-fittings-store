@@ -193,7 +193,7 @@ export default function Header({ user, handleLogout }) {
                 <NavLink
                   to="/basket"
                   className={({ isActive }) =>
-                    `flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
+                    `hidden md:flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                       isActive
                         ? "bg-krio-foreground/30 text-krio-secondary"
                         : "text-krio-primary hover:bg-krio-foreground/20 hover:text-krio-secondary"
@@ -222,12 +222,12 @@ export default function Header({ user, handleLogout }) {
                 <NavLink
                   to="/login"
                   className={({ isActive }) =>
-                                    `px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
-                                      isActive
-                                        ? "text-krio-secondary bg-krio-foreground/30"
-                                        : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20"
-                                    }`
-                                  }
+                    `px-2 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
+                      isActive
+                        ? "text-krio-secondary bg-krio-foreground/30"
+                        : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20"
+                    }`
+                  }
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +248,7 @@ export default function Header({ user, handleLogout }) {
               ) : (
                 <button
                   onClick={handleLogout}
-                  className="flex items-center space-x-2 px-0 md:px-3 lg:px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md shadow-md hover:bg-red-700 transition-all duration-300"
+                  className="flex items-center space-x-2 px-0 md:px-2 lg:px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md shadow-md hover:bg-red-700 transition-all duration-300"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

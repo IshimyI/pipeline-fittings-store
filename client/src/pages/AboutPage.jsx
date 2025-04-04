@@ -8,15 +8,16 @@ const Section = ({ title, children }) => (
 );
 
 const ClientCard = ({ client }) => (
-  <div className="relative p-4 bg-krio-foreground rounded-xl shadow-lg border border-krio-primary/20 flex flex-col items-center">
-    <div className="w-full aspect-square max-w-[160px] flex items-center justify-center overflow-hidden bg-white">
+  <div className="relative p-2 sm:p-3 bg-krio-foreground rounded-lg sm:rounded-xl shadow-md sm:shadow-lg border border-krio-primary/20 flex flex-col items-center w-full h-full">
+    <div className="w-full aspect-square flex items-center justify-center overflow-hidden bg-white p-1 sm:p-2">
       <img
         src={client.imgSrc}
         alt={client.alt}
-        className="object-contain w-full h-full p-2"
+        className="object-contain w-full h-full"
+        loading="lazy"
       />
     </div>
-    <p className="text-krio-secondary text-sm font-medium text-center mt-2 whitespace-nowrap">
+    <p className="text-krio-secondary text-xs sm:text-sm font-medium text-center mt-1 sm:mt-2 whitespace-nowrap truncate w-full px-1">
       {client.name}
     </p>
   </div>
@@ -99,14 +100,14 @@ export default function AboutPage() {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <main
-        className="w-full max-w-[80%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
+        className="w-full max-w-[90%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
                     bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
       >
         <Section title="О компании">
           <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8">
             <div className="space-y-4">
               <p className="text-gray-300 leading-relaxed">
-                <strong className="text-krio-primary">
+                <strong className="text-krio-primary text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
                   {" "}
                   &quot;Криоарматура&quot;
                 </strong>{" "}
@@ -120,16 +121,19 @@ export default function AboutPage() {
               <p className="text-gray-300 leading-relaxed">
                 Мы с гордостью поставляем нашу продукцию в такие
                 высокотехнологичные отрасли, как:
-                <span className="text-krio-primary ml-2">
+                <span className="text-krio-primary ml-2 text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
                   космическая промышленность
                 </span>
                 ,
-                <span className="text-krio-primary mx-2">
+                <span className="text-krio-primary mx-2 text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
                   нефтегазовый сектор
                 </span>{" "}
-                и<span className="text-krio-primary ml-2">машиностроение</span>,
-                где особое внимание уделяется надежности и долговечности каждой
-                детали.
+                и
+                <span className="text-krio-primary ml-2 text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
+                  машиностроение
+                </span>
+                , где особое внимание уделяется надежности и долговечности
+                каждой детали.
               </p>
             </div>
 
@@ -164,11 +168,8 @@ export default function AboutPage() {
           </div>
         </Section>
         <Section title="Наши клиенты">
-          <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl">
-            <div
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 
-      2xl:grid-cols-5 4k:grid-cols-6 gap-4 2xl:gap-6 justify-items-center"
-            >
+          <div className="p-4 sm:p-6 2xl:p-8 bg-krio-foreground rounded-xl sm:rounded-2xl shadow-lg sm:shadow-2xl">
+            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 2xl:gap-6 justify-items-center">
               {clients.map((client, index) => (
                 <ClientCard key={index} client={client} />
               ))}
@@ -180,7 +181,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 gap-6 2xl:gap-8">
               <div className="space-y-3">
                 <p className="text-gray-300 leading-relaxed text-lg">
-                  <strong className="text-krio-primary font-semibold">
+                  <strong className="text-krio-primary text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
                     &quot;Криоарматура&quot;
                   </strong>{" "}
                   не ограничивается лишь поставками арматуры. Мы предлагаем
@@ -279,7 +280,7 @@ export default function AboutPage() {
                 <div className="space-y-4">
                   <p className="text-gray-300 leading-relaxed text-lg">
                     В нашей команде работают{" "}
-                    <strong className="text-krio-primary font-semibold">
+                    <strong className="text-krio-primary text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
                       высококвалифицированные специалисты
                     </strong>
                     , которые не только обладают глубокими знаниями в своей

@@ -2,7 +2,7 @@ export default function PrivacyPage() {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <main
-        className="w-full max-w-[80%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
+        className="w-full max-w-[90%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
                   bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
       >
         <h2 className="text-2xl 2xl:text-3xl 4k:text-4xl font-bold text-center text-white">
