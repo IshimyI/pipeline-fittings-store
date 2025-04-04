@@ -7,29 +7,12 @@ const axiosInstance = axios.create({
 
 let accessToken = "";
 
-// Initialize access token from localStorage if a user is logged in
-try {
-  const savedUser = localStorage.getItem('user');
-  if (savedUser) {
-    // Token will be set via refresh on app load
-    console.log('User found in localStorage, token will be refreshed');
-  }
-} catch (e) {
-  console.error('Error accessing localStorage:', e);
-}
-
 export function setAccessToken(newToken) {
   accessToken = newToken;
 }
 
 export function clearAccessToken() {
   accessToken = "";
-  // Also clear user data from localStorage
-  try {
-    localStorage.removeItem('user');
-  } catch (e) {
-    console.error('Error clearing localStorage:', e);
-  }
 }
 
 axiosInstance.interceptors.request.use(
@@ -64,23 +47,14 @@ axiosInstance.interceptors.response.use(
           }
         );
         accessToken = response.data.accessToken;
-        // Update user data in localStorage
-        try {
-          localStorage.setItem('user', JSON.stringify(response.data.user));
-        } catch (e) {
-          console.error('Error updating localStorage:', e);
-        }
         prevReq.sent = true;
         prevReq.headers.Authorization = `Bearer ${accessToken}`;
         return axiosInstance(prevReq);
       } catch (refreshError) {
         console.error("Refresh token error:", refreshError);
         clearAccessToken();
-        try {
-          localStorage.removeItem("user");
-        } catch (e) {
-          console.error('Error clearing localStorage:', e);
-        }
+        localStorage.removeItem("user");
+        sessionStorage.removeItem("user");
         return Promise.reject(refreshError);
       }
     }
