@@ -9,14 +9,7 @@ function verifyRefreshToken(req, res, next) {
     next();
   } catch (error) {
     console.log("invalid refresh token");
-    res
-      .clearCookie("refreshToken", {
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-        path: "/",
-      })
-      .sendStatus(401);
+    res.clearCookie("refreshToken", cookieConfig).sendStatus(401);
   }
 }
 
