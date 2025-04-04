@@ -1,8 +1,5 @@
 const jwtConfig = require("./jwtConfig");
 
-const cookiePrefix = '__Secure-';
-
-
 // Helper function to convert JWT time string to milliseconds
 const convertJwtTimeToMs = (timeString) => {
   const units = {
@@ -47,9 +44,6 @@ const validateDomain = (domain) => {
   // Remove path and query params if present
   cleanDomain = cleanDomain.split('/')[0];
   
-  // Remove leading dot if present
-  cleanDomain = cleanDomain.replace(/^\./, '');
-  
   // Handle Vercel preview domains
   if (cleanDomain.endsWith('.vercel.app')) {
     return cleanDomain;
@@ -64,12 +58,6 @@ const validateDomain = (domain) => {
   const domainRegex = /^(\*\.)?(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
   if (!domainRegex.test(cleanDomain)) {
     console.warn(`Invalid domain format: ${cleanDomain}, using undefined`);
-    console.warn('Domain validation failed:', {
-      originalDomain: domain,
-      cleanDomain,
-      reason: 'Does not match domain pattern',
-      allowedPattern: domainRegex.toString()
-    });
     return undefined;
   }
   
@@ -120,8 +108,7 @@ const defaultCookieConfig = {
   secure: true,     // Required for cross-domain and when sameSite is 'none'
   path: "/",
   domain: process.env.COOKIE_DOMAIN || undefined,
-  _crossDomainEnabled: true, // Flag indicating cross-domain support is enabled,
-  prefix: cookiePrefix // Cookie name prefix for security
+  _crossDomainEnabled: true, // Flag indicating cross-domain support is enabled
 };
 
 // Get the frontend domain from environment variables or use a default
@@ -202,23 +189,11 @@ if (process.env.NODE_ENV === "development") {
   cookieConfig = { ...defaultCookieConfig };
 }
 
-// Validate cookie configuration
-const validateCookieConfig = (config) => {
-  if (config.sameSite === 'none' && !config.secure) {
-    console.error('Invalid cookie configuration: secure must be true when sameSite is "none"');
-    config.secure = true;
-  }
-  return config;
-};
-
 // Ensure cookieConfig is defined
 if (!cookieConfig) {
   console.warn("cookieConfig was not properly set, using default configuration");
   cookieConfig = { ...defaultCookieConfig };
 }
-
-// Validate cookie configuration
-cookieConfig = validateCookieConfig(cookieConfig);
 
 // Validate that maxAge is a positive number
 if (!cookieConfig || typeof cookieConfig.maxAge !== "number" || cookieConfig.maxAge <= 0) {

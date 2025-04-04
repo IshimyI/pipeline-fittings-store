@@ -59,7 +59,7 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
     console.error("Token refresh error:", error.message, error.stack);
     try {
       // Clear the refresh token cookie with proper options
-      res.clearCookie("auth_refreshToken", cookieConfig).status(401).json({
+      res.clearCookie("refreshToken", cookieConfig).status(401).json({
         error: "Authentication failed",
         message: "Failed to refresh token. Please login again.",
       });

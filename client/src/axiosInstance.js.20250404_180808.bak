@@ -1,9 +1,3 @@
-// Cross-domain cookie requirements:
-// - Backend must set SameSite=None and Secure flags for cookies
-// - Frontend must include withCredentials: true in requests
-// - Both frontend and backend domains must use HTTPS
-// - Backend must set proper Access-Control-Allow-Credentials and Origins headers
-
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -27,22 +21,10 @@ export function getUserData() {
   );
 }
 
-export function areCookiesEnabled() {
-  try {
-    document.cookie = "testcookie=1; SameSite=None; Secure";
-    const cookiesEnabled = document.cookie.indexOf("testcookie=") !== -1;
-    document.cookie = "testcookie=1; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure";
-    return cookiesEnabled;
-  } catch (e) {
-    return false;
-  }
-}
-
 export function saveUserData(userData) {
   const userDataWithAdmin = {
     ...userData,
     isAdmin: userData.isAdmin ?? false,
-    _lastUpdated: new Date().toISOString()
   };
   localStorage.setItem("user", JSON.stringify(userDataWithAdmin));
   sessionStorage.setItem("user", JSON.stringify(userDataWithAdmin));
@@ -155,10 +137,6 @@ axiosInstance.interceptors.response.use(
             message: refreshError.message,
             status: refreshError.response?.status,
             data: refreshError.response?.data,
-            headers: refreshError.response?.headers,
-            config: refreshError.config,
-            retryAttempts: retryCount,
-            cookieStatus: areCookiesEnabled() ? 'enabled' : 'disabled',
             timestamp: new Date().toISOString(),
           });
           
@@ -176,15 +154,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export function debugCookieStatus() {
-  console.log("Cookie debug info:", {
-    cookiesEnabled: areCookiesEnabled(),
-    hasAccessToken: !!accessToken,
-    hasUserData: !!getUserData(),
-    cookieAccess: document.cookie ? "available" : "restricted",
-    timestamp: new Date().toISOString()
-  });
-}
 
 export default axiosInstance;

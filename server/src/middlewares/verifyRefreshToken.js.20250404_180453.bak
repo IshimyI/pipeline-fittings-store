@@ -38,7 +38,7 @@ function verifyRefreshToken(req, res, next) {
       referer: req.headers.referer || 'none'
     });
 
-    const refreshToken = req.cookies[cookieConfig.cookiePrefix + 'refreshToken'];
+    const { refreshToken } = req.cookies;
     if (!refreshToken) {
       throw new TokenError("No refresh token found");
     }
@@ -53,14 +53,6 @@ function verifyRefreshToken(req, res, next) {
       throw new TokenError("Invalid token format");
     }
 
-    // Verify token and validate cookie domain
-    if (cookieConfig.domain && req.hostname && !req.hostname.endsWith(cookieConfig.domain)) {
-      throw new TokenError(`Cookie domain mismatch: ${req.hostname} does not match ${cookieConfig.domain}`);
-    }
-    // Verify secure connection for SameSite=None cookies
-    if (cookieConfig.sameSite === 'None' && !req.secure && req.headers['x-forwarded-proto'] !== 'https') {
-      throw new TokenError('Secure connection required for SameSite=None cookies');
-    }
     // Verify token
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
@@ -104,7 +96,7 @@ function verifyRefreshToken(req, res, next) {
 
     try {
       // Clear cookie before sending response
-      res.clearCookie(cookieConfig.cookiePrefix + 'refreshToken', cookieConfig);
+      res.clearCookie("refreshToken", cookieConfig);
 
       console.log("Cleared invalid refresh token cookie with settings:", {
         sameSite: cookieConfig.sameSite,
@@ -113,14 +105,11 @@ function verifyRefreshToken(req, res, next) {
         path: cookieConfig.path,
       });
     } catch (clearCookieError) {
-      console.error("Failed to clear cookie:", {
-        error: clearCookieError.message,
-        stack: clearCookieError.stack,
-        cookieName: cookieConfig.cookiePrefix + 'refreshToken',
-        cookieConfig: cookieConfig,
-        headers: req.headers,
-        hostname: req.hostname
-      });
+      console.error(
+        "Failed to clear cookie:",
+        clearCookieError.message,
+        clearCookieError.stack
+      );
     }
 
     // Handle specific error types

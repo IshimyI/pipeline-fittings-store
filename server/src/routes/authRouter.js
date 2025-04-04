@@ -42,7 +42,7 @@ authRouter.post("/signup", async (req, res) => {
 
     try {
       res
-        .cookie("refreshToken", refreshToken, cookieConfig)
+        .cookie(cookieConfig.cookiePrefix + "refreshToken", refreshToken, cookieConfig)
         .json({ 
           accessToken, 
           user: { ...user, isAdmin: user.isAdmin },
@@ -92,9 +92,9 @@ authRouter.post("/login", async (req, res) => {
         return res.sendStatus(409); // Already logged in with same account
       }
       
-      res.clearCookie("refreshToken", cookieConfig); // Clear token if different account
+      res.clearCookie(cookieConfig.cookiePrefix + "refreshToken", cookieConfig); // Clear token if different account
     } catch (err) {
-      res.clearCookie("refreshToken", cookieConfig); // Clear invalid token
+      res.clearCookie(cookieConfig.cookiePrefix + "refreshToken", cookieConfig); // Clear invalid token
     }
   }
   if (!email || !password) {
@@ -125,8 +125,11 @@ authRouter.post("/login", async (req, res) => {
     },
   });
 
-  // Log cookie configuration before setting
-  console.log("Login - Cookie configuration before setting:", {
+  // Log cookie configuration and domain validation before setting
+  console.log("Login - Cookie configuration and domain validation:", {
+    cookieDomain: cookieConfig.domain,
+    requestHost: req.get('host'),
+    isDomainValid: cookieConfig.domain ? req.get('host').includes(cookieConfig.domain) : true,
     sameSite: cookieConfig.sameSite,
     secure: cookieConfig.secure,
     domain: cookieConfig.domain || 'undefined',
@@ -138,10 +141,16 @@ authRouter.post("/login", async (req, res) => {
     isRender: process.env.IS_RENDER ? 'yes' : 'no'
   });
 
+  // Validate cookie configuration
+  if (!cookieConfig.domain || !cookieConfig.secure) {
+    console.warn('Cookie configuration may be insecure:', { domain: cookieConfig.domain, secure: cookieConfig.secure });
+  }
+
   try {
     res
       .status(200)
-      .cookie("refreshToken", refreshToken, cookieConfig)
+      .setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+      .cookie(cookieConfig.cookiePrefix + "refreshToken", refreshToken, cookieConfig)
       .json({ 
         accessToken, 
         user,
@@ -183,7 +192,7 @@ authRouter.post("/logout", async (req, res) => {
       hasRefreshToken: !!req.cookies.refreshToken
     });
 
-    res.clearCookie("refreshToken", cookieConfig).sendStatus(200);
+    res.clearCookie(cookieConfig.cookiePrefix + "refreshToken", cookieConfig).sendStatus(200);
 
     console.log("Logout successful, refresh token cookie cleared with settings:", {
       sameSite: cookieConfig.sameSite,
