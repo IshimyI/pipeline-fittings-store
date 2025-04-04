@@ -24,7 +24,7 @@ export function getUserData() {
 export function saveUserData(userData) {
   const userDataWithAdmin = {
     ...userData,
-    isAdmin: userData.isAdmin ?? false
+    isAdmin: userData.isAdmin ?? false,
   };
   localStorage.setItem("user", JSON.stringify(userDataWithAdmin));
   sessionStorage.setItem("user", JSON.stringify(userDataWithAdmin));
@@ -73,14 +73,14 @@ axiosInstance.interceptors.response.use(
             `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
             { withCredentials: true }
           );
-          if (!response.data.user?.hasOwnProperty('isAdmin')) {
-            throw new Error('Invalid user data: isAdmin flag missing');
+          if (!response.data.user?.hasOwnProperty.call("isAdmin")) {
+            throw new Error("Invalid user data: isAdmin flag missing");
           }
           accessToken = response.data.accessToken;
           if (response.data.user) {
             const userDataWithAdmin = {
               ...response.data.user,
-              isAdmin: response.data.user.isAdmin ?? false
+              isAdmin: response.data.user.isAdmin ?? false,
             };
             saveUserData(userDataWithAdmin);
           }
@@ -100,7 +100,10 @@ axiosInstance.interceptors.response.use(
             message: refreshError.message,
             status: refreshError.response?.status,
             data: refreshError.response?.data,
-            isAdminMissing: !refreshError.response?.data?.user?.hasOwnProperty('isAdmin'),
+            isAdminMissing:
+              !refreshError.response?.data?.user?.hasOwnProperty.call(
+                "isAdmin"
+              ),
             timestamp: new Date().toISOString(),
           });
           clearAccessToken();

@@ -38,7 +38,8 @@ const convertJwtTimeToMs = (timeString) => {
 const isLocalEnvironment = () => {
   return !process.env.COOKIE_DOMAIN || 
          process.env.COOKIE_DOMAIN === 'localhost' || 
-         process.env.COOKIE_DOMAIN.includes('127.0.0.1');
+         process.env.COOKIE_DOMAIN.includes('127.0.0.1') || 
+         process.env.COOKIE_DOMAIN === '.';
 };
 
 // Configuration for cross-domain authentication cookies
@@ -53,9 +54,13 @@ if (process.env.NODE_ENV === "production") {
       "COOKIE_DOMAIN environment variable is required in production"
     );
   }
+  if (domain === '.') {
+    throw new Error("COOKIE_DOMAIN cannot be a single dot (.) in production");
+  }
   if (!domain.startsWith(".") && domain.includes(".")) {
     console.warn(
-      "Consider using a leading dot in COOKIE_DOMAIN for broader subdomain coverage and proper cross-domain cookie sharing"
+      "Consider using a leading dot in COOKIE_DOMAIN for broader subdomain coverage and proper cross-domain cookie sharing",
+      "Current domain:", domain
     );
   }
 }
@@ -85,7 +90,7 @@ const cookieConfig =
         secure: isLocalEnvironment() ? false : (process.env.COOKIE_SECURE === "true"),
         path: "/",
         // For localhost, domain must be undefined
-        domain: isLocalEnvironment() ? undefined : process.env.COOKIE_DOMAIN,
+        domain: isLocalEnvironment() || process.env.COOKIE_DOMAIN === '.' ? undefined : process.env.COOKIE_DOMAIN,
       };
 
 // Validate that maxAge is a positive number
@@ -103,7 +108,7 @@ console.log("Cookie validation results:", {
   maxAgeValid: typeof cookieConfig.maxAge === "number" && cookieConfig.maxAge > 0,
   secureAppropriate: cookieConfig.secure === true || process.env.NODE_ENV !== "production",
   sameSiteValid: ["strict", "lax", "none"].includes(cookieConfig.sameSite),
-  domainValid: !cookieConfig.domain || typeof cookieConfig.domain === "string",
+  domainValid: !cookieConfig.domain || (typeof cookieConfig.domain === "string" && cookieConfig.domain !== '.'),
   crossOriginCompatible: process.env.NODE_ENV === "production" ? 
     (cookieConfig.sameSite === "none" && cookieConfig.secure === true) : true,
   subdomainSupport: cookieConfig.domain?.startsWith(".") || false

@@ -89,12 +89,10 @@ function verifyRefreshToken(req, res, next) {
     } else if (error.name === "SessionError") {
       res.status(403).json({ error: error.message });
     } else {
-      res
-        .status(500)
-        .json({
-          error: "Internal server error",
-          message: "An unexpected error occurred",
-        });
+      res.status(500).json({
+        error: "Internal server error",
+        message: "An unexpected error occurred",
+      });
     }
   }
 }
