@@ -16,14 +16,22 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
 
     // Create a copy of cookieConfig without the domain property if it's a single dot
     const cookieOptions = { ...cookieConfig };
+    
+    // Never use a single dot as domain
     if (cookieOptions.domain === '.') {
+      console.warn('Invalid domain "." detected in cookie config, removing domain property');
       delete cookieOptions.domain;
     }
 
     try {
+      // Set the refresh token cookie with proper options
       res
         .cookie("refreshToken", refreshToken, cookieOptions)
-        .json({ accessToken, user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin } });
+        .json({ 
+          accessToken, 
+          user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin },
+          cookieStatus: 'success' 
+        });
       
       console.log('Token refresh successful, new refresh token cookie set:', {
         email: res.locals.user.email,
@@ -31,20 +39,23 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
         cookieSettings: {
           sameSite: cookieOptions.sameSite,
           secure: cookieOptions.secure,
-          domain: cookieOptions.domain || 'undefined'
+          domain: cookieOptions.domain || 'undefined',
+          path: cookieOptions.path
         }
       });
     } catch (cookieError) {
-      console.error("Cookie setting error:", cookieError.message);
+      console.error("Cookie setting error:", cookieError.message, cookieError.stack);
+      
       // If setting cookie fails, still return the access token
       res.json({ 
         accessToken, 
         user: { ...res.locals.user, isAdmin: res.locals.user.isAdmin },
-        cookieError: "Failed to set refresh token cookie"
+        cookieStatus: 'error',
+        cookieError: cookieError.message
       });
     }
   } catch (error) {
-    console.error("Token refresh error:", error.message);
+    console.error("Token refresh error:", error.message, error.stack);
     try {
       // Create a copy of cookieConfig without the domain property if it's a single dot
       const cookieOptions = { ...cookieConfig };
@@ -52,12 +63,13 @@ tokensRouter.get("/refresh", verifyRefreshToken, async (req, res) => {
         delete cookieOptions.domain;
       }
       
+      // Clear the refresh token cookie with proper options
       res.clearCookie("refreshToken", cookieOptions).status(401).json({
         error: "Authentication failed",
         message: "Failed to refresh token. Please login again.",
       });
     } catch (clearCookieError) {
-      console.error("Clear cookie error:", clearCookieError.message);
+      console.error("Clear cookie error:", clearCookieError.message, clearCookieError.stack);
       res.status(401).json({
         error: "Authentication failed",
         message: "Failed to refresh token. Please login again.",

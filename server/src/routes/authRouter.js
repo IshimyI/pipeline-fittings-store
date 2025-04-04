@@ -33,13 +33,18 @@ authRouter.post("/signup", async (req, res) => {
     // Create a copy of cookieConfig without the domain property if it's a single dot
     const cookieOptions = { ...cookieConfig };
     if (cookieOptions.domain === '.') {
+      console.warn('Invalid domain "." detected in cookie config, removing domain property');
       delete cookieOptions.domain;
     }
 
     try {
       res
         .cookie("refreshToken", refreshToken, cookieOptions)
-        .json({ accessToken, user: { ...user, isAdmin: user.isAdmin } });
+        .json({ 
+          accessToken, 
+          user: { ...user, isAdmin: user.isAdmin },
+          cookieStatus: 'success'
+        });
 
       console.log("Signup successful, refresh token cookie set:", {
         email: user.email,
@@ -47,15 +52,17 @@ authRouter.post("/signup", async (req, res) => {
           sameSite: cookieOptions.sameSite,
           secure: cookieOptions.secure,
           domain: cookieOptions.domain || 'undefined',
+          path: cookieOptions.path
         },
       });
     } catch (cookieError) {
-      console.error("Cookie setting error during signup:", cookieError.message);
+      console.error("Cookie setting error during signup:", cookieError.message, cookieError.stack);
       // If setting cookie fails, still return the access token
       res.json({ 
         accessToken, 
         user: { ...user, isAdmin: user.isAdmin },
-        cookieError: "Failed to set refresh token cookie"
+        cookieStatus: 'error',
+        cookieError: cookieError.message
       });
     }
   } catch (error) {
@@ -85,6 +92,7 @@ authRouter.post("/login", async (req, res) => {
       // Create a copy of cookieConfig without the domain property if it's a single dot
       const cookieOptions = { ...cookieConfig };
       if (cookieOptions.domain === '.') {
+        console.warn('Invalid domain "." detected in cookie config, removing domain property');
         delete cookieOptions.domain;
       }
       
@@ -93,6 +101,7 @@ authRouter.post("/login", async (req, res) => {
       // Create a copy of cookieConfig without the domain property if it's a single dot
       const cookieOptions = { ...cookieConfig };
       if (cookieOptions.domain === '.') {
+        console.warn('Invalid domain "." detected in cookie config, removing domain property');
         delete cookieOptions.domain;
       }
       
@@ -130,6 +139,7 @@ authRouter.post("/login", async (req, res) => {
   // Create a copy of cookieConfig without the domain property if it's a single dot
   const cookieOptions = { ...cookieConfig };
   if (cookieOptions.domain === '.') {
+    console.warn('Invalid domain "." detected in cookie config, removing domain property');
     delete cookieOptions.domain;
   }
 
@@ -137,7 +147,11 @@ authRouter.post("/login", async (req, res) => {
     res
       .status(200)
       .cookie("refreshToken", refreshToken, cookieOptions)
-      .json({ accessToken, user });
+      .json({ 
+        accessToken, 
+        user,
+        cookieStatus: 'success'
+      });
 
     console.log("Login successful, refresh token cookie set:", {
       email: user.email,
@@ -146,15 +160,17 @@ authRouter.post("/login", async (req, res) => {
         sameSite: cookieOptions.sameSite,
         secure: cookieOptions.secure,
         domain: cookieOptions.domain || 'undefined',
+        path: cookieOptions.path
       },
     });
   } catch (cookieError) {
-    console.error("Cookie setting error during login:", cookieError.message);
+    console.error("Cookie setting error during login:", cookieError.message, cookieError.stack);
     // If setting cookie fails, still return the access token
     res.status(200).json({ 
       accessToken, 
       user,
-      cookieError: "Failed to set refresh token cookie"
+      cookieStatus: 'error',
+      cookieError: cookieError.message
     });
   }
 });
@@ -164,12 +180,18 @@ authRouter.post("/logout", async (req, res) => {
     // Create a copy of cookieConfig without the domain property if it's a single dot
     const cookieOptions = { ...cookieConfig };
     if (cookieOptions.domain === '.') {
+      console.warn('Invalid domain "." detected in cookie config, removing domain property');
       delete cookieOptions.domain;
     }
     
     res.clearCookie("refreshToken", cookieOptions).sendStatus(200);
 
-    console.log("Logout successful, refresh token cookie cleared");
+    console.log("Logout successful, refresh token cookie cleared with settings:", {
+      sameSite: cookieOptions.sameSite,
+      secure: cookieOptions.secure,
+      domain: cookieOptions.domain || 'undefined',
+      path: cookieOptions.path
+    });
   } catch (error) {
     console.error("Logout error:", error);
     res.status(500).json({ error: "Failed to logout" });

@@ -42,48 +42,76 @@ const isLocalEnvironment = () => {
          process.env.COOKIE_DOMAIN === '.';
 };
 
-// Helper function to determine if running on Vercel
+// Improved helper function to determine if running on Vercel
 const isVercelEnvironment = () => {
-  return !!process.env.VERCEL || !!process.env.VERCEL_URL || !!process.env.VERCEL_REGION || !!process.env.VERCEL_ENV;
+  // Check all possible Vercel environment variables
+  return Boolean(
+    process.env.VERCEL || 
+    process.env.VERCEL_URL || 
+    process.env.VERCEL_REGION || 
+    process.env.VERCEL_ENV ||
+    process.env.NEXT_PUBLIC_VERCEL_URL ||
+    process.env.VERCEL_GIT_COMMIT_SHA
+  );
 };
 
-// Helper to get the appropriate domain for cookies
-const getDomain = () => {
-  // For Vercel environments
-  if (isVercelEnvironment()) {
+// Extract the domain from VERCEL_URL if available
+const getVercelDomain = () => {
+  if (process.env.VERCEL_URL) {
+    // VERCEL_URL is typically in the format project-name-team.vercel.app
     return '.vercel.app';
+  }
+  return null;
+};
+
+// Improved helper to get the appropriate domain for cookies
+const getDomain = () => {
+  console.log('Determining cookie domain...');
+  
+  // First check if we're on Vercel
+  if (isVercelEnvironment()) {
+    const vercelDomain = getVercelDomain();
+    console.log(`Vercel environment detected, using domain: ${vercelDomain || '.vercel.app'}`);
+    return vercelDomain || '.vercel.app';
   }
   
   // For production with custom domain
-  if (process.env.NODE_ENV === 'production' && process.env.COOKIE_DOMAIN && process.env.COOKIE_DOMAIN !== '.') {
+  if (process.env.NODE_ENV === 'production' && process.env.COOKIE_DOMAIN) {
+    // Don't use a single dot as domain
+    if (process.env.COOKIE_DOMAIN === '.') {
+      console.warn('Invalid domain "." specified in COOKIE_DOMAIN, using undefined instead');
+      return undefined;
+    }
+    console.log(`Using production domain from env: ${process.env.COOKIE_DOMAIN}`);
     return process.env.COOKIE_DOMAIN;
   }
   
   // For local development
   if (isLocalEnvironment()) {
+    console.log('Local environment detected, using undefined domain');
     return undefined; // No domain for localhost
   }
   
-  // Default fallback
-  return process.env.COOKIE_DOMAIN === '.' ? undefined : process.env.COOKIE_DOMAIN;
+  // Default fallback - don't use a single dot
+  if (process.env.COOKIE_DOMAIN === '.') {
+    console.warn('Invalid domain "." detected, using undefined instead');
+    return undefined;
+  }
+  
+  console.log(`Using default domain from env: ${process.env.COOKIE_DOMAIN || 'undefined'}`);
+  return process.env.COOKIE_DOMAIN;
 };
 
-// Configuration for cross-domain authentication cookies
-// These settings are crucial for proper JWT token handling across different domains
-// Cookie settings control security aspects like cross-site access, SSL requirements,
-// and domain-specific behavior for authentication tokens
-
+// Get the domain for cookies
 const domain = getDomain();
 
 // Validate domain configuration in production
-if (process.env.NODE_ENV === "production") {
-  if (!domain && !isVercelEnvironment()) {
-    throw new Error(
-      "COOKIE_DOMAIN environment variable is required in production when not using Vercel"
-    );
+if (process.env.NODE_ENV === "production" && !isVercelEnvironment()) {
+  if (!domain) {
+    console.warn("COOKIE_DOMAIN environment variable is not set in production when not using Vercel");
   }
   if (domain === '.') {
-    throw new Error("COOKIE_DOMAIN cannot be a single dot (.) in production");
+    console.warn("COOKIE_DOMAIN cannot be a single dot (.) in production, will use undefined instead");
   }
 }
 
@@ -102,7 +130,7 @@ const cookieConfig =
           sameSite: "none", // Always use 'none' in production for cross-domain cookies
           secure: true, // Must be true when sameSite is 'none'
           path: "/",
-          domain: domain,
+          domain: domain === '.' ? undefined : domain, // Never use a single dot
         }
     : {
         httpOnly: true,
@@ -112,7 +140,7 @@ const cookieConfig =
         secure: false,
         path: "/",
         // For localhost, domain must be undefined
-        domain: undefined,
+        domain: domain === '.' ? undefined : domain, // Never use a single dot
       };
 
 // Validate that maxAge is a positive number
@@ -130,7 +158,7 @@ console.log("Cookie validation results:", {
   maxAgeValid: typeof cookieConfig.maxAge === "number" && cookieConfig.maxAge > 0,
   secureAppropriate: cookieConfig.secure === true || process.env.NODE_ENV !== "production",
   sameSiteValid: ["strict", "lax", "none"].includes(cookieConfig.sameSite),
-  domainValid: !cookieConfig.domain || (typeof cookieConfig.domain === 'string' && cookieConfig.domain !== '.' && cookieConfig.domain.indexOf('.') !== -1),
+  domainValid: !cookieConfig.domain || cookieConfig.domain !== '.',
   crossOriginCompatible: process.env.NODE_ENV === "production" ? 
     (cookieConfig.sameSite === "none" && cookieConfig.secure === true) : true,
   subdomainSupport: cookieConfig.domain?.startsWith(".") || false
@@ -139,9 +167,10 @@ console.log("Cookie validation results:", {
 // Log cookie configuration for debugging purposes
 console.log("Cookie configuration:", {
   ...cookieConfig,
-  domain: cookieConfig.domain,
+  domain: cookieConfig.domain || 'undefined',
   environment: process.env.NODE_ENV || "development",
-  isVercel: isVercelEnvironment()
+  isVercel: isVercelEnvironment(),
+  vercelUrl: process.env.VERCEL_URL || 'undefined'
 });
 
 // Log cross-origin request handling for development mode
@@ -156,9 +185,9 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Debug cookie domain resolution
 console.log("Cookie domain resolution:", {
-  configuredDomain: process.env.COOKIE_DOMAIN,
-  vercelUrl: process.env.VERCEL_URL,
-  effectiveDomain: cookieConfig.domain,
+  configuredDomain: process.env.COOKIE_DOMAIN || 'undefined',
+  vercelUrl: process.env.VERCEL_URL || 'undefined',
+  effectiveDomain: cookieConfig.domain || 'undefined',
   isLocalhost: isLocalEnvironment(),
   isDevelopment: process.env.NODE_ENV !== "production",
   isVercelDeployment: isVercelEnvironment()

@@ -42,6 +42,11 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (res) => {
+    // Check for cookie errors in response
+    if (res.data?.cookieError) {
+      console.warn("Cookie operation warning:", res.data.cookieError);
+      // We still have the access token, so we can continue
+    }
     return res;
   },
   async (error) => {
@@ -69,43 +74,72 @@ axiosInstance.interceptors.response.use(
 
       async function attemptRefresh() {
         try {
+          console.log("Attempting token refresh...");
           const response = await axios.get(
             `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
-            { withCredentials: true }
+            { 
+              withCredentials: true,
+              headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+              }
+            }
           );
-          if (!response.data.user?.hasOwnProperty.call("isAdmin")) {
-            throw new Error("Invalid user data: isAdmin flag missing");
+          
+          // Log the response for debugging
+          console.log("Token refresh response:", {
+            hasAccessToken: !!response.data.accessToken,
+            hasUser: !!response.data.user,
+            cookieStatus: response.data.cookieStatus || 'unknown',
+            cookieError: response.data.cookieError || 'none'
+          });
+          
+          // Check for required data
+          if (!response.data.accessToken) {
+            throw new Error("Invalid response: missing access token");
           }
+          
+          if (!response.data.user) {
+            throw new Error("Invalid response: missing user data");
+          }
+          
+          // Update the access token
           accessToken = response.data.accessToken;
-          if (response.data.user) {
-            const userDataWithAdmin = {
-              ...response.data.user,
-              isAdmin: response.data.user.isAdmin ?? false,
-            };
-            saveUserData(userDataWithAdmin);
+          
+          // Save user data with isAdmin flag
+          const userDataWithAdmin = {
+            ...response.data.user,
+            isAdmin: response.data.user.isAdmin ?? false,
+          };
+          saveUserData(userDataWithAdmin);
+          
+          // Even if there was a cookie error, we can still use the access token
+          if (response.data.cookieError) {
+            console.warn("Cookie error during token refresh:", response.data.cookieError);
+            // Continue anyway since we have the access token
           }
+          
           prevReq.sent = true;
           prevReq.headers.Authorization = `Bearer ${accessToken}`;
           return axiosInstance(prevReq);
         } catch (refreshError) {
           if (retryCount < maxRetries) {
             retryCount++;
+            console.log(`Token refresh failed, retrying (${retryCount}/${maxRetries})...`);
             await new Promise((resolve) =>
               setTimeout(resolve, retryDelay * retryCount)
             );
             return attemptRefresh();
           }
-          console.error("Token refresh failed:", {
+          
+          console.error("Token refresh failed after retries:", {
             error: refreshError,
             message: refreshError.message,
             status: refreshError.response?.status,
             data: refreshError.response?.data,
-            isAdminMissing:
-              !refreshError.response?.data?.user?.hasOwnProperty.call(
-                "isAdmin"
-              ),
             timestamp: new Date().toISOString(),
           });
+          
           clearAccessToken();
           localStorage.removeItem("user");
           sessionStorage.removeItem("user");

@@ -23,7 +23,6 @@ const allowedOrigins = [
   "http://127.0.0.1:5173",
   "https://pipeline-fittings-store-client.vercel.app",
   "https://www.pipeline-fittings-store-client.vercel.app",
-  "https://pipeline-fittings-store-client.vercel.app",
 ];
 
 // Add CLIENT_URL from environment if it exists
@@ -36,6 +35,7 @@ const corsConfig = {
     // Allow requests with no origin (like mobile apps, curl requests)
     if (!origin) return callback(null, true);
     
+    // Allow all Vercel domains or explicitly allowed origins
     if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
       callback(null, true);
     } else {
@@ -61,14 +61,35 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 // Get domain from environment or use default based on environment
 const getDomain = () => {
-  if (process.env.VERCEL_URL) {
+  // For Vercel environments
+  if (process.env.VERCEL || process.env.VERCEL_URL) {
+    console.log('Vercel environment detected for session cookie');
     return '.vercel.app';
   }
-  if (process.env.COOKIE_DOMAIN && process.env.COOKIE_DOMAIN !== '.') {
+  
+  // For production with custom domain
+  if (process.env.NODE_ENV === 'production' && process.env.COOKIE_DOMAIN && process.env.COOKIE_DOMAIN !== '.') {
+    console.log(`Using production domain for session cookie: ${process.env.COOKIE_DOMAIN}`);
     return process.env.COOKIE_DOMAIN;
   }
-  return process.env.COOKIE_DOMAIN === '.' ? undefined : (process.env.NODE_ENV === 'production' ? undefined : 'localhost');
+  
+  // Never use a single dot as domain
+  if (process.env.COOKIE_DOMAIN === '.') {
+    console.warn('Invalid domain "." specified for session cookie, using undefined');
+    return undefined;
+  }
+  
+  // Default for development
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('Development environment detected for session cookie, using undefined domain');
+    return undefined;
+  }
+  
+  return process.env.COOKIE_DOMAIN;
 };
+
+const sessionDomain = getDomain();
+console.log(`Session cookie domain: ${sessionDomain || 'undefined'}`);
 
 app.use(
   session({
@@ -76,10 +97,10 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production' || !!process.env.VERCEL || !!process.env.VERCEL_URL,
       httpOnly: true,
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      domain: getDomain(),
+      sameSite: process.env.NODE_ENV === 'production' || !!process.env.VERCEL || !!process.env.VERCEL_URL ? 'none' : 'lax',
+      domain: sessionDomain,
       path: '/',
       maxAge: parseInt(process.env.COOKIE_MAX_AGE) || 24 * 60 * 60 * 1000,
       originalMaxAge: parseInt(process.env.COOKIE_MAX_AGE) || 24 * 60 * 60 * 1000
@@ -89,12 +110,16 @@ app.use(
 
 app.options("*", cors(corsConfig));
 
+// CORS error handler middleware
 app.use((err, req, res, next) => {
-  if (err.name === "CORSError") {
-    console.error('CORS Error:', err.message, 'Origin:', req.headers.origin, 'Is Vercel:', req.headers.origin?.endsWith('.vercel.app') || false);
+  if (err.name === "CORSError" || err.message?.includes('CORS')) {
+    console.error('CORS Error:', err.message);
     console.error('Request Origin:', req.headers.origin);
     console.error('Request Method:', req.method);
-    console.error('Request Headers:', req.headers);
+    console.error('Request Headers:', JSON.stringify(req.headers));
+    console.error('Is Vercel Origin:', req.headers.origin?.endsWith('.vercel.app') || false);
+    console.error('Allowed Origins:', allowedOrigins);
+    
     return res.status(403).json({
       error: "CORS error",
       message: err.message,
@@ -107,11 +132,24 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
+// Multer error handler middleware
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     return res
       .status(400)
       .json({ error: "Ошибка загрузки файла", message: err.message });
+  }
+  next(err);
+});
+
+// Cookie error handler middleware
+app.use((err, req, res, next) => {
+  if (err.message?.includes('cookie') || err.message?.includes('Cookie')) {
+    console.error('Cookie Error:', err.message);
+    console.error('Cookie Headers:', req.headers.cookie);
+    
+    // Continue processing the request despite cookie error
+    return next();
   }
   next(err);
 });
