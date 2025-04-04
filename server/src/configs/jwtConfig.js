@@ -12,8 +12,8 @@ const jwtConfig = {
     secret: process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key'
   },
   cookieOptions: {
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: true, // Always true for cross-domain cookies
+    sameSite: 'none', // Required for cross-domain cookies
     httpOnly: true,
     path: '/'
   }

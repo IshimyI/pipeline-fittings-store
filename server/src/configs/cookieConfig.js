@@ -9,7 +9,7 @@ const convertJwtTimeToMs = (timeString) => {
     d: 24 * 60 * 60 * 1000, // days to ms
   };
 
-  const match = timeString.match(/^(\d+)([smhd])$/);
+  const match = timeString.match(/^(\\d+)([smhd])$/);
   if (!match) {
     console.warn(
       `Invalid time format: ${timeString}, defaulting to 7 days. Expected format: number followed by s/m/h/d (e.g., 30m, 24h, 7d)`
@@ -34,6 +34,26 @@ const convertJwtTimeToMs = (timeString) => {
   return value * units[unit];
 };
 
+// Helper function to validate domain
+const validateDomain = (domain) => {
+  if (!domain) return undefined;
+  
+  // Remove protocol if present
+  let cleanDomain = domain.replace(/^https?:\/\//, '');
+  
+  // Remove path and query params if present
+  cleanDomain = cleanDomain.split('/')[0];
+  
+  // Basic domain validation
+  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/;
+  if (!domainRegex.test(cleanDomain)) {
+    console.warn(`Invalid domain format: ${cleanDomain}, using undefined`);
+    return undefined;
+  }
+  
+  return cleanDomain;
+};
+
 // Helper function to determine if running on Vercel
 const isVercelEnvironment = () => {
   // Debug logging for environment detection
@@ -53,18 +73,35 @@ const isVercelEnvironment = () => {
   );
 };
 
+// Helper function to determine if running on Render
+const isRenderEnvironment = () => {
+  return Boolean(
+    process.env.RENDER ||
+    process.env.RENDER_EXTERNAL_URL ||
+    process.env.RENDER_SERVICE_ID ||
+    process.env.IS_RENDER
+  );
+};
+
 // Configure cookies based on environment
 let cookieConfig;
 
+// Default cookie configuration for cross-domain support
 const defaultCookieConfig = {
   httpOnly: true,
   maxAge: convertJwtTimeToMs(jwtConfig.refresh.expiresIn),
-  sameSite: "lax",
-  secure: false,
+  sameSite: "none", // For cross-domain cookies
+  secure: true,     // Required when sameSite is 'none'
   path: "/",
-  domain: undefined,
+  domain: process.env.COOKIE_DOMAIN || undefined,
 };
 
+// Get the frontend domain from environment variables or use a default
+const frontendDomain = validateDomain(
+  process.env.FRONTEND_DOMAIN || 
+  process.env.COOKIE_DOMAIN || 
+  "pipeline-fittings-store-client.vercel.app"
+);
 
 if (process.env.NODE_ENV === "development") {
   // Local development configuration
@@ -78,13 +115,12 @@ if (process.env.NODE_ENV === "development") {
     _domainValidated: true, // Explicit validation flag
   };
 
-  console.log("Using local development cookie configuration");
+  console.log(`Development environment detected for session cookie, using ${cookieConfig.domain || 'undefined'} domain`);
+  console.log(`Session cookie domain: ${cookieConfig.domain || 'undefined'}`);
 } else if (isVercelEnvironment()) {
   // Verify VERCEL_URL is available
   if (!process.env.VERCEL_URL) {
-    throw new Error(
-      "VERCEL_URL environment variable is required when running on Vercel"
-    );
+    console.warn("VERCEL_URL environment variable is missing, using default domain");
   }
 
   // Vercel-specific configuration
@@ -94,11 +130,23 @@ if (process.env.NODE_ENV === "development") {
     sameSite: "none", // Required for cross-domain cookies
     secure: true, // Required when sameSite is 'none'
     path: "/",
-    domain:
-      process.env.COOKIE_DOMAIN || "pipeline-fittings-store-client.vercel.app", // Use custom domain or fallback
+    domain: validateDomain(process.env.COOKIE_DOMAIN || frontendDomain),
   };
 
-  console.log("Using Vercel cookie configuration");
+  console.log(`Vercel environment detected, using domain: ${cookieConfig.domain || 'undefined'}`);
+} else if (isRenderEnvironment()) {
+  // Render-specific configuration
+  cookieConfig = {
+    httpOnly: true,
+    maxAge: convertJwtTimeToMs(jwtConfig.refresh.expiresIn),
+    sameSite: "none", // Required for cross-domain cookies
+    secure: true, // Required when sameSite is 'none'
+    path: "/",
+    domain: validateDomain(process.env.COOKIE_DOMAIN || frontendDomain),
+  };
+
+  console.log(`Render environment detected, using domain: ${cookieConfig.domain || 'undefined'}`);
+  console.log(`Cross-domain cookie configuration: sameSite=${cookieConfig.sameSite}, secure=${cookieConfig.secure}`);
 } else if (process.env.NODE_ENV === "production") {
   // Non-Vercel production configuration
   cookieConfig = {
@@ -107,15 +155,15 @@ if (process.env.NODE_ENV === "development") {
     sameSite: "none", // For cross-domain cookies
     secure: true, // Required when sameSite is 'none'
     path: "/",
-    domain: process.env.COOKIE_DOMAIN || undefined,
+    domain: validateDomain(process.env.COOKIE_DOMAIN || frontendDomain),
   };
 
-  console.log("Using production cookie configuration");
-  } else {
+  console.log(`Production environment detected, using domain: ${cookieConfig.domain || 'undefined'}`);
+} else {
   // Default configuration when NODE_ENV is not set or doesn't match expected values
   console.warn("NODE_ENV not set or unrecognized, using default cookie configuration");
   cookieConfig = { ...defaultCookieConfig };
-  }
+}
 
 // Ensure cookieConfig is defined
 if (!cookieConfig) {
@@ -140,6 +188,7 @@ console.log("Cookie configuration:", {
   domain: cookieConfig.domain || "undefined",
   environment: process.env.NODE_ENV || "development",
   isVercel: isVercelEnvironment() ? "yes" : "no",
+  isRender: isRenderEnvironment() ? "yes" : "no",
 });
 
 module.exports = cookieConfig || defaultCookieConfig;
