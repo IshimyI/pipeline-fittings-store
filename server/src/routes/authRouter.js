@@ -9,201 +9,49 @@ const authRouter = express.Router();
 
 authRouter.post("/signup", async (req, res) => {
   const { email, name, password } = req.body;
-  try {
-    if (!email || !name || !password) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
+  if (!email || !name || !password) return res.sendStatus(401);
 
-    const hashpass = await bcrypt.hash(password, 10);
-    const [newUser, created] = await User.findOrCreate({
-      where: { email },
-      defaults: {
-        name,
-        password: hashpass,
-      },
-    });
-
-    if (!created) return res.sendStatus(402);
-
-    const user = newUser.get();
-    delete user.password;
-
-    const { accessToken, refreshToken } = generateTokens({ user });
-
-    // Log cookie configuration before setting
-    console.log("Signup - Cookie configuration before setting:", {
-      sameSite: cookieConfig.sameSite,
-      secure: cookieConfig.secure,
-      domain: cookieConfig.domain || 'undefined',
-      path: cookieConfig.path,
-      httpOnly: cookieConfig.httpOnly,
-      maxAge: cookieConfig.maxAge
-    });
-
-    try {
-      res
-        .cookie(cookieConfig.cookiePrefix + "refreshToken", refreshToken, cookieConfig)
-        .json({ 
-          accessToken, 
-          user: { ...user, isAdmin: user.isAdmin },
-          cookieStatus: 'success'
-        });
-
-      console.log("Signup successful, refresh token cookie set:", {
-        email: user.email,
-        cookieSettings: {
-          sameSite: cookieConfig.sameSite,
-          secure: cookieConfig.secure,
-          domain: cookieConfig.domain || 'undefined',
-          path: cookieConfig.path
-        },
-      });
-    } catch (cookieError) {
-      console.error("Cookie setting error during signup:", cookieError.message, cookieError.stack);
-      // If setting cookie fails, still return the access token
-      res.json({ 
-        accessToken, 
-        user: { ...user, isAdmin: user.isAdmin },
-        cookieStatus: 'error',
-        cookieError: cookieError.message
-      });
-    }
-  } catch (error) {
-    console.error("Signup error:", error);
-    res.status(500).json({ error: "Failed to signup" });
-  }
-});
-
-authRouter.post("/login", async (req, res) => {
-  console.log(`Login attempt for email: ${req.body.email}`);
-  const startTime = Date.now();
-  console.log('Token generation will include isAdmin flag');
-  const { email, password } = req.body;
-  if (!email || !password) return res.sendStatus(400);
-
-  const existingRefreshToken = req.cookies.refreshToken;
-  if (existingRefreshToken) {
-    try {
-      const decoded = jwt.verify(
-        existingRefreshToken,
-        process.env.REFRESH_TOKEN_SECRET
-      );
-      if (decoded.user.email === email) {
-        return res.sendStatus(409); // Already logged in with same account
-      }
-      
-      res.clearCookie(cookieConfig.cookiePrefix + "refreshToken", cookieConfig); // Clear token if different account
-    } catch (err) {
-      res.clearCookie(cookieConfig.cookiePrefix + "refreshToken", cookieConfig); // Clear invalid token
-    }
-  }
-  if (!email || !password) {
-    console.error("Login attempt failed: Missing credentials");
-    return res.sendStatus(400);
-  }
-  const foundUser = await User.findOne({ where: { email } });
-  if (!foundUser) {
-    console.error(`Login attempt failed: User not found for email ${email}`);
-    return res.sendStatus(400);
-  }
-
-  const isValid = await bcrypt.compare(password, foundUser.password);
-  if (!isValid) {
-    console.error(`Login attempt failed: Invalid password for user ${email}`);
-    return res.sendStatus(400);
-  }
-
-  const user = foundUser.get();
-  delete user.password;
-  user.isAdmin = foundUser.isAdmin || false;
-  const { accessToken, refreshToken } = generateTokens({
-    user: {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      isAdmin: user.isAdmin,
+  const hashpass = await bcrypt.hash(password, 10);
+  const [newUser, created] = await User.findOrCreate({
+    where: { email },
+    defaults: {
+      name,
+      password: hashpass,
     },
   });
 
-  // Log cookie configuration and domain validation before setting
-  console.log("Login - Cookie configuration and domain validation:", {
-    cookieDomain: cookieConfig.domain,
-    requestHost: req.get('host'),
-    isDomainValid: cookieConfig.domain ? req.get('host').includes(cookieConfig.domain) : true,
-    sameSite: cookieConfig.sameSite,
-    secure: cookieConfig.secure,
-    domain: cookieConfig.domain || 'undefined',
-    path: cookieConfig.path,
-    httpOnly: cookieConfig.httpOnly,
-    maxAge: cookieConfig.maxAge,
-    environment: process.env.NODE_ENV || 'development',
-    isVercel: process.env.VERCEL ? 'yes' : 'no',
-    isRender: process.env.IS_RENDER ? 'yes' : 'no'
-  });
+  if (!created) return res.sendStatus(402);
 
-  // Validate cookie configuration
-  if (!cookieConfig.domain || !cookieConfig.secure) {
-    console.warn('Cookie configuration may be insecure:', { domain: cookieConfig.domain, secure: cookieConfig.secure });
-  }
+  const user = newUser.get();
+  delete user.password;
 
-  try {
-    res
-      .status(200)
-      .setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
-      .cookie(cookieConfig.cookiePrefix + "refreshToken", refreshToken, cookieConfig)
-      .json({ 
-        accessToken, 
-        user,
-        cookieStatus: 'success'
-      });
+  const { accessToken, refreshToken } = generateTokens({ user });
+  res
+    .cookie("refreshToken", refreshToken, cookieConfig)
+    .json({ accessToken, user });
+});
 
-    console.log("Login successful, refresh token cookie set:", {
-      email: user.email,
-      isAdmin: user.isAdmin,
-      cookieSettings: {
-        sameSite: cookieConfig.sameSite,
-        secure: cookieConfig.secure,
-        domain: cookieConfig.domain || 'undefined',
-        path: cookieConfig.path
-      },
-    });
-  } catch (cookieError) {
-    console.error("Cookie setting error during login:", cookieError.message, cookieError.stack);
-    // If setting cookie fails, still return the access token
-    res.status(200).json({ 
-      accessToken, 
-      user,
-      cookieStatus: 'error',
-      cookieError: cookieError.message
-    });
-  }
+authRouter.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.sendStatus(400);
+  const foundUser = await User.findOne({ where: { email } });
+  if (!foundUser) return res.sendStatus(400);
+
+  const isValid = await bcrypt.compare(password, foundUser.password);
+  if (!isValid) return res.sendStatus(400);
+
+  const user = foundUser.get();
+  delete user.password;
+  const { accessToken, refreshToken } = generateTokens({ user });
+
+  res
+    .status(200)
+    .cookie("refreshToken", refreshToken, cookieConfig)
+    .json({ accessToken, user });
 });
 
 authRouter.post("/logout", async (req, res) => {
-  try {
-    // Log cookie configuration before clearing
-    console.log("Logout - Cookie configuration before clearing:", {
-      sameSite: cookieConfig.sameSite,
-      secure: cookieConfig.secure,
-      domain: cookieConfig.domain || 'undefined',
-      path: cookieConfig.path,
-      httpOnly: cookieConfig.httpOnly,
-      maxAge: cookieConfig.maxAge,
-      hasRefreshToken: !!req.cookies.refreshToken
-    });
-
-    res.clearCookie(cookieConfig.cookiePrefix + "refreshToken", cookieConfig).sendStatus(200);
-
-    console.log("Logout successful, refresh token cookie cleared with settings:", {
-      sameSite: cookieConfig.sameSite,
-      secure: cookieConfig.secure,
-      domain: cookieConfig.domain || 'undefined',
-      path: cookieConfig.path
-    });
-  } catch (error) {
-    console.error("Logout error:", error);
-    res.status(500).json({ error: "Failed to logout" });
-  }
+  res.clearCookie("refreshToken", cookieConfig).sendStatus(200);
 });
 
 module.exports = authRouter;
