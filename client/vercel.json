@@ -1,12 +1,8 @@
 {
   "rewrites": [
     {
-      "rewrites": [
-        {
-          "source": "/api/(.*)",
-          "destination": "https://pipeline-fittings-store.onrender.com/api/$1"
-        }
-      ]
+      "source": "/api/(.*)",
+      "destination": "https://pipeline-fittings-store.onrender.com/api/$1"
     },
     {
       "source": "/uploads/:path*",
