@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: `${import.meta.env.VITE_TARGET}/api`,
+  baseURL: `/api`,
   withCredentials: true, // Essential for cross-origin cookie handling
 });
 
@@ -9,13 +9,13 @@ let accessToken = "";
 
 // Initialize access token from localStorage if a user is logged in
 try {
-  const savedUser = localStorage.getItem('user');
+  const savedUser = localStorage.getItem("user");
   if (savedUser) {
     // Token will be set via refresh on app load
-    console.log('User found in localStorage, token will be refreshed');
+    console.log("User found in localStorage, token will be refreshed");
   }
 } catch (e) {
-  console.error('Error accessing localStorage:', e);
+  console.error("Error accessing localStorage:", e);
 }
 
 export function setAccessToken(newToken) {
@@ -26,9 +26,9 @@ export function clearAccessToken() {
   accessToken = "";
   // Also clear user data from localStorage
   try {
-    localStorage.removeItem('user');
+    localStorage.removeItem("user");
   } catch (e) {
-    console.error('Error clearing localStorage:', e);
+    console.error("Error clearing localStorage:", e);
   }
 }
 
@@ -54,21 +54,21 @@ axiosInstance.interceptors.response.use(
         // Use withCredentials to ensure cookies are sent with the request
         const response = await axios.get(
           `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
-          { 
+          {
             withCredentials: true,
             // Add headers to ensure proper CORS handling
             headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            }
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
           }
         );
         accessToken = response.data.accessToken;
         // Update user data in localStorage
         try {
-          localStorage.setItem('user', JSON.stringify(response.data.user));
+          localStorage.setItem("user", JSON.stringify(response.data.user));
         } catch (e) {
-          console.error('Error updating localStorage:', e);
+          console.error("Error updating localStorage:", e);
         }
         prevReq.sent = true;
         prevReq.headers.Authorization = `Bearer ${accessToken}`;
@@ -79,7 +79,7 @@ axiosInstance.interceptors.response.use(
         try {
           localStorage.removeItem("user");
         } catch (e) {
-          console.error('Error clearing localStorage:', e);
+          console.error("Error clearing localStorage:", e);
         }
         return Promise.reject(refreshError);
       }
