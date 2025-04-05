@@ -220,6 +220,8 @@ const AddProductForm = ({ user, onProductCreated }) => {
                 <div>
                   <label className="block text-gray-300 mb-2">Наличие</label>
                   <input
+                    type="number"
+                    min="0"
                     name="availability"
                     value={formData.availability}
                     onChange={handleInputChange}
