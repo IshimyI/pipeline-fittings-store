@@ -95,6 +95,11 @@ export default function AboutPage() {
       imgSrc: "/uploads/companies/energomash.png",
       alt: "Лого НПО Энергомаш",
     },
+    {
+      name: "НПО «ГЕЛИЙМАШ»",
+      imgSrc: "/uploads/companies/geliimash.png",
+      alt: "Лого НПО «ГЕЛИЙМАШ»",
+    },
   ];
 
   return (

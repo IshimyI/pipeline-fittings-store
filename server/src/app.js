@@ -33,7 +33,8 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use(express.static(path.join(__dirname, "../public/dist")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(
   session({
     secret: config.telegram.secretKey,
@@ -65,6 +66,11 @@ app.use((err, req, res, next) => {
 app.use("/api", router);
 app.use("/api/auth", authRouter);
 app.use("/api/tokens", tokensRouter);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/dist/index.html"));
+});
+
 let server;
 try {
   const sslPath = path.join(__dirname, "../configs/ssl");
@@ -101,4 +107,5 @@ try {
   console.error("Server initialization error:", error);
   process.exit(1);
 }
+
 module.exports = app;

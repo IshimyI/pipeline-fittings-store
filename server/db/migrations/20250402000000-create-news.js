@@ -19,7 +19,7 @@ module.exports = {
       },
       image: {
         type: Sequelize.STRING,
-        defaultValue: "/uploads/news/default-news.jpg",
+        defaultValue: "/uploads/no-photo.png",
       },
       createdAt: {
         allowNull: false,

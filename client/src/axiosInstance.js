@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: `/api`,
+  baseURL: import.meta.env.VITE_TARGET,
   withCredentials: true, // Essential for cross-origin cookie handling
 });
 
@@ -53,7 +53,7 @@ axiosInstance.interceptors.response.use(
       try {
         // Use withCredentials to ensure cookies are sent with the request
         const response = await axios.get(
-          `${import.meta.env.VITE_TARGET}/api/tokens/refresh`,
+          `${import.meta.env.VITE_TARGET}tokens/refresh`,
           {
             withCredentials: true,
             // Add headers to ensure proper CORS handling

@@ -1,0 +1,71 @@
+version: "3"
+services:
+  postgres:
+    image: postgres
+    container_name: pipeline_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: elbrus
+      POSTGRES_PASSWORD: elbrus
+      POSTGRES_DB: pipeline_filtings_krioarmatura
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - app-network
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: ishimyi/krioarmatura:latest
+    container_name: pipeline_server
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - postgres
+    environment:
+      DB: postgres://elbrus:elbrus@postgres:5432/pipeline_filtings_krioarmatura
+      NODE_ENV: production
+      CLIENT_URL: http://2.58.68.140
+      PORT: 80
+      PORT_HTTPS: 443
+      PORT_HTTP: 80
+      ACCESS_TOKEN_SECRET: "krioarmatura-access"
+      REFRESH_TOKEN_SECRET: "krioarmatura-refresh"
+      SESSION_SECRET: "krioarmatura-session"
+      COOKIE_DOMAIN: 2.58.68.140
+      COOKIE_SECURE: "true"
+      COOKIE_HTTP_ONLY: "true"
+      COOKIE_SAME_SITE: none
+      COOKIE_MAX_AGE: 604800000
+      SMTP_HOST: "smtp.mail.ru"
+      SMTP_PORT: 465
+      EMAIL_USER: "krioarmatura-contact@mail.ru"
+      EMAIL_PASSWORD: "bRRQKK2Ay0vagRSudFNq"
+      ADMIN_EMAIL: "ivan.borisenko.2003@mail.ru"
+      JWT_SECRET: "email"
+      JWT_PASS: "password"
+      TELEGRAM_BOT_TOKEN: "7702110452:AAEw4QG0GzDDO5luS0LtpQpcp1JWf6oaKTE"
+      TELEGRAM_CHAT_ID: 55413493
+      CLOUDINARY_CLOUD_NAME: "dpty6vhdl"
+      CLOUDINARY_API_KEY: "719536481216766"
+      CLOUDINARY_API_SECRET: "c0nPM3d51fA7Fs6ntI-ij-EHgac"
+      CLOUDINARY_WATERMARK_ID: "watermark_lwwvwv"
+      CLOUDINARY_WATERMARK_OPACITY: 70
+      CLOUDINARY_WATERMARK_SIZE: 0.9
+    restart: always
+    volumes:
+      - ./server/public:/usr/src/app/public
+      - ./ssl:/usr/src/app/public/.well-known/acme-challenge
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

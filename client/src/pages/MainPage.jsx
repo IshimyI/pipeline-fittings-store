@@ -4,6 +4,7 @@ import Category from "../ui/Category";
 import axiosInstance from "../axiosInstance";
 import AddProductForm from "../components/AddProductForm";
 import Dialog from "../ui/Dialog";
+import ImageUploader from "../components/ImageUploader";
 const MemoizedCategory = memo(Category);
 
 export default function MainPage({ user, category }) {
@@ -79,17 +80,30 @@ export default function MainPage({ user, category }) {
     e.preventDefault();
     try {
       setIsLoading(true);
+
       if (!formData.name.trim()) {
         throw new Error("Название категории обязательно");
       }
-      const payload = {
-        name: formData.name.trim(),
-        img: formData.image || "default-category.jpg",
-      };
+
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name.trim());
+
+      if (formData.image instanceof File) {
+        formDataToSend.append("image", formData.image);
+      } else if (editingCategory.img) {
+        formDataToSend.append("existingImage", editingCategory.img);
+      }
+
       const response = await axiosInstance.put(
         `/updateCategory/${editingCategory.id}/${user.id}`,
-        payload
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
+
       if (response.status === 200) {
         setCategories((prev) =>
           prev.map((c) => (c.id === editingCategory.id ? response.data : c))
@@ -98,11 +112,7 @@ export default function MainPage({ user, category }) {
         setShowForm(null);
         setFormData({
           name: "",
-          categoryId: "",
-          price: "",
           image: null,
-          availability: 0,
-          params: "",
         });
       }
     } catch (error) {
@@ -111,6 +121,7 @@ export default function MainPage({ user, category }) {
       setIsLoading(false);
     }
   };
+
   const handleInputChange = useCallback((e) => {
     const { name, files } = e.target;
 
@@ -140,7 +151,7 @@ export default function MainPage({ user, category }) {
           name: formData.name.trim(),
           categoryId: Number(formData.categoryId),
           price: formData.price,
-          image: formData.image || "default-product.jpg",
+          image: formData.image || "no-photo.png",
           availability: formData.availability || 0,
           params: tryParseJSON(formData.params),
           user: { isAdmin: user?.isAdmin },
@@ -162,7 +173,7 @@ export default function MainPage({ user, category }) {
         }
         const categoryPayload = {
           name: formData.name.trim(),
-          img: formData.image || "default-category.jpg",
+          img: formData.image || "no-photo.png",
           user: { isAdmin: user?.isAdmin },
         };
         const response = await axiosInstance.post(
@@ -278,12 +289,19 @@ export default function MainPage({ user, category }) {
               )}
               <div>
                 <label className="block text-gray-300 mb-2">Изображение</label>
-                <input
-                  name="image"
-                  type="file"
-                  accept="image/png, image/jpeg image/jpg"
-                  onChange={handleInputChange}
-                  className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                <ImageUploader
+                  onImageSelected={(file) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      image: file,
+                    }));
+                  }}
+                  image={
+                    formData.image instanceof File
+                      ? URL.createObjectURL(formData.image)
+                      : editingCategory?.img || "/uploads/no-photo.png"
+                  }
+                  className="mt-2"
                 />
               </div>
               <div className="flex justify-end gap-4">
@@ -337,7 +355,7 @@ export default function MainPage({ user, category }) {
                     >
                       <div className="relative overflow-hidden rounded-lg mb-4">
                         <img
-                          src={news.image || "/uploads/default-news.jpg"}
+                          src={news.image || "/uploads/no-photo.png"}
                           alt={news.title}
                           className="w-full h-52 object-contain transform group-hover:scale-105 transition-transform duration-300"
                         />

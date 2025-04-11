@@ -15,8 +15,7 @@ export default function Category({ category }) {
     if (category.image.startsWith("/uploads/")) return category.image;
     if (category.image.startsWith("categories/"))
       return `/uploads/${category.image}`;
-    if (category.image === "default-category.jpg")
-      return `/uploads/${category.image}`;
+    if (category.image === "cno-photo.png") return `/uploads/${category.image}`;
     return category.image && category.image !== "alt"
       ? `/uploads/categories/${category.image}.png`
       : "/uploads/no-photo.png";

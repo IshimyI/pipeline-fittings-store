@@ -17443,7 +17443,7 @@ function Ax({ user: n, category: r }) {
           throw new Error("Название категории обязательно");
         const F = {
             name: N.name.trim(),
-            img: N.image || "default-category.jpg",
+            img: N.image || "no-photo.png",
           },
           re = await Te.put(`/updateCategory/${y.id}/${n.id}`, F);
         re.status === 200 &&
@@ -17483,7 +17483,7 @@ function Ax({ user: n, category: r }) {
             name: N.name.trim(),
             categoryId: Number(N.categoryId),
             price: N.price,
-            image: N.image || "default-product.jpg",
+            image: N.image || "no-photo.png",
             availability: N.availability || "в наличии",
             params: Ox(N.params),
             user: { isAdmin: n == null ? void 0 : n.isAdmin },
@@ -17499,7 +17499,7 @@ function Ax({ user: n, category: r }) {
             throw new Error("Категория с таким названием уже существует");
           const U = {
               name: N.name.trim(),
-              img: N.image || "default-category.jpg",
+              img: N.image || "no-photo.png",
               user: { isAdmin: n == null ? void 0 : n.isAdmin },
             },
             F = await Te.post("/createCategory", U);

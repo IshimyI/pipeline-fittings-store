@@ -179,7 +179,7 @@ export default function Dialog({ isOpen, onClose, product, user, category }) {
     if (isValidUrl(image)) return image;
     if (image.startsWith("/uploads/")) return image;
     if (image.startsWith("categories/")) return `/uploads/${image}`;
-    if (image === "default-category.jpg") return `/uploads/${image}`;
+    if (image === "no-photo.png") return `/uploads/${image}`;
     return `/uploads/categories/${image}.jpg?v=${Date.now()}`;
   };
 

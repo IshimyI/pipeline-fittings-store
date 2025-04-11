@@ -148,7 +148,7 @@ router.post(
       name,
       categoryId,
       price,
-      image = "default-product.jpg",
+      image = "no-photo.png",
       availability = 0,
       params = {},
     } = req.body;
@@ -172,7 +172,7 @@ router.post(
         });
       }
 
-      let imagePath = "/uploads/products/default-product.jpg";
+      let imagePath = "/uploads/no-photo.png";
       if (req.file) {
         imagePath = req.file.cloudinaryUrl;
       }
@@ -220,7 +220,7 @@ router.post(
         });
       }
 
-      let imagePath = `/uploads/categories/default-category.jpg`;
+      let imagePath = `/uploads/no-photo.png`;
       if (req.file) {
         imagePath = req.file.cloudinaryUrl;
       }
@@ -263,7 +263,7 @@ router.put("/updateCategory/:id/:userId", async (req, res) => {
 
     const updatedCategory = await category.update({
       name: name.trim(),
-      img: img || "/uploads/categories/default-category.jpg",
+      img: img || `/uploads/no-photo.png`,
       updatedAt: new Date(),
     });
 

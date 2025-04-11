@@ -351,7 +351,7 @@ export default function NewsPage({ user }) {
                       alt={item.title}
                       className="w-full h-auto object-contain transition-transform hover:scale-105"
                       onError={(e) => {
-                        e.target.src = "/uploads/news/default-news.jpg";
+                        e.target.src = "/uploads/no-photo.png";
                       }}
                     />
                   </div>
@@ -432,7 +432,7 @@ export default function NewsPage({ user }) {
                     className="w-full h-auto max-h-[500px] object-contain"
                     loading="lazy"
                     onError={(e) => {
-                      e.target.src = "/uploads/news/default-news.jpg";
+                      e.target.src = "/uploads/no-photo.png";
                     }}
                   />
                 </div>

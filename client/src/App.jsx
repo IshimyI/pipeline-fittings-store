@@ -27,31 +27,31 @@ function App() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
+    const savedUser = localStorage.getItem("user");
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser);
         setUser(parsedUser);
       } catch (e) {
-        console.error('Error parsing saved user data:', e);
-        localStorage.removeItem('user');
+        console.error("Error parsing saved user data:", e);
+        localStorage.removeItem("user");
       }
     }
   }, []);
 
   useEffect(() => {
-    axiosInstance("/tokens/refresh")
+    axiosInstance("tokens/refresh")
       .then((res) => {
         setUser(res.data.user);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         setAccessToken(res.data.accessToken);
       })
       .catch((error) => {
-        console.error('Token refresh failed:', error);
+        console.error("Token refresh failed:", error);
         setUser(null);
         clearAccessToken();
-        localStorage.removeItem('user');
-        navigate('/');
+        localStorage.removeItem("user");
+        navigate("/");
       })
       .finally(() => {
         setLoadingUser(false);
@@ -80,7 +80,7 @@ function App() {
       const res = await axiosInstance.post("/auth/signup", data);
       if (res && res.status === 200) {
         setUser(res.data.user);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         setAccessToken(res.data.accessToken);
         navigate("/");
       } else {
@@ -98,7 +98,7 @@ function App() {
     const res = await axiosInstance.post("/auth/login", data);
     if (res.status === 200) {
       setUser(res.data.user);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       setAccessToken(res.data.accessToken);
       navigate("/");
     }
@@ -157,4 +157,3 @@ function App() {
 }
 
 export default App;
-
