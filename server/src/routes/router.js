@@ -9,6 +9,8 @@ const {
   Order,
   Feedback,
   News,
+  Companie,
+  Info,
 } = require("../../db/models");
 const { where } = require("sequelize");
 const verifyRefreshToken = require("../middlewares/verifyRefreshToken");
@@ -19,6 +21,7 @@ const {
   uploadProductImage,
   uploadCategoryImage,
   uploadNewsImage,
+  uploadCompanyImage,
 } = require("../middlewares/fileUpload");
 const { log } = require("console");
 
@@ -789,5 +792,109 @@ router.delete(
     }
   }
 );
+
+router.get("/about", async (req, res) => {
+  try {
+    const aboutInfo = await Info.findOne();
+    if (!aboutInfo) {
+      return res.status(404).json({ message: "Информация не найдена" });
+    }
+    res.status(200).json(aboutInfo);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.put("/about", verifyRefreshToken, async (req, res) => {
+  try {
+    if (!res.locals.user.isAdmin) {
+      return res.status(403).json({ message: "Доступ запрещен" });
+    }
+
+    const fields = [
+      "title",
+      "content",
+      "actions",
+      "company_first",
+      "company_second",
+    ];
+    const updateData = { section: "about" };
+
+    fields.forEach((field) => {
+      if (req.body[field] !== undefined) {
+        updateData[field] = req.body[field];
+      }
+    });
+
+    let info = await Info.findOne({ where: { section: "about" } });
+
+    if (info) {
+      await info.update(updateData);
+    } else {
+      info = await Info.create(updateData);
+    }
+
+    res.status(200).json(info);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get("/companies", async (req, res) => {
+  try {
+    const companies = await Companie.findAll();
+    res.status(200).json(companies);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/companies", verifyRefreshToken, async (req, res) => {
+  if (!res.locals.user.isAdmin)
+    return res.status(403).json({ message: "Доступ запрещен" });
+  try {
+    const { name, imgSrc } = req.body;
+    const newClient = await Companie.create({
+      name,
+      imgSrc,
+    });
+    res.status(201).json(newClient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.put("/companies/:id", verifyRefreshToken, async (req, res) => {
+  if (!res.locals.user.isAdmin)
+    return res.status(403).json({ message: "Доступ запрещен" });
+
+  try {
+    const client = await Companie.findByPk(req.params.id);
+    if (!client) return res.status(404).json({ message: "Клиент не найден" });
+
+    if (req.body.name) client.name = req.body.name;
+    if (req.body.imgSrc) client.imgSrc = req.body.imgSrc;
+
+    await client.save();
+    res.status(200).json(client);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.delete("/companies/:id", verifyRefreshToken, async (req, res) => {
+  if (!res.locals.user.isAdmin)
+    return res.status(403).json({ message: "Доступ запрещен" });
+
+  try {
+    const client = await Companie.findByPk(req.params.id);
+    if (!client) return res.status(404).json({ message: "Клиент не найден" });
+
+    await client.destroy();
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router;

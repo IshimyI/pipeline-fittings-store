@@ -334,6 +334,16 @@ export default function BasketPage({ user }) {
                 >
                   {isSubmitting ? "Оформление..." : "Перейти к оформлению"}
                 </button>
+                <div className="text-sm 2xl:text-base mt-2 text-gray-400">
+                  Нажимая на кнопку, вы соглашаетесь с{" "}
+                  <a className="text-krio-primary underline" href="/terms">
+                    Пользовательским соглашением
+                  </a>{" "}
+                  и{" "}
+                  <a className="text-krio-primary underline" href="/privacy">
+                    Политикой конфиденциальности
+                  </a>
+                </div>
 
                 {cartItems.length > 0 && !user?.id && (
                   <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 2xl:p-5 mt-6">

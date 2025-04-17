@@ -369,6 +369,16 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                       "Перезвоните мне"
                     )}
                   </button>
+                  <div className="text-sm 2xl:text-base mt-2 text-gray-400">
+                    Нажимая на кнопку, вы соглашаетесь с{" "}
+                    <a className="text-krio-primary underline" href="/terms">
+                      Пользовательским соглашением
+                    </a>{" "}
+                    и{" "}
+                    <a className="text-krio-primary underline" href="/privacy">
+                      Политикой конфиденциальности
+                    </a>
+                  </div>
                 </form>
               </div>
             </div>
@@ -581,6 +591,16 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                   "Отправить сообщение"
                 )}
               </button>
+              <div className="text-sm 2xl:text-base mt-2 text-gray-400">
+                Нажимая на кнопку, вы соглашаетесь с{" "}
+                <a className="text-krio-primary underline" href="/terms">
+                  Пользовательским соглашением
+                </a>{" "}
+                и{" "}
+                <a className="text-krio-primary underline" href="/privacy">
+                  Политикой конфиденциальности
+                </a>
+              </div>
             </form>
           </div>
         </section>

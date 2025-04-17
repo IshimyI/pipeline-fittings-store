@@ -126,7 +126,7 @@ function App() {
           element={<MainPage user={user} category={category} />}
         />
         <Route path="/contacts" element={<ContactsPage user={user} />} />
-        <Route path="/about" element={<AboutPage />} />
+        <Route path="/about" element={<AboutPage user={user} />} />
         <Route path="/selector" element={<SelectorPage />} />
         <Route path="/basket" element={<BasketPage user={user} />} />
         <Route

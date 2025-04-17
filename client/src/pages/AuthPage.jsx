@@ -155,6 +155,16 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
           >
             {log ? "Войти →" : "Зарегистрироваться"}
           </button>
+          <div className="text-sm 2xl:text-base mt-2 text-gray-400">
+            Нажимая на кнопку, вы соглашаетесь с{" "}
+            <a className="text-krio-primary underline" href="/terms">
+              Пользовательским соглашением
+            </a>{" "}
+            и{" "}
+            <a className="text-krio-primary underline" href="/privacy">
+              Политикой конфиденциальности
+            </a>
+          </div>
         </form>
 
         <div className="text-center text-sm text-krio-secondary">

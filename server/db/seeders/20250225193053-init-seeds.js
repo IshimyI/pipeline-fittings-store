@@ -13,6 +13,96 @@ module.exports = {
         isAdmin: true,
       },
     ]);
+    await queryInterface.bulkInsert("Infos", [
+      {
+        section: "about",
+        title:
+          "уже более 20 лет успешно работает на рынке поставок высокотехнологичной стендовой, воздушной и криогенной арматуры. Мы гордимся тем, что являемся надежным партнером для ведущих предприятий в России, обеспечивая качественные решения, которые соответствуют самым строгим стандартам.",
+        content:
+          "Мы с гордостью поставляем нашу продукцию в такие высокотехнологичные отрасли, как: космическая промышленность,нефтегазовый сектор и машиностроение, где особое внимание уделяется надежности и долговечности каждой детали.",
+        actions:
+          "не ограничивается лишь поставками арматуры. Мы предлагаем своим клиентам полный спектр услуг, включая:",
+        company_first:
+          "В нашей команде работают высококвалифицированные специалисты, которые не только обладают глубокими знаниями в своей области, но и постоянно совершенствуют свои навыки.",
+        company_second:
+          "Мы гордимся тем, что наша команда всегда готова предложить передовые решения для самых сложных задач, сочетая традиционные подходы с инновационными технологиями.",
+      },
+    ]);
+    await queryInterface.bulkInsert("Companies", [
+      {
+        name: "Роскосмос",
+        imgSrc: "https://www.aex.ru/images/media/900/9790.jpg",
+      },
+      {
+        name: "Алмаз-Антей",
+        imgSrc:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFptMYAntuau64uWvZz-1KX3b_eH9se9CKCo-S0Ew_sRih12oX",
+      },
+      {
+        name: "Криогенмаш",
+        imgSrc:
+          "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTqdBFJVMeOW2B-7b7lqPGEZVEwoC8Pkwn_7Byk8EYooR71JWZz",
+      },
+      {
+        name: "Техгаз",
+        imgSrc: "https://ivanteevka.tekhgaz.ru/image/catalog/logo.png",
+      },
+      {
+        name: "НИИМАШ",
+        imgSrc:
+          "https://nsaldago.ru/media/project_mo_95/5c/09/5e/ee/34/00/snimok.png",
+      },
+      {
+        name: "СЭГЗ",
+        imgSrc:
+          "https://balans-s.ru/upload/iblock/eb1/85410ej0rkm9mqdb41pjqwy6ozfr0mpr.png",
+      },
+      {
+        name: "ГКНПЦ им. М.В. Хруничева",
+        imgSrc:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSofIjQ7cs8nOZNsdTIK6flfcmStKbuAeQQcQthcNWVGwAjFRkPCG8Zo6zve6VvAPXDhQ&usqp=CAU",
+      },
+      {
+        name: "ДИОКСИД",
+        imgSrc:
+          "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRzIYoMjHBD39FEaZ3DxNC_9qKWZZqy-CivjdRJUVogQ1Yq8g0K",
+      },
+      {
+        name: "ЦЭНКИ",
+        imgSrc:
+          "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTsvZiS_8pwipuZVub7tzqy4MJ_dWa8j8MS6LfWsisoGN2OURtH",
+      },
+      {
+        name: "РКЦ Прогресс",
+        imgSrc:
+          "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNjqynW0dlI1x2bNBeDneM_QAgDka-0IkDpIEhd5xCAQrhjVh_",
+      },
+      {
+        name: "Филиал ФГУП ЦЭНКИ - КБТХМ",
+        imgSrc:
+          "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ52cBk5bdtK04JcvP5EeEZnn6ADmgQ3xagoS3nZP-ARdt8HOw7",
+      },
+      {
+        name: "ФКП НИЦ РКП",
+        imgSrc:
+          "https://optim.tildacdn.com/tild6563-3939-4564-a139-623332323934/-/resize/260x/-/format/webp/__.jpg",
+      },
+      {
+        name: "ЗАО НПО АРКОН",
+        imgSrc:
+          "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRKdcs3cm_slWseFU1IH4W2zLo0SyzVbH1J7_aJ9o3CM2y1g6C7",
+      },
+      {
+        name: "НПО Энергомаш",
+        imgSrc:
+          "https://upload.wikimedia.org/wikipedia/ru/thumb/6/60/%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8_%D0%AD%D0%BD%D0%B5%D1%80%D0%B3%D0%BE%D0%BC%D0%B0%D1%88.png/200px-%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8_%D0%AD%D0%BD%D0%B5%D1%80%D0%B3%D0%BE%D0%BC%D0%B0%D1%88.png",
+      },
+      {
+        name: "НПО «ГЕЛИЙМАШ»",
+        imgSrc:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo9sardxXlMYohPfmxSr1Eb0m2eU-q94ZfEWqgoTn1zkEzVGgi2Wk5PZJnwVbJtFO66g&usqp=CAU",
+      },
+    ]);
     await queryInterface.bulkInsert(
       "Categories",
       [

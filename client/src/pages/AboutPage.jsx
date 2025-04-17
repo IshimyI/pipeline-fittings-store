@@ -1,3 +1,6 @@
+import { useState, useEffect, useCallback } from "react";
+import axiosInstance from "../axiosInstance";
+
 const Section = ({ title, children }) => (
   <section className="space-y-6">
     <h2 className="text-2xl font-bold text-center text-white glow-text">
@@ -7,100 +10,293 @@ const Section = ({ title, children }) => (
   </section>
 );
 
-const ClientCard = ({ client }) => (
-  <div className="relative p-2 sm:p-3 bg-krio-foreground rounded-lg sm:rounded-xl shadow-md sm:shadow-lg border border-krio-primary/20 flex flex-col items-center w-full h-full">
-    <div className="w-full aspect-square flex items-center justify-center overflow-hidden bg-white p-1 sm:p-2">
-      <img
-        src={client.imgSrc}
-        alt={client.alt}
-        className="object-contain w-full h-full"
-        loading="lazy"
-      />
-    </div>
-    <p className="text-krio-secondary text-xs sm:text-sm font-medium text-center mt-1 sm:mt-2 whitespace-nowrap truncate w-full px-1">
-      {client.name}
-    </p>
-  </div>
-);
+const ClientCard = ({ client, isAdmin, onUpdate, onDelete }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState(client.name);
+  const [imgSrc, setImgSrc] = useState(client.imgSrc);
 
-export default function AboutPage() {
-  const clients = [
-    {
-      name: "Роскосмос",
-      imgSrc: "/uploads/companies/Roscosmos.png",
-      alt: "Лого Роскосмоса",
-    },
-    {
-      name: "Алмаз-Антей",
-      imgSrc: "/uploads/companies/Almaz-Antey.jpg",
-      alt: "Лого Алмаз-Антея",
-    },
-    {
-      name: "Криогенмаш",
-      imgSrc: "/uploads/companies/Kriogenmash.jpg",
-      alt: "Лого Криогенмаша",
-    },
-    {
-      name: "Техгаз",
-      imgSrc: "/uploads/companies/tech-gas.png",
-      alt: "Лого Техгаза",
-    },
-    {
-      name: "НИИМАШ",
-      imgSrc: "/uploads/companies/niimash.jpg",
-      alt: "Лого НИИМАШа",
-    },
-    {
-      name: "СЭГЗ",
-      imgSrc: "/uploads/companies/segs.png",
-      alt: "Лого СЭГЗа",
-    },
-    {
-      name: "ГКНПЦ им. М.В. Хруничева",
-      imgSrc: "/uploads/companies/gknpc-khrunichev.png",
-      alt: "Лого ГКНПЦ им. М.В. Хруничева",
-    },
-    {
-      name: "ДИОКСИД",
-      imgSrc: "/uploads/companies/dioksid.jpg",
-      alt: "Лого ДИОКСИД",
-    },
-    {
-      name: "ЦЭНКИ",
-      imgSrc: "/uploads/companies/tsenki.jpg",
-      alt: "Лого ЦЭНКИ",
-    },
-    {
-      name: "РКЦ Прогресс",
-      imgSrc: "/uploads/companies/rkc-progress.jpg",
-      alt: "Лого РКЦ Прогресс",
-    },
-    {
-      name: "Филиал ФГУП ЦЭНКИ - КБТХМ",
-      imgSrc: "/uploads/companies/kbthm.jpg",
-      alt: "Лого КБТХМ",
-    },
-    {
-      name: "ФКП НИЦ РКП",
-      imgSrc: "/uploads/companies/nic-rkp.png",
-      alt: "Лого НИЦ РКП",
-    },
-    {
-      name: "ЗАО НПО АРКОН",
-      imgSrc: "/uploads/companies/arkon.jpg",
-      alt: "Лого НПО АРКОН",
-    },
-    {
-      name: "НПО Энергомаш",
-      imgSrc: "/uploads/companies/energomash.png",
-      alt: "Лого НПО Энергомаш",
-    },
-    {
-      name: "НПО «ГЕЛИЙМАШ»",
-      imgSrc: "/uploads/companies/geliimash.png",
-      alt: "Лого НПО «ГЕЛИЙМАШ»",
-    },
-  ];
+  const handleSave = async (e) => {
+    e.preventDefault();
+    await onUpdate(client.id, { name, imgSrc });
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setName(client.name);
+    setImgSrc(client.imgSrc);
+    setIsEditing(false);
+  };
+
+  return (
+    <div className="relative p-2 sm:p-3 bg-krio-foreground rounded-lg sm:rounded-xl shadow-md sm:shadow-lg border border-krio-primary/20 flex flex-col items-center w-full h-full">
+      {isEditing ? (
+        <form
+          onSubmit={handleSave}
+          className="w-full h-full flex flex-col gap-2"
+        >
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-2 py-1 text-sm bg-krio-background rounded border border-krio-primary/20 text-white"
+            required
+          />
+          <input
+            type="url"
+            value={imgSrc}
+            onChange={(e) => setImgSrc(e.target.value)}
+            className="w-full px-2 py-1 text-sm bg-krio-background rounded border border-krio-primary/20 text-white"
+            required
+          />
+          <div className="flex gap-2 mt-auto">
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="px-2 py-1 text-xs bg-krio-primary/20 rounded hover:bg-krio-primary/30 text-krio-secondary"
+            >
+              Отмена
+            </button>
+            <button
+              type="submit"
+              className="px-2 py-1 text-xs bg-krio-primary rounded hover:bg-krio-primary/80 text-white"
+            >
+              Сохранить
+            </button>
+          </div>
+        </form>
+      ) : (
+        <>
+          <div className="w-full aspect-square flex items-center justify-center overflow-hidden bg-white p-1 sm:p-2">
+            <img
+              src={client.imgSrc}
+              alt={client.name}
+              className="object-contain w-full h-full"
+              loading="lazy"
+            />
+          </div>
+          <p className="text-krio-secondary text-xs sm:text-sm font-medium text-center mt-1 sm:mt-2 whitespace-nowrap truncate w-full px-1">
+            {client.name}
+          </p>
+        </>
+      )}
+      {isAdmin && !isEditing && (
+        <div className="absolute top-2 right-2 flex gap-2 z-10">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsEditing(true);
+            }}
+            className="p-1.5 bg-krio-primary/80 hover:bg-krio-primary rounded-full shadow-lg"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(client.id);
+            }}
+            className="p-1.5 bg-red-500/80 hover:bg-red-500 rounded-full shadow-lg"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const AddClientCard = ({ onAdd }) => {
+  const [name, setName] = useState("");
+  const [imgSrc, setImgSrc] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await onAdd({ name, imgSrc });
+    setName("");
+    setImgSrc("");
+    setIsEditing(false);
+  };
+
+  return (
+    <div className="relative p-2 sm:p-3 bg-krio-foreground rounded-lg sm:rounded-xl shadow-md sm:shadow-lg border border-dashed border-krio-primary/40 flex flex-col items-center w-full h-full min-h-[200px]">
+      {!isEditing ? (
+        <button
+          onClick={() => setIsEditing(true)}
+          className="w-full h-full flex flex-col items-center justify-center gap-2 text-krio-secondary hover:text-krio-primary transition-colors"
+        >
+          <svg
+            className="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          <span className="text-xs sm:text-sm">Добавить клиента</span>
+        </button>
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          className="w-full h-full flex flex-col gap-3 p-2"
+        >
+          <input
+            type="text"
+            placeholder="Название"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-2 py-1 text-sm bg-krio-background rounded border border-krio-primary/20 text-white"
+            required
+          />
+          <input
+            type="url"
+            placeholder="URL изображения"
+            value={imgSrc}
+            onChange={(e) => setImgSrc(e.target.value)}
+            className="w-full px-2 py-1 text-sm bg-krio-background rounded border border-krio-primary/20 text-white"
+            required
+          />
+          <div className="flex gap-2 mt-auto">
+            <button
+              type="button"
+              onClick={() => setIsEditing(false)}
+              className="px-3 py-1 text-xs bg-krio-primary/20 rounded hover:bg-krio-primary/30 text-krio-secondary"
+            >
+              Отмена
+            </button>
+            <button
+              type="submit"
+              className="px-3 py-1 text-xs bg-krio-primary rounded hover:bg-krio-primary/80 text-white"
+            >
+              Добавить
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+};
+
+export default function AboutPage({ user }) {
+  const [aboutContent, setAboutContent] = useState("");
+  const [aboutSecondPart, setAboutSecondPart] = useState("");
+  const [aboutActions, setAboutActions] = useState("");
+  const [aboutCompanyFirst, setAboutCompanyFirst] = useState("");
+  const [aboutCompanySecond, setAboutCompanySecond] = useState("");
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const isAdmin = user?.isAdmin;
+
+  const fetchAboutData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [aboutRes, companiesRes] = await Promise.all([
+        axiosInstance.get("/about"),
+        axiosInstance.get("/companies"),
+      ]);
+
+      setAboutContent(aboutRes.data?.title || "");
+      setAboutSecondPart(aboutRes.data?.content || "");
+      setAboutActions(aboutRes.data?.actions || "");
+      setAboutCompanyFirst(aboutRes.data?.company_first || "");
+      setAboutCompanySecond(aboutRes.data?.company_second || "");
+
+      setClients(companiesRes.data);
+    } catch (err) {
+      setError(err.response?.data?.message || "Ошибка при загрузке данных");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAboutData();
+  }, [fetchAboutData]);
+
+  const handlerUpdateField = async (field, value) => {
+    try {
+      const res = await axiosInstance.put("/about", { [field]: value });
+      if (res.status === 200) {
+        if (field === "title") setAboutContent(res.data.title);
+        if (field === "content") setAboutSecondPart(res.data.content);
+        if (field === "actions") setAboutActions(res.data.actions);
+        if (field === "company_first")
+          setAboutCompanyFirst(res.data.company_first);
+        if (field === "company_second")
+          setAboutCompanySecond(res.data.company_second);
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении:", error);
+    }
+  };
+
+  const handleAddClient = async (newClient) => {
+    try {
+      await axiosInstance.post("/companies", newClient);
+      await fetchAboutData();
+    } catch (error) {
+      console.error("Ошибка при добавлении:", error);
+    }
+  };
+
+  const handleUpdateClient = async (id, updatedData) => {
+    try {
+      await axiosInstance.put(`/companies/${id}`, updatedData);
+      await fetchAboutData();
+    } catch (error) {
+      console.error("Ошибка при обновлении:", error);
+    }
+  };
+
+  const handleDeleteClient = async (id) => {
+    try {
+      await axiosInstance.delete(`/companies/${id}`);
+      await fetchAboutData();
+    } catch (error) {
+      console.error("Ошибка при удалении:", error);
+    }
+  };
+
+  if (loading) {
+    return <div>Загрузка данных...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -111,35 +307,63 @@ export default function AboutPage() {
         <Section title="О компании">
           <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8">
             <div className="space-y-4">
+              {isAdmin && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handlerUpdateField("title", aboutContent);
+                  }}
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full mt-4"
+                >
+                  <input
+                    type="text"
+                    value={aboutContent}
+                    onChange={(e) => setAboutContent(e.target.value)}
+                    placeholder="Заголовок"
+                    className="flex-1 w-full px-3 py-2 text-sm text-white bg-krio-background border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
+                  >
+                    💾 Сохранить
+                  </button>
+                </form>
+              )}
               <p className="text-gray-300 leading-relaxed">
                 <strong className="text-krio-primary text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
                   {" "}
                   &quot;Криоарматура&quot;
                 </strong>{" "}
-                уже более 20 лет успешно работает на рынке поставок
-                высокотехнологичной стендовой, воздушной и криогенной арматуры.
-                Мы гордимся тем, что являемся надежным партнером для ведущих
-                предприятий в России, обеспечивая качественные решения, которые
-                соответствуют самым строгим стандартам.
+                {aboutContent}
               </p>
               <div className="h-px bg-krio-primary/20 my-4" />{" "}
-              <p className="text-gray-300 leading-relaxed">
-                Мы с гордостью поставляем нашу продукцию в такие
-                высокотехнологичные отрасли, как:
-                <span className="text-krio-primary ml-2 text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
-                  космическая промышленность
-                </span>
-                ,
-                <span className="text-krio-primary mx-2 text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
-                  нефтегазовый сектор
-                </span>{" "}
-                и
-                <span className="text-krio-primary ml-2 text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
-                  машиностроение
-                </span>
-                , где особое внимание уделяется надежности и долговечности
-                каждой детали.
-              </p>
+              {isAdmin && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handlerUpdateField("content", aboutSecondPart);
+                  }}
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full mt-4"
+                >
+                  <input
+                    type="text"
+                    value={aboutSecondPart}
+                    onChange={(e) => setAboutSecondPart(e.target.value)}
+                    placeholder="Описание"
+                    className="flex-1 w-full px-3 py-2 text-sm text-white bg-krio-background border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
+                  >
+                    💾 Сохранить
+                  </button>
+                </form>
+              )}
+              <p className="text-gray-300 leading-relaxed">{aboutSecondPart}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-4 2xl:gap-6 pt-4">
@@ -175,8 +399,15 @@ export default function AboutPage() {
         <Section title="Наши клиенты">
           <div className="p-4 sm:p-6 2xl:p-8 bg-krio-foreground rounded-xl sm:rounded-2xl shadow-lg sm:shadow-2xl">
             <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 2xl:gap-6 justify-items-center">
-              {clients.map((client, index) => (
-                <ClientCard key={index} client={client} />
+              {isAdmin && <AddClientCard onAdd={handleAddClient} />}
+              {clients.map((client) => (
+                <ClientCard
+                  key={client.id}
+                  client={client}
+                  isAdmin={isAdmin}
+                  onUpdate={handleUpdateClient}
+                  onDelete={handleDeleteClient}
+                />
               ))}
             </div>
           </div>
@@ -185,16 +416,35 @@ export default function AboutPage() {
           <div className="p-6 2xl:p-8 bg-krio-foreground rounded-2xl shadow-2xl space-y-6 2xl:space-y-8 border border-krio-primary/20">
             <div className="grid grid-cols-1 gap-6 2xl:gap-8">
               <div className="space-y-3">
+                {isAdmin && (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handlerUpdateField("actions", aboutActions);
+                    }}
+                    className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full mt-4"
+                  >
+                    <input
+                      type="text"
+                      value={aboutActions}
+                      onChange={(e) => setAboutActions(e.target.value)}
+                      placeholder="Услуги"
+                      className="flex-1 w-full px-3 py-2 text-sm text-white bg-krio-background border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
+                    >
+                      💾 Сохранить
+                    </button>
+                  </form>
+                )}
                 <p className="text-gray-300 leading-relaxed text-lg">
                   <strong className="text-krio-primary text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
                     &quot;Криоарматура&quot;
                   </strong>{" "}
-                  не ограничивается лишь поставками арматуры. Мы предлагаем
-                  своим клиентам{" "}
-                  <span className="text-krio-primary underline underline-offset-4 decoration-dotted">
-                    полный спектр услуг
-                  </span>
-                  , включая:
+                  {aboutActions}
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -283,13 +533,33 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8">
               <div className="space-y-4">
                 <div className="space-y-4">
+                  {isAdmin && (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handlerUpdateField("company_first", aboutCompanyFirst);
+                      }}
+                      className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full mt-4"
+                    >
+                      <input
+                        type="text"
+                        value={aboutCompanyFirst}
+                        onChange={(e) => setAboutCompanyFirst(e.target.value)}
+                        placeholder="Блок команды 1"
+                        className="flex-1 w-full px-3 py-2 text-sm text-white bg-krio-background border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all"
+                        required
+                      />
+                      <button
+                        type="submit"
+                        className="px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
+                      >
+                        💾 Сохранить
+                      </button>
+                    </form>
+                  )}
+
                   <p className="text-gray-300 leading-relaxed text-lg">
-                    В нашей команде работают{" "}
-                    <strong className="text-krio-primary text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
-                      высококвалифицированные специалисты
-                    </strong>
-                    , которые не только обладают глубокими знаниями в своей
-                    области, но и постоянно совершенствуют свои навыки.
+                    {aboutCompanyFirst}
                   </p>
 
                   <div className="flex flex-col space-y-3">
@@ -318,13 +588,32 @@ export default function AboutPage() {
               </div>
 
               <div className="space-y-4">
+                {isAdmin && (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handlerUpdateField("company_second", aboutCompanySecond);
+                    }}
+                    className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full mt-4"
+                  >
+                    <input
+                      type="text"
+                      value={aboutCompanySecond}
+                      onChange={(e) => setAboutCompanySecond(e.target.value)}
+                      placeholder="Блок команды 2"
+                      className="flex-1 w-full px-3 py-2 text-sm text-white bg-krio-background border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
+                    >
+                      💾 Сохранить
+                    </button>
+                  </form>
+                )}
                 <p className="text-gray-300 leading-relaxed text-lg">
-                  Мы гордимся тем, что наша команда всегда готова предложить{" "}
-                  <span className="text-krio-primary font-semibold">
-                    передовые решения
-                  </span>{" "}
-                  для самых сложных задач, сочетая традиционные подходы с
-                  инновационными технологиями.
+                  {aboutCompanySecond}
                 </p>
                 <div className="p-3 bg-krio-background/50 rounded-lg border border-krio-primary/20  transition-colors">
                   <div className="flex items-center gap-3">

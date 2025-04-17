@@ -95,6 +95,16 @@ export default function Cart({
             >
               {isSubmitting ? "Оформление..." : "Перейти к оформлению"}
             </button>
+            <div className="text-xs 2xl:text-base mt-2 text-gray-400">
+              Нажимая на кнопку, вы соглашаетесь с{" "}
+              <a className="text-krio-primary underline" href="/terms">
+                Пользовательским соглашением
+              </a>{" "}
+              и{" "}
+              <a className="text-krio-primary underline" href="/privacy">
+                Политикой конфиденциальности
+              </a>
+            </div>
             {items.length > 0 && !user?.id && (
               <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
                 <label className="block text-sm font-medium text-gray-300 mb-2">
