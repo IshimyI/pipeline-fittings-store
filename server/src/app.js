@@ -13,10 +13,15 @@ const router = require("./routes/router");
 const authRouter = require("./routes/authRouter");
 const tokensRouter = require("./routes/tokensRouter");
 const app = express();
-const { PORT } = process.env || 3000;
+const PORT_HTTP = process.env.PORT_HTTP || 80;
+const PORT_HTTPS = process.env.PORT_HTTPS || 443;
 
 const corsConfig = {
   origin: [
+    "https://krioarmatura.com",
+    "https://www.krioarmatura.com",
+    "https://krio-armatura.ru",
+    "https://www.krio-armatura.ru",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://pipeline-fittings-store-client.vercel.app",
@@ -71,36 +76,35 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/dist/index.html"));
 });
 
-let server;
 try {
   const sslPath = path.join(__dirname, "../configs/ssl");
   const keyPath = path.join(sslPath, "private.key");
   const certPath = path.join(sslPath, "certificate.crt");
 
-  if (!fs.existsSync(sslPath)) {
-    fs.mkdirSync(sslPath, { recursive: true });
-    console.log("Created SSL directory:", sslPath);
-  }
+  if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+    const httpsOptions = {
+      key: fs.readFileSync(keyPath, "utf8"),
+      cert: fs.readFileSync(certPath, "utf8"),
+    };
 
-  if (!fs.existsSync(keyPath) || !fs.existsSync(certPath)) {
-    console.warn("SSL certificates not found. Starting in HTTP mode.");
-    console.warn("Expected files:");
-    console.warn(`- ${keyPath}`);
-    console.warn(`- ${certPath}`);
-    console.warn(
-      "To enable HTTPS, place your SSL certificates in the configs/ssl directory."
-    );
-    server = app.listen(PORT, () => {
-      console.log(`HTTP Server running on port ${PORT}`);
+    https.createServer(httpsOptions, app).listen(PORT_HTTPS, () => {
+      console.log(`✅ HTTPS сервер запущен на порту ${PORT_HTTPS}`);
+    });
+
+    const http = require("http");
+    const redirectApp = express();
+    redirectApp.use((req, res) => {
+      const host = (req.headers.host || "krioarmatura.com").split(":")[0];
+      res.redirect(`https://${host}${req.url}`);
+    });
+
+    http.createServer(redirectApp).listen(PORT_HTTP, () => {
+      console.log(`🔁 HTTP сервер редиректит на HTTPS (порт ${PORT_HTTP})`);
     });
   } else {
-    const httpsOptions = {
-      key: fs.readFileSync(keyPath),
-      cert: fs.readFileSync(certPath),
-    };
-    server = https.createServer(httpsOptions, app);
-    server.listen(PORT, () => {
-      console.log(`HTTPS Server running on port ${PORT}`);
+    console.warn("❌ SSL certificates not found. Starting in HTTP mode only.");
+    app.listen(PORT_HTTP, () => {
+      console.log(`⚠️ HTTP сервер запущен на порту ${PORT_HTTP} (без SSL)`);
     });
   }
 } catch (error) {
