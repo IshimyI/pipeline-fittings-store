@@ -25,6 +25,22 @@ export default function AdminOrder({ user }) {
     fetchOrders();
   }, []);
 
+  const handleStatusChange = async (orderId, newStatus) => {
+    try {
+      await axiosInstance.put(`/orders/${orderId}/status`, {
+        status: newStatus,
+      });
+
+      console.log("Обновление статуса:", orderId, newStatus);
+      const response = await axiosInstance.get("/allOrders");
+      console.log("Полученные заказы после обновления:", response.data);
+      setOrders(response.data);
+    } catch (error) {
+      console.error("Ошибка обновления статуса:", error);
+      alert("Не удалось обновить статус.");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900 p-8">
@@ -66,7 +82,12 @@ export default function AdminOrder({ user }) {
             </div>
           ) : (
             orders.map((order) => (
-              <Order key={order.id} order={order} user={user} />
+              <Order
+                key={order.id}
+                order={order}
+                user={user}
+                handleStatusChange={handleStatusChange}
+              />
             ))
           )}
         </div>

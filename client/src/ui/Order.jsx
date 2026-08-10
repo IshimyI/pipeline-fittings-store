@@ -1,4 +1,4 @@
-export default function Order({ order }) {
+export default function Order({ order, handleStatusChange }) {
   const user = order.user || {
     name: "Неизвестный клиент",
     email: order.email || "Нет email",
@@ -6,13 +6,21 @@ export default function Order({ order }) {
   const items = order.items || [];
   const total = order.total || "Не указана";
 
+  const statusColors = {
+    ожидает: "bg-yellow-600",
+    проведен: "bg-green-600",
+    отменен: "bg-red-600",
+  };
+
+  console.log("Статус заказа:", order.status);
+
   return (
     <div className="bg-gray-800/50 hover:bg-gray-800/70 transition-all border border-gray-700 rounded-lg shadow-lg overflow-hidden">
       <div className="p-6">
         <div className="flex justify-between items-start mb-4 pb-4 border-b border-gray-700">
           <div>
             <h3>
-              <span className="text-l text-white"> Имя: </span>
+              <span className="text-l text-white">Имя: </span>
               <span className="text-gray-100 font-bold text-m mt-1">
                 {user.name || "Неизвестный пользователь"}
                 <span className="ml-3 bg-gray-700/50 text-gray-300 px-2 py-1 rounded-full text-xs">
@@ -20,14 +28,27 @@ export default function Order({ order }) {
                 </span>
               </span>
             </h3>
-            <span className="text-l text-white"> Почта: </span>
+            <span className="text-l text-white">Почта: </span>
             <span className="text-gray-100 font-bold text-m mt-1">
               {user.email}
             </span>
           </div>
-          <span className="text-sm text-gray-400">
-            {new Date(order.createdAt).toLocaleString()}
-          </span>
+          <div className="text-right space-y-2">
+            <span className="text-sm text-gray-400 block">
+              {new Date(order.createdAt).toLocaleString()}
+            </span>
+            <select
+              value={order.status}
+              onChange={(e) => handleStatusChange(order.id, e.target.value)}
+              className={`text-white px-3 py-1 rounded ${
+                statusColors[order.status]
+              } border border-gray-600`}
+            >
+              <option value="ожидает">Ожидает</option>
+              <option value="проведен">Проведен</option>
+              <option value="отменен">Отменен</option>
+            </select>
+          </div>
         </div>
 
         <div className="mb-4">

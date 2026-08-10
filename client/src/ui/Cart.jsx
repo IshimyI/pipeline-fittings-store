@@ -1,5 +1,45 @@
 import { useState } from "react";
 
+const CloseIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
+const TrashIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+    />
+  </svg>
+);
+
+const ArrowIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+  </svg>
+);
+
 export default function Cart({
   items = [],
   onClose,
@@ -28,52 +68,63 @@ export default function Cart({
     : `${totalSum.toFixed(2)} ₽`;
 
   return (
-    <div className="fixed bottom-4 right-4 bg-krio-background p-4 rounded-lg shadow-xl w-96">
+    <div className="fixed bottom-4 right-4 bg-krio-background p-5 rounded-xl shadow-2xl border border-krio-primary/20 w-96 max-w-[92vw] z-[90]">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-semibold">Корзина</h3>
-        <button onClick={onClose} className="text-gray-400 hover:text-white">
-          ×
+        <h3 className="text-lg font-bold text-white uppercase tracking-wide">
+          Корзина
+        </h3>
+        <button
+          onClick={onClose}
+          className="text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/40 rounded-full transition-colors p-1"
+          aria-label="Закрыть"
+        >
+          <CloseIcon />
         </button>
       </div>
 
       {items.length === 0 ? (
-        <p className="text-gray-400">Корзина пуста</p>
+        <p className="text-krio-secondary/70 text-sm">Корзина пуста</p>
       ) : (
         <>
-          <div className="mb-4 max-h-64 overflow-y-auto">
+          <div className="mb-4 max-h-64 overflow-y-auto divide-y divide-krio-primary/10">
             {items.map((item) => (
               <div
                 key={item.id}
-                className="flex justify-between items-center mb-2"
+                className="flex justify-between items-center py-2.5 first:pt-0"
               >
                 <div className="flex flex-col max-w-[60%]">
-                  <span className="truncate">{item.name}</span>
-                  <span className="text-xs text-gray-400">
+                  <span className="truncate text-white text-sm">
+                    {item.name}
+                  </span>
+                  <span className="text-xs text-krio-secondary/70">
                     Количество: {item.quantity || 1}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-nowrap">
+                  <span className="text-nowrap text-sm text-gray-300">
                     {String(item.price).toLowerCase().includes("запросу")
                       ? "По запросу"
                       : item.price}
                   </span>
                   <button
                     onClick={() => onRemove(item.id)}
-                    className="text-red-500 hover:text-red-700"
+                    className="p-1.5 bg-red-500/10 hover:bg-red-500/80 text-red-400 hover:text-white rounded-full transition-colors"
+                    aria-label="Удалить"
                   >
-                    ✕
+                    <TrashIcon />
                   </button>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="border-t pt-4">
+          <div className="border-t border-krio-primary/20 pt-4">
             <div className="flex justify-between mb-4">
-              <span>Итого:</span>
-              <span className="font-semibold">{formattedTotal}</span>
+              <span className="text-gray-300">Итого:</span>
+              <span className="font-semibold text-white">
+                {formattedTotal}
+              </span>
             </div>
             <button
               onClick={() => {
@@ -85,7 +136,7 @@ export default function Cart({
                 items.length === 0 ||
                 (!user?.id && !isEmailValid)
               }
-              className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg text-lg font-medium ${
+              className={`w-full flex items-center justify-center gap-2 bg-krio-primary hover:bg-krio-primary/80 text-white py-3 px-4 rounded-lg text-base font-medium shadow-md transition-colors ${
                 isSubmitting ||
                 items.length === 0 ||
                 (!user?.id && !isEmailValid)
@@ -93,9 +144,16 @@ export default function Cart({
                   : ""
               }`}
             >
-              {isSubmitting ? "Оформление..." : "Перейти к оформлению"}
+              {isSubmitting ? (
+                "Оформление..."
+              ) : (
+                <>
+                  Перейти к оформлению
+                  <ArrowIcon />
+                </>
+              )}
             </button>
-            <div className="text-xs 2xl:text-base mt-2 text-gray-400">
+            <div className="text-xs mt-3 text-gray-400">
               Нажимая на кнопку, вы соглашаетесь с{" "}
               <a className="text-krio-primary underline" href="/terms">
                 Пользовательским соглашением
@@ -106,7 +164,7 @@ export default function Cart({
               </a>
             </div>
             {items.length > 0 && !user?.id && (
-              <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+              <div className="mt-4 bg-krio-foreground border border-krio-primary/20 rounded-lg p-4">
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Email для связи
                 </label>
@@ -117,10 +175,10 @@ export default function Cart({
                     setEmail(e.target.value);
                     setError(null);
                   }}
-                  className={`w-full p-2 border rounded text-white ${
+                  className={`w-full p-2 bg-krio-background border rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all ${
                     email && !isEmailValid
-                      ? "bg-red-900/20 border-red-500"
-                      : "bg-gray-700 border-gray-600"
+                      ? "border-red-500"
+                      : "border-krio-primary/30"
                   }`}
                   placeholder="Введите ваш email"
                   required

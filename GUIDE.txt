@@ -1,0 +1,19 @@
+-Сервер
+
+docker build -t krioarmatura --platform=linux/amd64 .
+docker run --name app -p 80:80 --env-file .env -d krioarmatura
+docker tag krioarmatura ishimyi/krioarmatura                
+docker push ishimyi/krioarmatura  
+
+-Подкл к удаленному
+ssh root@айпи
+
+-Удаленный
+
+docker pull ishimyi/krioarmatura
+docker run --name app -p 80:80 -p 443:443 --env-file /tmp/.env  -d -e CLOUDINARY_CLOUD_NAME=dpty6vhdl ishimyi/krioarmatura
+
+-Чтобы снести 
+docker stop app
+docker rm app
+

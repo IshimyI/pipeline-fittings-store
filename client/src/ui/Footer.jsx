@@ -91,10 +91,10 @@ export default function Footer() {
                 <div>
                   <p className="text-sm text-krio-primary">Телефон</p>
                   <a
-                    href="tel:+74951234567"
+                    href="tel:+79854277791"
                     className="text-krio-secondary hover:text-white transition-colors duration-300 text-lg font-medium"
                   >
-                    +7 (995) 887-06-11
+                    +7 (985) 427-77-91
                   </a>
                 </div>
               </div>
@@ -118,10 +118,10 @@ export default function Footer() {
                 <div>
                   <p className="text-sm text-krio-primary">Email</p>
                   <a
-                    href="mailto:krioarmatura@yandex.ru"
+                    href="mailto:krio-armatura@mail.ru"
                     className="text-krio-secondary hover:text-white transition-colors duration-300 text-lg font-medium"
                   >
-                    krioarmatura@yandex.ru
+                    krio-armatura@mail.ru
                   </a>
                 </div>
               </div>
@@ -135,7 +135,7 @@ export default function Footer() {
             <div className="flex space-x-4">
               <a
                 href="https://t.me/krioarmatura"
-                className="w-12 h-12 bg-krio-foreground rounded-full flex items-center justify-center text-white hover:bg-krio-primary transition-all duration-300 transform hover:-translate-y-1"
+                className="w-12 h-12 bg-krio-foreground rounded-full shadow-md flex items-center justify-center text-white hover:bg-krio-primary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                 aria-label="Telegram"
               >
                 <svg

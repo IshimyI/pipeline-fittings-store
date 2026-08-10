@@ -412,13 +412,16 @@ export default function ProductsPage({ user, category }) {
   return (
     <div className="flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-2 md:p-8">
       <main className="w-full max-w-[90%] md:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[80%] 4k:max-w-[80%] p-0 md:p-6 mx-auto">
-        <h2 className="text-3xl font-bold text-center text-gray-300 mb-8 2xl:text-4xl 4k:text-5xl">
-          Товары в категории
-        </h2>
+        <div className="text-center mb-8">
+          <h2 className="text-2xl md:text-3xl 4k:text-4xl font-bold text-white uppercase tracking-[0.15em]">
+            Товары в категории
+          </h2>
+          <div className="w-16 h-0.5 bg-krio-primary mx-auto mt-3" />
+        </div>
         <div className="flex flex-col xl:flex-row gap-10">
           <aside className="block xl:hidden w-full max-w-md mx-auto mb-5">
-            <div className="bg-krio-background rounded-lg p-6">
-              <h3 className="text-2xl font-semibold text-gray-300 mb-4 text-center">
+            <div className="bg-krio-background rounded-lg p-6 border border-krio-primary/20">
+              <h3 className="text-xl font-semibold text-white mb-4 text-center uppercase tracking-wide">
                 Фильтры
               </h3>
               <div className="mb-4">
@@ -516,14 +519,14 @@ export default function ProductsPage({ user, category }) {
               </div>
               <button
                 onClick={handleResetFilters}
-                className="w-full mt-4 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+                className="w-full mt-4 py-2 px-4 bg-krio-primary hover:bg-krio-primary/80 text-white rounded-lg shadow-md transition-colors duration-300"
               >
                 Сбросить фильтры
               </button>
             </div>
           </aside>
-          <aside className="hidden xl:block w-72 min-w-[288px] bg-krio-background rounded-lg p-6 sticky top-20 h-fit mb-10">
-            <h3 className="text-2xl font-semibold text-gray-300 mb-4">
+          <aside className="hidden xl:block w-72 min-w-[288px] bg-krio-background rounded-lg p-6 border border-krio-primary/20 sticky top-20 h-fit mb-10">
+            <h3 className="text-xl font-semibold text-white mb-4 uppercase tracking-wide">
               Фильтры
             </h3>
             <div className="mb-4">
@@ -615,7 +618,7 @@ export default function ProductsPage({ user, category }) {
             </div>
             <button
               onClick={handleResetFilters}
-              className="w-full mt-4 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+              className="w-full mt-4 py-2 px-4 bg-krio-primary hover:bg-krio-primary/80 text-white rounded-lg shadow-md transition-colors duration-300"
             >
               Сбросить фильтры
             </button>
@@ -633,7 +636,7 @@ export default function ProductsPage({ user, category }) {
                     payload: e.target.value,
                   })
                 }
-                className="w-full p-4 2xl:p-5 text-lg 2xl:text-xl bg-krio-background rounded-xl"
+                className="w-full p-4 2xl:p-5 text-lg 2xl:text-xl bg-krio-background border border-krio-primary/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-krio-primary"
               />
             </div>
             {loading ? (
@@ -643,18 +646,21 @@ export default function ProductsPage({ user, category }) {
                 {sortedProducts?.map((product) => (
                   <div
                     key={product.id}
-                    className="bg-krio-background p-6 rounded-xl shadow-xl transition-transform hover:scale-105 4k:hover:scale-[1.03]"
+                    className="relative bg-krio-background p-6 rounded-xl shadow-xl border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
                     onClick={() => openModal(product)}
                   >
                     {user?.isAdmin && (
                       <button
-                        onClick={() => handleDeleteProduct(product.id)}
-                        className="absolute top-2 right-2 z-10 p-2 text-red-500 hover:text-red-700 transition-colors bg-black/50 rounded-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteProduct(product.id);
+                        }}
+                        className="absolute top-2 right-2 z-10 p-2 bg-red-500/80 hover:bg-red-500 text-white shadow-lg transition-colors rounded-full"
                         title="Удалить товар"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-12 w-12"
+                          className="h-5 w-5"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -670,30 +676,33 @@ export default function ProductsPage({ user, category }) {
                     )}
 
                     {!user?.isAdmin && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          addToCart(product);
-                        }}
-                        className="absolute bottom-2 right-2 p-2 bg-blue-600 rounded-full hover:bg-blue-700"
-                        title="Добавить в корзину"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
+                      <div className="mt-4 flex justify-end lg:mt-0 lg:block">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            addToCart(product);
+                          }}
+                          className="p-2 bg-krio-primary hover:bg-krio-primary/80 text-white shadow-md transition-colors rounded-full lg:absolute lg:bottom-2 lg:right-2"
+                          title="Добавить в корзину"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                          />
-                        </svg>
-                      </button>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                     )}
+
                     <div className="aspect-square flex items-center justify-center relative">
                       <img
                         src={getImageUrl(product.image)}
@@ -718,7 +727,7 @@ export default function ProductsPage({ user, category }) {
         </div>
 
         {error && (
-          <div className="fixed bottom-4 right-4 p-4 bg-red-800 text-red-100 rounded-lg">
+          <div className="fixed bottom-4 right-4 p-4 bg-red-500/10 border border-red-500/40 text-red-300 rounded-lg">
             {error}
           </div>
         )}
@@ -727,7 +736,7 @@ export default function ProductsPage({ user, category }) {
         <div className="fixed bottom-4 right-4">
           <button
             onClick={() => setCartVisible(!cartVisible)}
-            className="p-4 bg-blue-600 rounded-full hover:bg-blue-700 relative"
+            className="p-4 bg-krio-primary rounded-full shadow-lg hover:bg-krio-primary/80 relative transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

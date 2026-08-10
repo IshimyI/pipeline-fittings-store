@@ -14,6 +14,13 @@ export default function Header({ user, handleLogout }) {
         : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/10"
     }`;
 
+  const desktopLinkStyles = ({ isActive }) =>
+    `relative px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 after:absolute after:bottom-0.5 after:left-1/2 after:-translate-x-1/2 after:h-0.5 after:bg-krio-primary after:transition-all after:duration-300 ${
+      isActive
+        ? "text-krio-secondary bg-krio-foreground/30 after:w-6"
+        : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20 after:w-0 hover:after:w-6"
+    }`;
+
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-krio-background/95 text-white border-b border-krio-primary/20 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,23 +74,14 @@ export default function Header({ user, handleLogout }) {
               className="flex items-center space-x-2 group"
               onClick={() => setIsOpen(false)}
             >
-              <div className="w-9 h-9 bg-krio-secondary rounded-lg flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-krio-background"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                  />
-                </svg>
+              <div className="w-9 h-9 rounded-lg overflow-hidden flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                <img
+                  src="/logo-krio.png"
+                  alt="Криоарматура"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <span className="text-2xl font-bold text-krio-secondary">
+              <span className="text-2xl font-bold text-krio-secondary transition-colors duration-300 group-hover:text-white">
                 Криоарматура
               </span>
             </NavLink>
@@ -92,61 +90,31 @@ export default function Header({ user, handleLogout }) {
           <nav className="hidden lg:flex flex-1 items-center justify-center space-x-4">
             <NavLink
               to="/"
-              className={({ isActive }) =>
-                `px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
-                  isActive
-                    ? "text-krio-secondary bg-krio-foreground/30"
-                    : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20"
-                }`
-              }
+              className={desktopLinkStyles}
             >
               Каталог
             </NavLink>
             <NavLink
               to="/about"
-              className={({ isActive }) =>
-                `px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
-                  isActive
-                    ? "text-krio-secondary bg-krio-foreground/30"
-                    : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20"
-                }`
-              }
+              className={desktopLinkStyles}
             >
               О нас
             </NavLink>
             <NavLink
               to="/news"
-              className={({ isActive }) =>
-                `px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
-                  isActive
-                    ? "text-krio-secondary bg-krio-foreground/30"
-                    : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20"
-                }`
-              }
+              className={desktopLinkStyles}
             >
               Новости
             </NavLink>
             <NavLink
               to="/contacts"
-              className={({ isActive }) =>
-                `px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
-                  isActive
-                    ? "text-krio-secondary bg-krio-foreground/30"
-                    : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20"
-                }`
-              }
+              className={desktopLinkStyles}
             >
               Контакты
             </NavLink>
             <NavLink
               to="/selector"
-              className={({ isActive }) =>
-                `px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
-                  isActive
-                    ? "text-krio-secondary bg-krio-foreground/30"
-                    : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20"
-                }`
-              }
+              className={desktopLinkStyles}
             >
               Подбор арматуры
             </NavLink>
@@ -222,7 +190,7 @@ export default function Header({ user, handleLogout }) {
                 <NavLink
                   to="/login"
                   className={({ isActive }) =>
-                    `px-2 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
+                    `flex items-center space-x-1 px-2 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
                       isActive
                         ? "text-krio-secondary bg-krio-foreground/30"
                         : "text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/20"

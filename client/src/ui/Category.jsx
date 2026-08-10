@@ -22,14 +22,14 @@ export default function Category({ category }) {
   };
 
   return (
-    <div className="category bg-krio-background p-6 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+    <div className="category bg-krio-background p-6 rounded-lg shadow-lg border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300">
       <img
         src={imageUrl()}
         alt={category.name}
         className="w-full h-full object-cover rounded-lg mb-4"
         onError={handleImageError}
       />
-      <p className="text-center text-sm md:text-xl font-semibold break-words whitespace-normal">
+      <p className="text-center text-sm md:text-xl font-semibold text-white break-words whitespace-normal">
         {category.name}
       </p>
     </div>

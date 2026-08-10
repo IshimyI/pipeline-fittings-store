@@ -470,6 +470,7 @@ router.post("/createOrder", async (req, res) => {
       email: email || null,
       items: enrichedItems,
       total,
+      status: "ожидает",
     });
     let userInfo = email;
     if (userId) {
@@ -589,6 +590,7 @@ router.get("/allOrders", async (req, res) => {
       total: order.total,
       createdAt: order.createdAt,
       updatedAt: order.updatedAt,
+      status: order.status,
       user: {
         name: order.user?.name,
         email: order.user?.email || order.email,
@@ -894,6 +896,28 @@ router.delete("/companies/:id", verifyRefreshToken, async (req, res) => {
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+router.put("/orders/:id/status", async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!["ожидает", "проведен", "отменен"].includes(status)) {
+    return res.status(400).json({ error: "Неверный статус" });
+  }
+
+  try {
+    const order = await Order.findByPk(id);
+    if (!order) return res.status(404).json({ error: "Заказ не найден" });
+
+    console.log("СТАРЫЙ СТАТУС:", order.status); // 👈
+    order.status = status;
+    await order.save();
+    res.json(order);
+  } catch (err) {
+    console.error("Ошибка обновления заказа:", err); // 👈
+    res.status(500).json({ error: "Ошибка сервера" });
   }
 });
 

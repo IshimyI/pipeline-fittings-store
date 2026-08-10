@@ -1,11 +1,69 @@
 import { useState, useEffect, useCallback } from "react";
 import axiosInstance from "../axiosInstance";
 
+const SaveIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
+);
+
+const EngineerIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+    />
+    <circle cx="12" cy="12" r="3" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const BookIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+    />
+  </svg>
+);
+
+const SaveButton = () => (
+  <button
+    type="submit"
+    className="flex items-center gap-1.5 px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition whitespace-nowrap"
+  >
+    <SaveIcon />
+    Сохранить
+  </button>
+);
+
 const Section = ({ title, children }) => (
   <section className="space-y-6">
-    <h2 className="text-2xl font-bold text-center text-white glow-text">
-      {title}
-    </h2>
+    <div className="text-center">
+      <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-[0.15em]">
+        {title}
+      </h2>
+      <div className="w-16 h-0.5 bg-krio-primary mx-auto mt-3" />
+    </div>
     {children}
   </section>
 );
@@ -301,7 +359,7 @@ export default function AboutPage({ user }) {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <main
-        className="w-full max-w-[90%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
+        className="w-full max-w-[90%] md:max-w-[60%] lg:max-w-[75%] p-6 space-y-6
                     bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
       >
         <Section title="О компании">
@@ -323,12 +381,7 @@ export default function AboutPage({ user }) {
                     className="flex-1 w-full px-3 py-2 text-sm text-white bg-krio-background border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all"
                     required
                   />
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
-                  >
-                    💾 Сохранить
-                  </button>
+                  <SaveButton />
                 </form>
               )}
               <p className="text-gray-300 leading-relaxed">
@@ -355,19 +408,17 @@ export default function AboutPage({ user }) {
                     className="flex-1 w-full px-3 py-2 text-sm text-white bg-krio-background border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all"
                     required
                   />
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
-                  >
-                    💾 Сохранить
-                  </button>
+                  <SaveButton />
                 </form>
               )}
               <p className="text-gray-300 leading-relaxed">{aboutSecondPart}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 4k:grid-cols-5 gap-4 2xl:gap-6 pt-4">
-              <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20 transform transition ">
+              <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300">
+                <span className="block text-xs font-mono tracking-widest text-krio-primary/50 mb-2">
+                  01
+                </span>
                 <h3 className="text-krio-primary text-lg font-semibold mb-2">
                   Космос
                 </h3>
@@ -376,7 +427,10 @@ export default function AboutPage({ user }) {
                 </p>
               </div>
 
-              <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20 transform transition ">
+              <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300">
+                <span className="block text-xs font-mono tracking-widest text-krio-primary/50 mb-2">
+                  02
+                </span>
                 <h3 className="text-krio-primary text-lg font-semibold mb-2">
                   Нефтегаз
                 </h3>
@@ -385,7 +439,10 @@ export default function AboutPage({ user }) {
                 </p>
               </div>
 
-              <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20 transform transition ">
+              <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300">
+                <span className="block text-xs font-mono tracking-widest text-krio-primary/50 mb-2">
+                  03
+                </span>
                 <h3 className="text-krio-primary text-lg font-semibold mb-2">
                   Машины
                 </h3>
@@ -432,12 +489,7 @@ export default function AboutPage({ user }) {
                       className="flex-1 w-full px-3 py-2 text-sm text-white bg-krio-background border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all"
                       required
                     />
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
-                    >
-                      💾 Сохранить
-                    </button>
+                    <SaveButton />
                   </form>
                 )}
                 <p className="text-gray-300 leading-relaxed text-lg">
@@ -448,7 +500,7 @@ export default function AboutPage({ user }) {
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20  transition-colors group">
+                  <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300 group">
                     <div className="flex items-start gap-3 mb-2">
                       <div className="w-8 h-8 bg-krio-primary/20 rounded-lg flex items-center justify-center">
                         <svg
@@ -485,7 +537,7 @@ export default function AboutPage({ user }) {
                     </ul>
                   </div>
 
-                  <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20  transition-colors group">
+                  <div className="p-4 bg-krio-primary/5 rounded-xl border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300 group">
                     <div className="flex items-start gap-3 mb-2">
                       <div className="w-8 h-8 bg-krio-primary/20 rounded-lg flex items-center justify-center">
                         <svg
@@ -520,8 +572,8 @@ export default function AboutPage({ user }) {
                 </div>
               </div>
 
-              <div className="p-4 bg-krio-background/50 rounded-lg border border-krio-primary/20">
-                <p className="text-center text-krio-secondary italic">
+              <div className="p-4 bg-krio-background/50 rounded-lg border-l-2 border-krio-primary">
+                <p className="text-center text-krio-secondary italic tracking-wide">
                   «Каждое решение проходит 5-ступенчатый контроль качества»
                 </p>
               </div>
@@ -549,12 +601,7 @@ export default function AboutPage({ user }) {
                         className="flex-1 w-full px-3 py-2 text-sm text-white bg-krio-background border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all"
                         required
                       />
-                      <button
-                        type="submit"
-                        className="px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
-                      >
-                        💾 Сохранить
-                      </button>
+                      <SaveButton />
                     </form>
                   )}
 
@@ -566,7 +613,9 @@ export default function AboutPage({ user }) {
                     <div className="p-3 bg-krio-background/50 rounded-lg border border-krio-primary/20 transition-colors">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-krio-primary/20 rounded-full flex items-center justify-center">
-                          <span className="text-krio-primary">👨💻</span>
+                          <span className="text-krio-primary">
+                            <EngineerIcon />
+                          </span>
                         </div>
                         <div>
                           <h4 className="text-krio-primary font-medium">
@@ -604,12 +653,7 @@ export default function AboutPage({ user }) {
                       className="flex-1 w-full px-3 py-2 text-sm text-white bg-krio-background border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all"
                       required
                     />
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
-                    >
-                      💾 Сохранить
-                    </button>
+                    <SaveButton />
                   </form>
                 )}
                 <p className="text-gray-300 leading-relaxed text-lg">
@@ -618,7 +662,9 @@ export default function AboutPage({ user }) {
                 <div className="p-3 bg-krio-background/50 rounded-lg border border-krio-primary/20  transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-krio-primary/20 rounded-full flex items-center justify-center">
-                      <span className="text-krio-primary">📖</span>
+                      <span className="text-krio-primary">
+                        <BookIcon />
+                      </span>
                     </div>
                     <div>
                       <h4 className="text-krio-primary font-medium">

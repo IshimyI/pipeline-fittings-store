@@ -1,7 +1,7 @@
 FROM node:22.0.0-alpine
 
 ENV NODE_ENV=production
-ENV DB=postgres://elbrus:elbrus@2.58.68.140:5432/pipeline_filtings_krioarmatura
+ENV DB=postgres://elbrus:elbrus@91.219.189.115:5432/pipeline_filtings_krioarmatura
 
 WORKDIR /usr/src/app
 

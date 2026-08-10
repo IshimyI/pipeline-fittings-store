@@ -214,8 +214,8 @@ export default function MainPage({ user, category }) {
     >
       <main className="max-w-7xl  4k:max-w-[1800px] mx-auto">
         {showForm && (
-          <div className="mb-8 bg-krio-background p-6 rounded-xl shadow-lg">
-            <h3 className="text-2xl font-semibold mb-6 text-gray-100">
+          <div className="mb-8 bg-krio-background p-6 rounded-xl shadow-lg border border-krio-primary/20">
+            <h3 className="text-2xl font-semibold mb-6 text-white">
               {showForm === "category"
                 ? "Создать категорию"
                 : showForm === "editCategory"
@@ -239,7 +239,7 @@ export default function MainPage({ user, category }) {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-4 bg-krio-foreground border border-krio-primary/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-krio-primary"
                   required
                 />
               </div>
@@ -253,7 +253,7 @@ export default function MainPage({ user, category }) {
                       name="categoryId"
                       value={formData.categoryId}
                       onChange={handleInputChange}
-                      className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full p-4 bg-krio-foreground border border-krio-primary/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-krio-primary"
                       required
                     >
                       <option value="">Выберите категорию</option>
@@ -271,7 +271,7 @@ export default function MainPage({ user, category }) {
                       name="price"
                       value={formData.price}
                       onChange={handleInputChange}
-                      className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full p-4 bg-krio-foreground border border-krio-primary/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-krio-primary"
                       required
                     />
                   </div>
@@ -282,7 +282,7 @@ export default function MainPage({ user, category }) {
                       name="availability"
                       value={formData.availability}
                       onChange={handleInputChange}
-                      className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full p-4 bg-krio-foreground border border-krio-primary/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-krio-primary"
                     />
                   </div>
                 </>
@@ -324,8 +324,21 @@ export default function MainPage({ user, category }) {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex items-center gap-2 px-6 py-3 bg-krio-primary hover:bg-krio-primary/80 text-white rounded-lg shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-krio-primary"
                 >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
                   {showForm === "editCategory" ? "Сохранить" : "Создать"}
                 </button>
               </div>
@@ -343,14 +356,17 @@ export default function MainPage({ user, category }) {
             </div>
             <section className="mb-16 grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-2 md:gap-8">
               <div>
-                <h2 className="text-4xl font-bold text-center text-gray-300 mb-8 lg:mb-12">
-                  Последние новости
-                </h2>
+                <div className="text-center mb-8 lg:mb-12">
+                  <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-[0.15em]">
+                    Последние новости
+                  </h2>
+                  <div className="w-16 h-0.5 bg-krio-primary mx-auto mt-3" />
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {latestNews.slice(0, 3).map((news) => (
                     <article
                       key={news.id}
-                      className="bg-krio-background rounded-xl p-5 shadow-lg hover:shadow-2xl transition-all duration-300 group"
+                      className="bg-krio-background rounded-xl p-5 shadow-lg border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer"
                       onClick={() => navigate(`/news/${news.id}`)}
                     >
                       <div className="relative overflow-hidden rounded-lg mb-4">
@@ -364,11 +380,11 @@ export default function MainPage({ user, category }) {
                         {news.title}
                       </h3>
                       <p className="text-gray-400 text-sm line-clamp-3 mb-4">
-                        {news.summary}
+                        {news.content}
                       </p>
                       <button
                         onClick={() => navigate(`/news/${news.id}`)}
-                        className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+                        className="text-krio-primary hover:text-krio-secondary text-sm font-medium"
                       >
                         Читать далее →
                       </button>
@@ -378,12 +394,15 @@ export default function MainPage({ user, category }) {
               </div>
 
               <div className="lg:pl-4">
-                <h2 className="text-4xl font-bold text-center text-gray-300 mb-8 lg:mb-12">
-                  Новый товар
-                </h2>
+                <div className="text-center mb-8 lg:mb-12">
+                  <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-[0.15em]">
+                    Новый товар
+                  </h2>
+                  <div className="w-16 h-0.5 bg-krio-primary mx-auto mt-3" />
+                </div>
                 {latestProduct && (
                   <div
-                    className="bg-krio-background rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 group sticky top-6 cursor-pointer"
+                    className="bg-krio-background rounded-xl p-6 shadow-lg border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300 group sticky top-6 cursor-pointer"
                     onClick={() => {
                       setSelectedProduct(latestProduct);
                       setIsDialogOpen(true);
@@ -406,7 +425,7 @@ export default function MainPage({ user, category }) {
                           {latestProduct.name}
                         </h3>
                         <div className="flex items-center justify-between mb-4">
-                          <p className="text-xl text-blue-400 font-medium">
+                          <p className="text-xl text-krio-primary font-medium">
                             По запросу
                           </p>
                           <span className="text-sm text-emerald-400 bg-emerald-900/30 px-3 py-1 rounded-full">
@@ -422,16 +441,19 @@ export default function MainPage({ user, category }) {
               </div>
             </section>
             <section>
-              <h2 className="text-4xl font-bold text-center text-gray-300 mb-12">
-                Каталог
-              </h2>
+              <div className="text-center mb-12">
+                <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-[0.15em]">
+                  Каталог
+                </h2>
+                <div className="w-16 h-0.5 bg-krio-primary mx-auto mt-3" />
+              </div>
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-12">
                 <button
                   onClick={() => goToCategory()}
-                  className="w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-xl transform transition-transform hover:scale-105"
+                  className="w-full focus:outline-none focus:ring-2 focus:ring-krio-primary rounded-xl transform transition-transform hover:scale-105"
                   aria-label="Показать все категории"
                 >
-                  <div className="bg-krio-background p-8 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                  <div className="bg-krio-background p-8 rounded-xl shadow-xl border-2 border-krio-primary/20 hover:border-krio-primary/50 transition-all duration-300">
                     <img
                       src="/uploads/categories/all-categories.png"
                       alt="Все категории"
@@ -452,14 +474,14 @@ export default function MainPage({ user, category }) {
                             e.stopPropagation();
                             handleDeleteCategory(category.id);
                           }}
-                          className="p-3 text-red-500 hover:text-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 rounded-full"
+                          className="p-2.5 bg-red-500/80 hover:bg-red-500 text-white shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 rounded-full"
                           title="Удалить категорию"
                           aria-label={`Удалить категорию ${category.name}`}
                           disabled={isLoading}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
+                            className="h-5 w-5"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -483,14 +505,14 @@ export default function MainPage({ user, category }) {
                               image: category.img,
                             });
                           }}
-                          className="p-3 text-blue-500 hover:text-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
+                          className="p-2.5 bg-krio-primary/80 hover:bg-krio-primary text-white shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-krio-primary rounded-full"
                           title="Редактировать категорию"
                           aria-label={`Редактировать категорию ${category.name}`}
                           disabled={isLoading}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
+                            className="h-5 w-5"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -507,7 +529,7 @@ export default function MainPage({ user, category }) {
                     )}
                     <button
                       onClick={() => goToCategory(category.id)}
-                      className="w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-xl transform transition-transform hover:scale-105"
+                      className="w-full focus:outline-none focus:ring-2 focus:ring-krio-primary rounded-xl transform transition-transform hover:scale-105"
                       aria-label={`Перейти в категорию ${category.name}`}
                     >
                       <MemoizedCategory category={category} />

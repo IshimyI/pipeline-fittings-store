@@ -157,8 +157,8 @@ const AddProductForm = ({ user, onProductCreated }) => {
   return (
     <div>
       {showForm && (
-        <div className="mb-8 bg-krio-background p-6 rounded-xl shadow-lg">
-          <h3 className="text-2xl font-semibold mb-6 text-gray-100">
+        <div className="mb-8 bg-krio-background p-6 rounded-xl shadow-lg border border-krio-primary/20">
+          <h3 className="text-2xl font-semibold mb-6 text-white">
             {showForm === "category"
               ? "Создать категорию"
               : showForm === "editCategory"
@@ -182,7 +182,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-4 bg-krio-foreground border border-krio-primary/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-krio-primary"
                 required
               />
             </div>
@@ -196,7 +196,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
                     name="categoryId"
                     value={formData.categoryId}
                     onChange={handleInputChange}
-                    className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-4 bg-krio-foreground border border-krio-primary/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-krio-primary"
                     required
                   >
                     <option value="">Выберите категорию</option>
@@ -213,7 +213,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
                     name="price"
                     value={formData.price}
                     onChange={handleInputChange}
-                    className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-4 bg-krio-foreground border border-krio-primary/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-krio-primary"
                     required
                   />
                 </div>
@@ -225,7 +225,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
                     name="availability"
                     value={formData.availability}
                     onChange={handleInputChange}
-                    className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-4 bg-krio-foreground border border-krio-primary/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-krio-primary"
                   />
                 </div>
               </>
@@ -261,8 +261,23 @@ const AddProductForm = ({ user, onProductCreated }) => {
               <button
                 type="submit"
                 disabled={isLoading || isCategoryLoading}
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-krio-primary hover:bg-krio-primary/80 text-white rounded-lg shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-krio-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
+                {!(isLoading || isCategoryLoading) && (
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                )}
                 {isLoading || isCategoryLoading
                   ? "Загрузка..."
                   : showForm === "editCategory"
@@ -278,7 +293,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
           <div className="mb-8 flex flex-col md:flex-row gap-6 justify-end">
             <button
               onClick={() => setShowForm("product")}
-              className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="bg-krio-primary hover:bg-krio-primary/80 text-white px-6 py-3 rounded-lg shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-krio-primary"
               disabled={isLoading}
               aria-label="Добавить новый товар"
             >
@@ -286,7 +301,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
             </button>
             <button
               onClick={() => setShowForm("category")}
-              className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-krio-primary hover:bg-krio-primary/80 text-white px-6 py-3 rounded-lg shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-krio-primary"
               disabled={isLoading}
               aria-label="Добавить новую категорию"
             >
@@ -296,7 +311,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
         )}
         {error && (
           <div
-            className="mb-6 p-6 bg-red-800 text-red-100 rounded-lg shadow-xl"
+            className="mb-6 p-4 bg-red-500/10 border border-red-500/40 text-red-300 rounded-lg"
             role="alert"
             aria-live="polite"
           >
@@ -305,7 +320,7 @@ const AddProductForm = ({ user, onProductCreated }) => {
         )}
         {isLoading && (
           <div className="flex justify-center items-center py-8">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-krio-primary"></div>
           </div>
         )}
       </div>

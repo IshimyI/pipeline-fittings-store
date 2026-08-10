@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+const inputClass =
+  "w-full px-4 py-3 bg-krio-foreground border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all text-white placeholder:text-gray-400";
+
 export default function AuthPage({ handleLogin, handleSignUp }) {
   const [log, setLog] = useState(true);
   const [password, setPassword] = useState("");
@@ -27,19 +30,20 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4">
-      <div className="w-full max-w-md p-8 space-y-8 bg-krio-background rounded-xl shadow-2xl transition-all duration-300">
-        <div className="text-center text-krio-secondary">
-          <h2 className="text-3xl font-bold mb-2">
+      <div className="w-full max-w-md p-8 space-y-8 bg-krio-background rounded-xl shadow-2xl border border-krio-primary/20 transition-all duration-300">
+        <div className="text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-[0.1em]">
             {log ? "Добро пожаловать" : "Создайте аккаунт"}
           </h2>
-          <p className="text-krio-secondary">
+          <div className="w-16 h-0.5 bg-krio-primary mx-auto mt-3" />
+          <p className="text-krio-secondary mt-4">
             {log ? "Войдите в свой аккаунт" : "Начните работу с платформой"}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-krio-secondary mb-1">
+            <label className="block text-sm font-medium text-krio-secondary mb-1.5">
               Электронная почта
             </label>
             <div className="relative">
@@ -47,11 +51,11 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
                 name="email"
                 type="email"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-krio-secondary"
+                className={inputClass}
                 placeholder="example@mail.com"
               />
               <svg
-                className="absolute right-3 top-3.5 h-5 w-5 text-krio-secondary"
+                className="absolute right-3 top-3.5 h-5 w-5 text-krio-primary"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -68,7 +72,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
 
           {!log && (
             <div>
-              <label className="block text-sm font-medium text-krio-secondary mb-1">
+              <label className="block text-sm font-medium text-krio-secondary mb-1.5">
                 Имя пользователя
               </label>
               <input
@@ -77,14 +81,14 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-krio-secondary"
+                className={inputClass}
                 placeholder="Ваше имя"
               />
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-krio-secondary mb-1">
+            <label className="block text-sm font-medium text-krio-secondary mb-1.5">
               Пароль
             </label>
             <div className="relative">
@@ -94,11 +98,11 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-krio-secondary"
+                className={inputClass}
                 placeholder="••••••••"
               />
               <svg
-                className="absolute right-3 top-3.5 h-5 w-5 text-krio-secondary"
+                className="absolute right-3 top-3.5 h-5 w-5 text-krio-primary"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -115,7 +119,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
 
           {!log && (
             <div>
-              <label className="block text-sm font-medium text-krio-secondary mb-1">
+              <label className="block text-sm font-medium text-krio-secondary mb-1.5">
                 Подтверждение пароля
               </label>
               <input
@@ -124,16 +128,16 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-krio-secondary"
+                className={inputClass}
                 placeholder="••••••••"
               />
             </div>
           )}
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm flex items-center space-x-2">
+            <div className="p-3 bg-red-500/10 border border-red-500/40 text-red-300 rounded-lg text-sm flex items-center gap-2">
               <svg
-                className="h-5 w-5"
+                className="h-5 w-5 shrink-0"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -151,7 +155,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
 
           <button
             type="submit"
-            className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-krio-secondary font-semibold rounded-lg transition-all duration-300 transform hover:scale-[1.01]"
+            className="w-full py-3.5 bg-krio-primary hover:bg-krio-primary/80 text-white font-semibold rounded-lg shadow-md transition-all duration-300 transform hover:scale-[1.01]"
           >
             {log ? "Войти →" : "Зарегистрироваться"}
           </button>
@@ -171,7 +175,7 @@ export default function AuthPage({ handleLogin, handleSignUp }) {
           {log ? "Нет аккаунта?" : "Уже зарегистрированы?"}{" "}
           <button
             onClick={toggleForm}
-            className="text-blue-600 hover:text-blue-700 font-semibold underline underline-offset-2"
+            className="text-krio-primary hover:text-krio-secondary font-semibold underline underline-offset-2 transition-colors"
           >
             {log ? "Создать аккаунт" : "Войти в систему"}
           </button>

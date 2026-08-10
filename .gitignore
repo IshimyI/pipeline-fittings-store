@@ -135,3 +135,5 @@ dist
 
 db/database.js
 .env
+
+configs

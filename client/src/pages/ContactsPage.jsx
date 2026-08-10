@@ -1,6 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 
+const SendIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"
+    />
+  </svg>
+);
+
 export default function ContactsPage({ user }) {
   const [formData, setFormData] = useState({
     name: user?.name || "",
@@ -194,18 +210,19 @@ export default function ContactsPage({ user }) {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <main
-        className="w-full max-w-[90%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6 
+        className="w-full max-w-[90%] md:max-w-[60%] lg:max-w-[75%] p-6 space-y-6
                   bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
       >
         <section
           id="contacts"
           className="space-y-6 2xl:space-y-10 4k:space-y-14"
         >
-          <div>
-            <h2 className="text-2xl 2xl:text-3xl 4k:text-4xl font-bold text-center text-white">
+          <div className="text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-[0.15em]">
               Свяжитесь с нами
             </h2>
-            <p className="text-krio-secondary text-center mt-2 2xl:mt-4 4k:mt-6 2xl:text-lg 4k:text-xl">
+            <div className="w-16 h-0.5 bg-krio-primary mx-auto mt-3" />
+            <p className="text-krio-secondary mt-4 2xl:text-lg 4k:text-xl">
               Мы всегда рады помочь! Вы можете связаться с нами следующими
               способами:
             </p>
@@ -214,7 +231,7 @@ export default function ContactsPage({ user }) {
           <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 4k:grid-cols-4 gap-6 2xl:gap-8 4k:gap-12">
             <div className="space-y-6">
               <div className="p-6 2xl:p-8 4k:p-10 bg-krio-foreground rounded-2xl shadow-2xl transform transition-all">
-                <h3 className="text-2xl 2xl:text-3xl 4k:text-4xl font-bold text-krio-primary mb-4 2xl:mb-6 glow-text">
+                <h3 className="text-2xl 2xl:text-3xl 4k:text-4xl font-bold text-krio-primary mb-4 2xl:mb-6">
                   Контакты
                 </h3>
                 <div className="space-y-4 2xl:space-y-6">
@@ -266,10 +283,42 @@ export default function ContactsPage({ user }) {
                       </p>
                       <div className="text-white text-lg font-medium">
                         <a
-                          href="tel:+79958870611"
+                          href="tel:+79854277791"
                           className="hover:text-krio-primary transition-colors"
                         >
-                          +7 (995) 887-06-11
+                          +7 (985) 427-77-91
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4 group">
+                    <div className="p-2 bg-krio-background/50 rounded-lg group-hover:bg-krio-primary/20 transition-colors">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 h-6 text-krio-primary"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-sm text-krio-secondary/80 mb-1">
+                        Email
+                      </p>
+                      <div className="text-white text-lg font-medium">
+                        <a
+                          href="mailto:krio-armatura@mail.ru"
+                          className="hover:text-krio-primary transition-colors"
+                        >
+                          krio-armatura@mail.ru
                         </a>
                       </div>
                     </div>
@@ -299,7 +348,7 @@ export default function ContactsPage({ user }) {
                         <a
                           href="https://t.me/krioarmatura"
                           target="_blank"
-                          className="text-krio-primary hover:text-white transition-colors"
+                          className="hover:text-krio-primary transition-colors"
                         >
                           @krioarmatura
                         </a>
@@ -315,13 +364,13 @@ export default function ContactsPage({ user }) {
                 </h3>
 
                 {callMeStatus.success && (
-                  <div className="mb-4 p-3 bg-green-600/80 text-white rounded text-center text-sm">
+                  <div className="mb-4 p-3 bg-green-500/10 border border-green-500/40 text-green-300 rounded-lg text-center text-sm">
                     Заявка принята! Мы вам перезвоним
                   </div>
                 )}
 
                 {callMeStatus.error && (
-                  <div className="mb-4 p-3 bg-red-600/80 text-white rounded text-center text-sm">
+                  <div className="mb-4 p-3 bg-red-500/10 border border-red-500/40 text-red-300 rounded-lg text-center text-sm">
                     {callMeStatus.error}
                   </div>
                 )}
@@ -335,7 +384,7 @@ export default function ContactsPage({ user }) {
                     name="phone"
                     placeholder="+7 (XXX) XXX-XX-XX"
                     className="
-w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none
+w-full px-3 py-2 bg-krio-background text-white border border-krio-primary/30 rounded-lg focus:ring-2 focus:ring-krio-primary focus:outline-none
 "
                     pattern="\+7\s?[\(]{0,1}\d{3}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
                   />
@@ -366,7 +415,10 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                         ></path>
                       </svg>
                     ) : (
-                      "Перезвоните мне"
+                      <span className="flex items-center gap-2">
+                        <SendIcon />
+                        Перезвоните мне
+                      </span>
                     )}
                   </button>
                   <div className="text-sm 2xl:text-base mt-2 text-gray-400">
@@ -409,7 +461,7 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
               </div>
 
               <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4 2xl:gap-6 4k:gap-8">
-                <div className="p-4 2xl:p-6 bg-krio-primary/10 rounded-xl border border-krio-primary/20">
+                <div className="p-4 2xl:p-6 bg-krio-primary/10 rounded-xl border border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300">
                   <h4 className="text-sm 2xl:text-base text-krio-primary mb-2">
                     Часы работы
                   </h4>
@@ -421,12 +473,12 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                   </div>
                 </div>
 
-                <div className="p-4 bg-krio-primary/10 rounded-xl border border-krio-primary/20 relative overflow-hidden">
+                <div className="p-4 bg-krio-primary/10 rounded-xl border border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden">
                   <div className="absolute -right-6 -bottom-6 w-16 h-16 bg-krio-primary/5 rounded-full"></div>
                   <h4 className="text-sm text-krio-primary mb-2">
                     Срочный вопрос
                   </h4>
-                  <p className="text-white text-sm">+7 (995) 887-06-11</p>
+                  <p className="text-white text-sm">+7 (985) 427-77-91</p>
                   <span className="text-xs text-krio-secondary">
                     круглосуточно
                   </span>
@@ -440,14 +492,14 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
               Форма обратной связи
             </h3>
             {submitStatus.success && (
-              <div className="mb-4 p-3 bg-green-600 text-white rounded text-center">
+              <div className="mb-4 p-3 bg-green-500/10 border border-green-500/40 text-green-300 rounded-lg text-center">
                 Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее
                 время.
               </div>
             )}
 
             {submitStatus.error && (
-              <div className="mb-4 p-3 bg-red-600 text-white rounded text-center">
+              <div className="mb-4 p-3 bg-red-500/10 border border-red-500/40 text-red-300 rounded-lg text-center">
                 {submitStatus.error}
               </div>
             )}
@@ -469,8 +521,8 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                   onBlur={handleBlur}
                   placeholder="Ваше имя"
                   className={`w-full px-3 py-2 bg-krio-background text-white border ${
-                    errors.name ? "border-red-500" : "border-gray-600"
-                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                    errors.name ? "border-red-500" : "border-krio-primary/30"
+                  } rounded-lg focus:ring-2 focus:ring-krio-primary focus:outline-none`}
                 />
                 {dirtyFields.name && errors.name && (
                   <p className="mt-1 text-sm text-red-500">{errors.name}</p>
@@ -493,8 +545,8 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                   onBlur={handleBlur}
                   placeholder="Ваш email"
                   className={`w-full px-3 py-2 bg-krio-background text-white border ${
-                    errors.email ? "border-red-500" : "border-gray-600"
-                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                    errors.email ? "border-red-500" : "border-krio-primary/30"
+                  } rounded-lg focus:ring-2 focus:ring-krio-primary focus:outline-none`}
                 />
                 {dirtyFields.email && errors.email && (
                   <p className="mt-1 text-sm text-red-500">{errors.email}</p>
@@ -520,8 +572,8 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                   onBlur={handleBlur}
                   placeholder="+7 (XXX) XXX-XX-XX"
                   className={`w-full px-3 py-2 bg-krio-background text-white border ${
-                    errors.phone ? "border-red-500" : "border-gray-600"
-                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                    errors.phone ? "border-red-500" : "border-krio-primary/30"
+                  } rounded-lg focus:ring-2 focus:ring-krio-primary focus:outline-none`}
                 />
                 {dirtyFields.phone && errors.phone && (
                   <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
@@ -544,8 +596,8 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                   placeholder="Опишите ваш вопрос или предложение..."
                   rows="5"
                   className={`w-full px-3 py-2 bg-krio-background text-white border ${
-                    errors.message ? "border-red-500" : "border-gray-600"
-                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                    errors.message ? "border-red-500" : "border-krio-primary/30"
+                  } rounded-lg focus:ring-2 focus:ring-krio-primary focus:outline-none`}
                 />
                 {dirtyFields.message && errors.message && (
                   <p className="mt-1 text-sm text-red-500">{errors.message}</p>
@@ -560,8 +612,8 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                     ? "bg-krio-foreground cursor-not-allowed"
                     : !formValid
                     ? "bg-krio-foreground cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700"
-                } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800`}
+                    : "bg-krio-primary hover:bg-krio-primary/80"
+                } focus:outline-none focus:ring-2 focus:ring-krio-primary focus:ring-offset-2 focus:ring-offset-krio-background`}
               >
                 {submitStatus.loading ? (
                   <span className="flex items-center justify-center">
@@ -588,7 +640,10 @@ w-full px-3 py-2 bg-krio-background text-white border border-gray-600 rounded-lg
                     Отправка...
                   </span>
                 ) : (
-                  "Отправить сообщение"
+                  <span className="flex items-center justify-center gap-2">
+                    <SendIcon />
+                    Отправить сообщение
+                  </span>
                 )}
               </button>
               <div className="text-sm 2xl:text-base mt-2 text-gray-400">

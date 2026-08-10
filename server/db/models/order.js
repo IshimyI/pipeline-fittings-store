@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       items: DataTypes.JSON,
       total: DataTypes.STRING,
+      status: {
+        type: DataTypes.ENUM("ожидает", "проведен", "отменен"),
+      },
     },
     {
       sequelize,

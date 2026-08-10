@@ -22,6 +22,10 @@ module.exports = {
       total: {
         type: Sequelize.STRING,
       },
+      status: {
+        type: Sequelize.ENUM("ожидает", "проведен", "отменен"),
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

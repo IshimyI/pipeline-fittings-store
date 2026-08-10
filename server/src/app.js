@@ -8,7 +8,6 @@ const https = require("https");
 const fs = require("fs");
 const path = require("path");
 const session = require("express-session");
-const config = require("./configs/config.json");
 const router = require("./routes/router");
 const authRouter = require("./routes/authRouter");
 const tokensRouter = require("./routes/tokensRouter");
@@ -42,7 +41,7 @@ app.use(express.static(path.join(__dirname, "../public/dist")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(
   session({
-    secret: config.telegram.secretKey,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {

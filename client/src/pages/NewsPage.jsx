@@ -2,10 +2,83 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 
+const SaveIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
+);
+
+const EditIcon = () => (
+  <svg
+    className="h-5 w-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+    />
+  </svg>
+);
+
+const DeleteIcon = () => (
+  <svg
+    className="h-5 w-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+    />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg
+    className="h-7 w-7"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+);
+
+const PageTitle = ({ children }) => (
+  <div className="text-center">
+    <h1 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-[0.15em]">
+      {children}
+    </h1>
+    <div className="w-16 h-0.5 bg-krio-primary mx-auto mt-3" />
+  </div>
+);
+
+const inputClass =
+  "w-full p-4 bg-krio-background border border-krio-primary/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all";
+
 export default function NewsPage({ user }) {
   const [news, setNews] = useState([]);
   const [selectedNews, setSelectedNews] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [modalLoading, setModalLoading] = useState(false);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -48,16 +121,15 @@ export default function NewsPage({ user }) {
 
   const fetchNewsById = async (newsId) => {
     try {
-      setLoading(true);
+      setModalLoading(true);
       const response = await axiosInstance.get(`/news/${newsId}`);
       setSelectedNews(response.data);
       setIsModalOpen(true);
       setError("");
     } catch (err) {
       console.error("Error fetching news item:", err);
-      setError("Не удалось загрузить новость");
     } finally {
-      setLoading(false);
+      setModalLoading(false);
     }
   };
 
@@ -160,53 +232,51 @@ export default function NewsPage({ user }) {
   };
 
   return (
-    <div className="min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover p-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-gray-300 mb-8">
-          Новости
-        </h1>
+    <div className="min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover flex justify-center py-8 px-4">
+      <main className="w-full max-w-[90%] md:max-w-[60%] lg:max-w-[75%] p-6 space-y-8 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 h-fit">
+        <PageTitle>Новости</PageTitle>
 
         {user?.isAdmin && (
-          <div className="mb-8">
+          <div>
             <button
               onClick={() => {
                 setFormData({ title: "", content: "", image: null });
                 setIsEditing(false);
                 setShowForm(!showForm);
               }}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-6 py-3 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition"
             >
               {showForm ? "Отменить" : "Добавить новость"}
             </button>
 
             {showForm && (
-              <div className="mt-6 bg-krio-background p-6 rounded-xl shadow-lg">
-                <h3 className="text-2xl font-semibold mb-6 text-gray-100">
+              <div className="mt-6 p-6 bg-krio-foreground rounded-2xl shadow-2xl border border-krio-primary/20 space-y-6">
+                <h3 className="text-xl font-semibold text-white">
                   {isEditing ? "Редактировать новость" : "Создать новость"}
                 </h3>
 
                 {formError && (
-                  <div className="mb-4 p-3 bg-red-500 bg-opacity-20 border border-red-500 rounded-lg text-red-300">
+                  <div className="p-3 bg-red-500/10 border border-red-500/40 rounded-lg text-red-300 text-sm">
                     {formError}
                   </div>
                 )}
 
                 <form onSubmit={handleCreateNews} className="space-y-6">
                   <div>
-                    <label className="block text-gray-300 mb-2">
+                    <label className="block text-gray-300 text-sm mb-2">
                       Заголовок *
                     </label>
                     <input
                       name="title"
                       value={formData.title}
                       onChange={handleInputChange}
-                      className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className={inputClass}
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-gray-300 mb-2">
+                    <label className="block text-gray-300 text-sm mb-2">
                       Содержание *
                     </label>
                     <textarea
@@ -214,13 +284,13 @@ export default function NewsPage({ user }) {
                       value={formData.content}
                       onChange={handleInputChange}
                       rows="6"
-                      className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className={inputClass}
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-gray-300 mb-2">
+                    <label className="block text-gray-300 text-sm mb-2">
                       Изображение
                     </label>
                     <input
@@ -228,35 +298,36 @@ export default function NewsPage({ user }) {
                       type="file"
                       accept="image/png, image/jpeg, image/jpg"
                       onChange={handleInputChange}
-                      className="w-full p-4 bg-krio-foreground border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className={inputClass}
                     />
                   </div>
                   {isEditing && selectedNews?.image && (
-                    <div className="mb-4">
+                    <div>
                       <p className="text-gray-300 text-sm mb-2">
                         Текущее изображение:
                       </p>
                       <img
                         src={selectedNews.image}
                         alt="Превью"
-                        className="w-48 h-48 object-contain rounded-lg"
+                        className="w-48 h-48 object-contain rounded-lg border border-krio-primary/20"
                       />
                     </div>
                   )}
 
-                  <div className="flex justify-end gap-4">
+                  <div className="flex justify-end gap-3">
                     <button
                       type="button"
                       onClick={() => setShowForm(false)}
-                      className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500"
+                      className="px-4 py-2 text-sm bg-krio-primary/20 rounded-lg hover:bg-krio-primary/30 text-krio-secondary transition"
                     >
                       Отмена
                     </button>
                     <button
                       type="submit"
                       disabled={formLoading}
-                      className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                      className="flex items-center gap-1.5 px-4 py-2 bg-krio-primary text-white text-sm font-medium rounded-lg shadow-md hover:bg-krio-primary/80 transition disabled:opacity-50"
                     >
+                      <SaveIcon />
                       {formLoading
                         ? "Сохранение..."
                         : isEditing
@@ -283,59 +354,33 @@ export default function NewsPage({ user }) {
             <p>Новостей пока нет</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {news.map((item) => (
               <div
                 key={item.id}
-                className="bg-krio-background p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow relative group"
+                className="relative group p-4 bg-krio-foreground rounded-xl border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300"
               >
                 {user?.isAdmin && (
-                  <div className="absolute top-4 right-4 flex gap-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute top-3 right-3 flex gap-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleEditNews(item);
                       }}
-                      className="p-2 text-blue-500 hover:text-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
+                      className="p-1.5 bg-krio-primary/80 hover:bg-krio-primary text-white rounded-full shadow-lg"
                       title="Редактировать новость"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                        />
-                      </svg>
+                      <EditIcon />
                     </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteNews(item.id);
                       }}
-                      className="p-2 text-red-500 hover:text-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 rounded-full"
+                      className="p-1.5 bg-red-500/80 hover:bg-red-500 text-white rounded-full shadow-lg"
                       title="Удалить новость"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
+                      <DeleteIcon />
                     </button>
                   </div>
                 )}
@@ -345,118 +390,107 @@ export default function NewsPage({ user }) {
                   onClick={() => fetchNewsById(item.id)}
                   onMouseEnter={() => prefetchNews(item.id)}
                 >
-                  <div className="mb-4 h-48 overflow-hidden rounded-lg">
+                  <div className="mb-4 aspect-square overflow-hidden rounded-lg bg-white">
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-auto object-contain transition-transform hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       onError={(e) => {
                         e.target.src = "/uploads/no-photo.png";
                       }}
                     />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-200 mb-2">
+                  <h3 className="text-lg font-semibold text-white mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-gray-400 text-sm mb-3">
+                  <p className="text-krio-secondary/70 text-xs font-mono tracking-wide mb-3">
                     {formatDate(item.createdAt)}
                   </p>
-                  <p className="text-gray-300 line-clamp-3">{item.content}</p>
+                  <p className="text-gray-300 text-sm line-clamp-3">
+                    {item.content}
+                  </p>
                   <button
-                    className="mt-4 text-blue-400 hover:text-blue-300 transition-colors"
+                    className="mt-4 text-sm text-krio-primary hover:text-krio-secondary transition-colors"
                     onMouseEnter={() => prefetchNews(item.id)}
                     onClick={(e) => {
                       e.stopPropagation();
                       fetchNewsById(item.id);
                     }}
                   >
-                    Читать далее
+                    Читать далее →
                   </button>
                 </div>
               </div>
             ))}
           </div>
         )}
+      </main>
 
-        {isModalOpen && selectedNews && (
+      {isModalOpen && selectedNews && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 z-[100]"
+          onClick={() => {
+            setIsModalOpen(false);
+            navigate("/news");
+          }}
+        >
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 z-[100]"
-            onClick={() => {
-              setIsModalOpen(false);
-              navigate("/news");
-            }}
+            className="bg-krio-background rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl border border-krio-primary/20"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className="bg-krio-background rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-700/50"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-6">
-                  <div className="pr-4">
-                    <h2 className="text-2xl font-bold text-gray-100 mb-2">
-                      {selectedNews.title}
-                    </h2>
-                    <p className="text-gray-400 text-sm">
-                      {formatDate(selectedNews.createdAt)}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setIsModalOpen(false);
-                      navigate("/news");
-                    }}
-                    className="text-gray-400 hover:text-gray-200 transition-colors p-1 -mt-2 -mr-2"
-                    aria-label="Закрыть"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-7 w-7"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-6">
+                <div className="pr-4">
+                  <h2 className="text-2xl font-bold text-white mb-2">
+                    {selectedNews.title}
+                  </h2>
+                  <p className="text-krio-secondary/70 text-xs font-mono tracking-wide">
+                    {formatDate(selectedNews.createdAt)}
+                  </p>
                 </div>
+                <button
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    navigate("/news");
+                  }}
+                  className="text-krio-primary hover:text-krio-secondary hover:bg-krio-foreground/40 rounded-full transition-colors p-1 -mt-2 -mr-2"
+                  aria-label="Закрыть"
+                >
+                  <CloseIcon />
+                </button>
+              </div>
 
-                <div className="mb-6 rounded-lg overflow-hidden bg-gray-800/50">
-                  <img
-                    src={selectedNews.image}
-                    alt={selectedNews.title}
-                    className="w-full h-auto max-h-[500px] object-contain"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.target.src = "/uploads/no-photo.png";
-                    }}
-                  />
-                </div>
+              <div className="mb-6 rounded-lg overflow-hidden bg-white/5 border border-krio-primary/10">
+                <img
+                  src={selectedNews.image}
+                  alt={selectedNews.title}
+                  className="w-full h-auto max-h-[500px] object-contain"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = "/uploads/no-photo.png";
+                  }}
+                />
+              </div>
 
-                <div className="text-gray-300 whitespace-pre-line leading-relaxed space-y-4">
-                  {selectedNews.content}
-                </div>
+              <div className="text-gray-300 whitespace-pre-line leading-relaxed space-y-4">
+                {selectedNews.content}
+              </div>
 
-                <div className="mt-8 pt-6 border-t border-gray-700/50">
-                  <button
-                    onClick={() => {
-                      setIsModalOpen(false);
-                      navigate("/news");
-                    }}
-                    className="px-5 py-2.5 text-sm font-medium bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors float-right"
-                  >
-                    Закрыть
-                  </button>
-                </div>
+              <div className="mt-8 pt-6 border-t border-krio-primary/20 flex justify-end">
+                <button
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    navigate("/news");
+                  }}
+                  className="px-5 py-2.5 text-sm font-medium bg-krio-foreground text-krio-secondary hover:bg-krio-primary hover:text-krio-background rounded-lg transition-colors"
+                >
+                  Закрыть
+                </button>
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

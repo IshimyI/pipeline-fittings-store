@@ -2,16 +2,14 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_TARGET,
-  withCredentials: true, // Essential for cross-origin cookie handling
+  withCredentials: true,
 });
 
 let accessToken = "";
 
-// Initialize access token from localStorage if a user is logged in
 try {
   const savedUser = localStorage.getItem("user");
   if (savedUser) {
-    // Token will be set via refresh on app load
     console.log("User found in localStorage, token will be refreshed");
   }
 } catch (e) {
@@ -24,7 +22,6 @@ export function setAccessToken(newToken) {
 
 export function clearAccessToken() {
   accessToken = "";
-  // Also clear user data from localStorage
   try {
     localStorage.removeItem("user");
   } catch (e) {
@@ -48,15 +45,12 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     const prevReq = error.config;
-    // Prevent infinite loops with a flag
     if (error.response?.status === 401 && !prevReq.sent) {
       try {
-        // Use withCredentials to ensure cookies are sent with the request
         const response = await axios.get(
           `${import.meta.env.VITE_TARGET}tokens/refresh`,
           {
             withCredentials: true,
-            // Add headers to ensure proper CORS handling
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
@@ -64,7 +58,6 @@ axiosInstance.interceptors.response.use(
           }
         );
         accessToken = response.data.accessToken;
-        // Update user data in localStorage
         try {
           localStorage.setItem("user", JSON.stringify(response.data.user));
         } catch (e) {
