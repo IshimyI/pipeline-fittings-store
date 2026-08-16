@@ -470,33 +470,42 @@ router.post("/createOrder", async (req: Request, res: Response) => {
       total,
       status: "ожидает",
     });
-    let userInfo = email;
-    if (userId) {
-      const user = await User.findByPk(userId);
-      userInfo = `${user.name} (${user.email})`;
-    }
-    const itemDetails = await Promise.all(
-      items.map(async (item: any) => {
-        const product = await Product.findByPk(item.productId);
-        return `${product.name} - ${item.quantity} шт.`;
-      })
-    );
-    const messageText = `
+
+    res.status(201).json(order);
+
+    // Notifications are best-effort: the order is already created and the
+    // response already sent, so a Telegram/email failure here must not be
+    // reported to the client as an order-creation failure.
+    try {
+      let userInfo = email;
+      if (userId) {
+        const user = await User.findByPk(userId);
+        userInfo = `${user.name} (${user.email})`;
+      }
+      const itemDetails = await Promise.all(
+        items.map(async (item: any) => {
+          const product = await Product.findByPk(item.productId);
+          return `${product.name} - ${item.quantity} шт.`;
+        })
+      );
+      const messageText = `
 Новый заказ #${order.id}
 От: ${userInfo}
 Товары:
 ${itemDetails.join("")}
 Итого: ${total || "По запросу"} ₽
   `.trim();
-    await sendMsg({
-      body: { message: messageText },
-    } as Request, {} as Response, () => {});
-    await sendEmail({
-      to: process.env.ADMIN_EMAIL as string,
-      subject: `Новый заказ #${order.id}`,
-      text: messageText,
-    });
-    res.status(201).json(order);
+      await sendMsg({
+        body: { message: messageText },
+      } as Request, {} as Response, () => {});
+      await sendEmail({
+        to: process.env.ADMIN_EMAIL as string,
+        subject: `Новый заказ #${order.id}`,
+        text: messageText,
+      });
+    } catch (notifyError) {
+      console.error("Order notification error:", notifyError);
+    }
   } catch (error) {
     console.error("Order creation error:", error);
     res.status(500).json({ message: "Error creating order" });

@@ -58,7 +58,6 @@ function App() {
         setUser(null);
         clearAccessToken();
         localStorage.removeItem("user");
-        navigate("/");
       })
       .finally(() => {
         setLoadingUser(false);
