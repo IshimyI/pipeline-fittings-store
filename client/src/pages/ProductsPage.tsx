@@ -1,11 +1,18 @@
-import React, { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useState, type SyntheticEvent } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 import axiosInstance from "../axiosInstance";
 import Dialog from "../ui/Dialog";
 import { OrdersService } from "../ui/OrderService";
 import Cart from "../ui/Cart";
+import type { User, Category, Product, CartItem, BasketEntry } from "../types";
 
-export default function ProductsPage({ user, category }) {
+interface ProductsPageProps {
+  user: User | null;
+  category: Category[];
+}
+
+export default function ProductsPage({ user, category }: ProductsPageProps) {
   const { categoryId } = useParams();
   const [sortOption, setSortOption] = useState("name");
   const [workingPressureFilter, setWorkingPressureFilter] = useState("all");
@@ -18,12 +25,12 @@ export default function ProductsPage({ user, category }) {
   const [weightFilter, setWeightFilter] = useState("all");
   const [error, setError] = useState("");
   const [cartVisible, setCartVisible] = useState(false);
-  const [cartItems, setCartItems] = useState(() => {
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     const localCart = localStorage.getItem("cart");
     return localCart ? JSON.parse(localCart) : [];
   });
 
-  const [loadingCart, setLoadingCart] = useState(false);
+  const [, setLoadingCart] = useState(false);
 
   const handleResetFilters = () => {
     setSortOption("name");
@@ -47,7 +54,24 @@ export default function ProductsPage({ user, category }) {
     SET_LOADING: "SET_LOADING" as const,
   };
 
-  const initialState = {
+  interface State {
+    products: Product[];
+    sortedProducts: Product[];
+    searchQuery: string;
+    selectedProduct: Product | null;
+    isOpen: boolean;
+    loading: boolean;
+  }
+
+  type Action =
+    | { type: typeof ACTION.SET_PRODUCTS; payload: Product[] }
+    | { type: typeof ACTION.SET_SORTED_PRODUCTS; payload: Product[] }
+    | { type: typeof ACTION.SET_SEARCH_QUERY; payload: string }
+    | { type: typeof ACTION.SET_SELECTED_PRODUCT; payload: Product | null }
+    | { type: typeof ACTION.SET_IS_OPEN; payload: boolean }
+    | { type: typeof ACTION.SET_LOADING; payload: boolean };
+
+  const initialState: State = {
     products: [],
     sortedProducts: [],
     searchQuery: "",
@@ -56,7 +80,7 @@ export default function ProductsPage({ user, category }) {
     loading: false,
   };
 
-  const reducer = (state, action) => {
+  const reducer = (state: State, action: Action): State => {
     switch (action.type) {
       case ACTION.SET_PRODUCTS:
         return { ...state, products: action.payload };
@@ -75,6 +99,9 @@ export default function ProductsPage({ user, category }) {
 
       case ACTION.SET_LOADING:
         return { ...state, loading: action.payload };
+
+      default:
+        return state;
     }
   };
 
@@ -93,11 +120,11 @@ export default function ProductsPage({ user, category }) {
       setLoadingCart(true);
       try {
         if (user?.id) {
-          const response = await axiosInstance.get("/basket", {
+          const response = await axiosInstance.get<BasketEntry[]>("/basket", {
             params: { userId: user.id },
           });
           const cartProducts = response.data.map((item) => ({
-            ...item.product,
+            ...(item.product as Product),
             quantity: item.quantity,
           }));
           setCartItems(cartProducts);
@@ -117,7 +144,7 @@ export default function ProductsPage({ user, category }) {
     fetchCart();
   }, [user]);
 
-  const addToCart = async (product) => {
+  const addToCart = async (product: Product) => {
     setLoadingCart(true);
     try {
       if (user?.id) {
@@ -192,20 +219,18 @@ export default function ProductsPage({ user, category }) {
       alert("Заказ принят! Менеджер свяжется для уточнения деталей.");
     } catch (error) {
       console.error("Ошибка оформления:", error);
-      setError(
-        error.message ||
-          error.response?.data?.message ||
-          "Не удалось оформить заказ"
-      );
+      const message = error instanceof Error ? error.message : undefined;
+      const responseMessage = axios.isAxiosError(error) ? error.response?.data?.message : undefined;
+      setError(message || responseMessage || "Не удалось оформить заказ");
     }
   };
 
-  const isValidUrl = (str) => {
+  const isValidUrl = (str: string) => {
     const pattern = /^(https?:\/\/)/;
     return pattern.test(str);
   };
 
-  const getImageUrl = (image) => {
+  const getImageUrl = (image: string | null | undefined) => {
     if (!image) return "/uploads/no-photo.png";
     if (isValidUrl(image)) return image;
     if (image.startsWith("/uploads/")) return image;
@@ -215,16 +240,12 @@ export default function ProductsPage({ user, category }) {
     return "/uploads/no-photo.png";
   };
 
-  const handleImageError = (e) => {
-    console.error("Failed to load image:", e.target.src);
-    e.target.src = "/uploads/no-photo.png";
+  const handleImageError = (e: SyntheticEvent<HTMLImageElement>) => {
+    console.error("Failed to load image:", e.currentTarget.src);
+    e.currentTarget.src = "/uploads/no-photo.png";
   };
 
-  const handleSortChange = (e) => {
-    setSortOption(e.target.value);
-  };
-
-  const handleRemoveFromCart = async (productId) => {
+  const handleRemoveFromCart = async (productId: number) => {
     try {
       if (user?.id) {
         await axiosInstance.delete("/basket", {
@@ -240,7 +261,7 @@ export default function ProductsPage({ user, category }) {
     }
   };
 
-  const sortProducts = (prods) => {
+  const sortProducts = (prods: Product[]) => {
     if (!Array.isArray(prods)) return [];
 
     return [...prods].sort((a, b) => {
@@ -268,12 +289,9 @@ export default function ProductsPage({ user, category }) {
       }
       dispatch({ type: ACTION.SET_LOADING, payload: true });
       try {
-        let response;
-        if (categoryId) {
-          response = await axiosInstance.get(`/listProducts/${categoryId}`);
-        } else {
-          response = await axiosInstance.get(`/listProducts`);
-        }
+        const response = categoryId
+          ? await axiosInstance.get<Product[]>(`/listProducts/${categoryId}`)
+          : await axiosInstance.get<Product[]>(`/listProducts`);
         dispatch({ type: ACTION.SET_PRODUCTS, payload: response.data });
         dispatch({ type: ACTION.SET_SORTED_PRODUCTS, payload: response.data });
       } catch (error) {
@@ -286,7 +304,7 @@ export default function ProductsPage({ user, category }) {
     fetchProducts();
   }, [categoryId, category]);
 
-  const parseProductParams = (product) => {
+  const parseProductParams = (product: Product): Record<string, string> => {
     if (typeof product.params === "object" && product.params !== null) {
       return product.params;
     }
@@ -299,8 +317,8 @@ export default function ProductsPage({ user, category }) {
     }
   };
 
-  const getUniqueValues = (products, paramName) => {
-    const values = new Set();
+  const getUniqueValues = (products: Product[], paramName: string): string[] => {
+    const values = new Set<string>();
     products.forEach((product) => {
       const params = parseProductParams(product);
       const value = params[paramName];
@@ -369,7 +387,7 @@ export default function ProductsPage({ user, category }) {
     dimensionsFilter,
   ]);
 
-  const openModal = (product) => {
+  const openModal = (product: Product) => {
     dispatch({ type: ACTION.SET_SELECTED_PRODUCT, payload: product });
     dispatch({ type: ACTION.SET_IS_OPEN, payload: true });
   };
@@ -379,33 +397,25 @@ export default function ProductsPage({ user, category }) {
     dispatch({ type: ACTION.SET_IS_OPEN, payload: false });
   };
 
-  const availabilityOptions = [
-    "all",
-    ...[...new Set(products.map((product) => product.availability))],
-  ];
-
-  const priceOptions = [
-    "all",
-    ...Array.from(new Set(products.map((product) => product.price.toString()))),
-  ];
-
-  const handleDeleteProduct = async (productId) => {
+  const handleDeleteProduct = async (productId: number) => {
     try {
       if (!window.confirm("Вы уверены, что хотите удалить этот товар?")) return;
+      if (!user) return;
       const userId = user.id;
 
       await axiosInstance.delete(`/deleteProduct/${productId}/${userId}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
 
-      const response = await axiosInstance.get(
+      const response = await axiosInstance.get<Product[]>(
         categoryId ? `/listProducts/${categoryId}` : `/listProducts`
       );
 
       dispatch({ type: ACTION.SET_PRODUCTS, payload: response.data });
     } catch (error) {
       console.error("Ошибка удаления:", error);
-      setError(error.response?.data?.message || "Недостаточно прав");
+      const message = axios.isAxiosError(error) ? error.response?.data?.message : undefined;
+      setError(message || "Недостаточно прав");
     }
   };
 

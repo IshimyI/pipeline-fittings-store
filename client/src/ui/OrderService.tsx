@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosInstance from "../axiosInstance";
 interface OrderItem {
   productId: number;
@@ -36,9 +37,8 @@ export class OrdersService {
       return response.data;
     } catch (error) {
       console.error("Error creating order:", error);
-      throw new Error(
-        error.response?.data?.message || "Ошибка оформления заказа"
-      );
+      const message = axios.isAxiosError(error) ? error.response?.data?.message : undefined;
+      throw new Error(message || "Ошибка оформления заказа");
     }
   }
   static async clearBasket(userId: number): Promise<void> {

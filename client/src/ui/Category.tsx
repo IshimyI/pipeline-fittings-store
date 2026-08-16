@@ -1,0 +1,44 @@
+import type { SyntheticEvent } from "react";
+import type { Category as CategoryType } from "../types";
+
+interface CategoryProps {
+  category: CategoryType;
+}
+
+export default function Category({ category }: CategoryProps) {
+  const isValidUrl = (str: string) => {
+    const pattern = /^(https?:\/\/)/;
+    return pattern.test(str);
+  };
+
+  const handleImageError = (e: SyntheticEvent<HTMLImageElement>) => {
+    console.error("Image load error:", e.currentTarget.src);
+    e.currentTarget.src = "/uploads/no-photo.png";
+  };
+
+  const imageUrl = () => {
+    if (!category.image) return "/uploads/no-photo.png";
+    if (isValidUrl(category.image)) return category.image;
+    if (category.image.startsWith("/uploads/")) return category.image;
+    if (category.image.startsWith("categories/"))
+      return `/uploads/${category.image}`;
+    if (category.image === "cno-photo.png") return `/uploads/${category.image}`;
+    return category.image && category.image !== "alt"
+      ? `/uploads/categories/${category.image}.png`
+      : "/uploads/no-photo.png";
+  };
+
+  return (
+    <div className="category bg-krio-background p-6 rounded-lg shadow-lg border-2 border-krio-primary/20 hover:border-krio-primary/50 hover:-translate-y-0.5 transition-all duration-300">
+      <img
+        src={imageUrl()}
+        alt={category.name}
+        className="w-full h-full object-cover rounded-lg mb-4"
+        onError={handleImageError}
+      />
+      <p className="text-center text-sm md:text-xl font-semibold text-white break-words whitespace-normal">
+        {category.name}
+      </p>
+    </div>
+  );
+}

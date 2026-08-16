@@ -1,0 +1,495 @@
+import { useEffect, useRef, useState, type ChangeEvent, type SyntheticEvent } from "react";
+import axiosInstance from "../axiosInstance";
+import type { Product, Category, User } from "../types";
+
+interface DialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  product: Product | null;
+  user: User | null;
+  category: Category[];
+}
+
+interface EditFormData {
+  categoryId: number | string;
+  name: string;
+  image: string | null;
+  price: string;
+  availability: number;
+  params: Record<string, unknown> | string;
+}
+
+export default function Dialog({ isOpen, onClose, product, user, category }: DialogProps) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const [, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState<EditFormData>({
+    categoryId: product?.categoryId || "",
+    name: product?.name || "",
+    image: product?.image || null,
+    price: product?.price || "",
+    availability: product?.availability || 0,
+    params: product?.params || {},
+  });
+  const [bool, setBool] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (product) {
+      let initialParams: Record<string, unknown> | string = product.params || {};
+      if (typeof initialParams === "string") {
+        try {
+          initialParams = JSON.parse(initialParams.replace(/"/g, '"'));
+        } catch (e) {
+          console.error("Ошибка парсинга параметров:", e);
+          initialParams = {};
+        }
+      }
+      setFormData({
+        categoryId: product.categoryId || "",
+        name: product.name || "",
+        image: product.image || "",
+        price: product.price || "",
+        availability: product.availability || 0,
+        params: initialParams,
+      });
+      setImagePreview(product.image ? getImageUrl(product.image) : null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product]);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "image") {
+      const input = e.target as HTMLInputElement;
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        setImageFile(file);
+        const imageUrl = URL.createObjectURL(file);
+        setImagePreview(imageUrl);
+        setFormData((prevData) => ({
+          ...prevData,
+          image: imageUrl,
+        }));
+      }
+      return;
+    }
+
+    if (name === "params") {
+      try {
+        if (!value.trim()) {
+          setFormData((prev) => ({ ...prev, params: {} }));
+          return;
+        }
+
+        let parsedValue: Record<string, unknown> | string;
+        try {
+          parsedValue = JSON.parse(value);
+        } catch {
+          parsedValue = value;
+        }
+
+        setFormData((prev) => ({ ...prev, params: parsedValue }));
+      } catch (error) {
+        console.error("Ошибка обработки параметров:", error);
+        setFormData((prev) => ({ ...prev, params: value }));
+      }
+      return;
+    }
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = async () => {
+    try {
+      if (!formData.name.trim()) {
+        throw new Error("Название обязательно");
+      }
+      if (!product) return;
+
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("categoryId", String(formData.categoryId));
+      formDataToSend.append("price", formData.price);
+      formDataToSend.append("availability", String(formData.availability));
+
+      const paramsString =
+        typeof formData.params === "object"
+          ? JSON.stringify(formData.params)
+          : formData.params;
+      formDataToSend.append("params", paramsString);
+
+      formDataToSend.append("user", JSON.stringify(user));
+
+      if (imageFile) {
+        formDataToSend.append("image", imageFile);
+      } else if (formData.image) {
+        formDataToSend.append("imagePath", formData.image);
+      }
+
+      const response = await axiosInstance.post(
+        `/changeProduct/${product.id}`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Ошибка при сохранении изменений");
+      }
+
+      setIsEditing(false);
+      onClose();
+      window.location.reload();
+    } catch (error) {
+      console.error("Ошибка сохранения:", error);
+      alert(error instanceof Error ? error.message : "Ошибка сохранения");
+    }
+  };
+
+  const isValidUrl = (str: string) => {
+    if (typeof str !== "string") return false;
+
+    try {
+      new URL(str);
+
+      const allowedProtocols = ["http:", "https:"];
+      const url = new URL(str);
+      return allowedProtocols.includes(url.protocol);
+    } catch {
+      return false;
+    }
+  };
+
+  const getImageUrl = (image: string | null | undefined) => {
+    if (!image) return "/uploads/no-photo.png";
+    if (isValidUrl(image)) return image;
+    if (image.startsWith("/uploads/")) return image;
+    if (image.startsWith("categories/")) return `/uploads/${image}`;
+    if (image === "no-photo.png") return `/uploads/${image}`;
+    return `/uploads/categories/${image}.jpg?v=${Date.now()}`;
+  };
+
+  const handleImageError = (e: SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/uploads/no-photo.png";
+  };
+
+  useEffect(() => {
+    const handleCancel = (event: Event) => {
+      event.preventDefault();
+      onClose();
+    };
+
+    const dialog = dialogRef.current;
+    if (dialog) {
+      dialog.addEventListener("cancel", handleCancel);
+    }
+
+    return () => {
+      if (dialog) {
+        dialog.removeEventListener("cancel", handleCancel);
+      }
+    };
+  }, [onClose]);
+
+  const renderParams = (params: Record<string, unknown> | string | undefined) => {
+    let parsedParams: Record<string, unknown> | string | undefined = params;
+
+    if (typeof params === "string") {
+      try {
+        parsedParams = JSON.parse(params);
+      } catch (e) {
+        console.error("Ошибка парсинга параметров:", e);
+        return (
+          <div className="text-red-500 text-sm">
+            Ошибка формата параметров. Используйте корректный JSON.
+          </div>
+        );
+      }
+    }
+    if (!parsedParams || typeof parsedParams !== "object") {
+      return null;
+    }
+    return Object.entries(parsedParams).map(([key, value]) => (
+      <div
+        key={key}
+        className="flex flex-col md:flex-row justify-between md:items-center items-start py-1 px-1.5 text-xs"
+      >
+        <span className="text-gray-400 truncate">{key}</span>
+        <span className="text-blue-300 ml-2 max-w-[60%] text-right truncate">
+          {typeof value === "object" ? JSON.stringify(value) : String(value)}
+        </span>
+      </div>
+    ));
+  };
+
+  // Used both as a native document "mousedown" listener and directly as a
+  // JSX onClick handler on the overlay div — accepts either event shape
+  // since both a native MouseEvent and React's SyntheticEvent expose .target.
+  const handleOutsideClick = (event: { target: EventTarget | null }) => {
+    if (dialogRef.current && !dialogRef.current.contains(event.target as Node)) {
+      onClose();
+    }
+  };
+
+  const handleEscapeKey = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.addEventListener("mousedown", handleOutsideClick);
+      document.addEventListener("keydown", handleEscapeKey);
+    } else {
+      document.body.style.overflow = "auto";
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscapeKey);
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
+  return (
+    <>
+      {isOpen && (
+        <div className="dialog-overlay" onClick={handleOutsideClick}></div>
+      )}
+      <dialog
+        ref={dialogRef}
+        open={isOpen}
+        className="dialog m-auto p-2 md:p-8 bg-krio-background text-white rounded-lg shadow-lg max-w-250 w-11/12 transform transition-all duration-500 opacity-100"
+        style={{ backdropFilter: "blur(10px)" }}
+        aria-labelledby="dialog-title"
+        aria-hidden={!isOpen}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-white text-3xl font-bold hover:text-red-500 transition-colors duration-300"
+          aria-label="Закрыть"
+        >
+          &times;
+        </button>
+        {product ? (
+          <>
+            <h4
+              id="dialog-title"
+              className="text-xl md:3xl font-semibold mb-6 text-center"
+            >
+              {product.name}
+            </h4>
+            {!bool ? (
+              <div className="space-y-4">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className=" md:w-1/3 flex items-center justify-center">
+                    <img
+                      src={getImageUrl(product.image)}
+                      alt={product.name}
+                      className="w-auto object-contain rounded-lg md:w-auto max-md:max-h-40 max-md:mx-auto"
+                      onError={handleImageError}
+                    />
+                  </div>
+
+                  <div className="md:w-2/3 space-y-3 overflow-y-scroll max-h-[320px] md:max-h-full pr-2">
+                    <div className="space-y-3">
+                      <div className="bg-krio-foreground p-3 rounded-lg">
+                        <p className="text-sm text-gray-400 mb-1">Цена</p>
+                        <p className="text-xl text-white font-mono">
+                          По запросу
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols- md:grid-cols-2 gap-2">
+                        <div className="bg-krio-foreground p-2 rounded-lg">
+                          <p className="text-xs text-gray-400 mb-1">
+                            Категория
+                          </p>
+                          <p className="text-sm text-white truncate">
+                            {category?.find((c) => c.id === product.categoryId)
+                              ?.name || "Категория не указана"}
+                          </p>
+                        </div>
+
+                        <div className="bg-krio-foreground p-2 rounded-lg ">
+                          <p className="text-xs text-gray-400 mb-1">Наличие</p>
+                          <p className="text-sm text-white">
+                            {product.availability === 0
+                              ? "Под заказ"
+                              : "Есть в наличии"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-krio-foreground p-3 rounded-lg">
+                      <h4 className="text-sm font-semibold text-white mb-2 border-b border-gray-600 pb-1">
+                        Характеристики
+                      </h4>
+                      <div className="space-y-1.5">
+                        {renderParams(product.params)}
+                      </div>
+                    </div>
+
+                    {user?.isAdmin && (
+                      <button
+                        onClick={() => setBool(true)}
+                        className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-sm rounded-lg
+                   transition-all duration-300 flex items-center justify-center gap-1.5"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                        Редактировать
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <h4 className="text-2xl font-bold text-white mb-4">
+                  Редактирование товара
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[420px] md:max-h-full overflow-y-scroll">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-gray-300 mb-2">
+                        Название
+                      </label>
+                      <input
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-300 mb-2">
+                        ID Категории
+                      </label>
+                      <input
+                        name="categoryId"
+                        value={formData.categoryId}
+                        onChange={handleInputChange}
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <label className="block text-gray-300 mb-2">
+                      Список категорий
+                    </label>
+                    <div className="flex flex-col gap-1 overflow-scroll max-h-60">
+                      {category.map((el, index) => (
+                        <p
+                          key={el.name}
+                          className="text-white bg-krio-foreground px-1.5 rounded"
+                        >
+                          {index + 1}. {el.name}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-gray-300 mb-2">Цена</label>
+                      <input
+                        name="price"
+                        value={formData.price}
+                        onChange={handleInputChange}
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-300 mb-2">
+                        Изображение
+                      </label>
+                      {imagePreview && (
+                        <div className="mb-2">
+                          <img
+                            src={imagePreview}
+                            alt="Предпросмотр"
+                            className="max-h-32 rounded-lg"
+                            onError={handleImageError}
+                          />
+                        </div>
+                      )}
+                      <input
+                        name="image"
+                        type="file"
+                        accept="image/png, image/jpeg, image/jpg"
+                        onChange={handleInputChange}
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-300 mb-2">
+                        Наличие
+                      </label>
+                      <input
+                        type="number"
+                        name="availability"
+                        value={formData.availability}
+                        onChange={handleInputChange}
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-300 mb-2">
+                        Характеристики (JSON)
+                      </label>
+                      <textarea
+                        name="params"
+                        value={
+                          typeof formData.params === "string"
+                            ? formData.params
+                            : JSON.stringify(formData.params, null, 2)
+                        }
+                        onChange={handleInputChange}
+                        className="w-full p-3 bg-krio-foreground border border-gray-600 rounded-lg text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[150px] max-w-[350px]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-4 mt-6">
+                  <button
+                    onClick={() => setBool(false)}
+                    className="px-6 py-2 bg-krio-primary hover:bg-krio-foreground text-white rounded-lg transition-colors duration-300"
+                  >
+                    Отмена
+                  </button>
+                  <button
+                    onClick={handleSave}
+                    className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+                  >
+                    Сохранить изменения
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        ) : null}
+      </dialog>
+    </>
+  );
+}
