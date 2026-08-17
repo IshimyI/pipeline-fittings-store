@@ -172,7 +172,7 @@ export default function NewsPage({ user }: NewsPageProps) {
 
       const endpoint =
         isEditing && selectedNews
-          ? `/updateNews/${selectedNews.id}/${user?.id}`
+          ? `/updateNews/${selectedNews.id}`
           : "/createNews";
 
       await axiosInstance.post(endpoint, newsData, config);
@@ -198,7 +198,7 @@ export default function NewsPage({ user }: NewsPageProps) {
 
     try {
       setLoading(true);
-      await axiosInstance.delete(`/deleteNews/${newsId}/${user?.id}`);
+      await axiosInstance.delete(`/deleteNews/${newsId}`);
       setNews(news.filter((item) => item.id !== newsId));
 
       if (selectedNews && selectedNews.id === newsId) {

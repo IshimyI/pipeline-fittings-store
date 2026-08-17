@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { CartItem, User } from "../types";
+import { parsePrice } from "../lib/utils";
 
 const CloseIcon = () => (
   <svg
@@ -67,7 +68,7 @@ export default function Cart({
   );
 
   const totalSum = items.reduce((sum, item) => {
-    const price = parseFloat(String(item.price).replace(/[^0-9.]/g, ""));
+    const price = parsePrice(item.price);
     const quantity = item.quantity || 1;
     return isNaN(price) ? sum : sum + price * quantity;
   }, 0);

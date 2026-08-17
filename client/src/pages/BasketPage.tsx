@@ -3,6 +3,7 @@ import axios from "axios";
 import axiosInstance from "../axiosInstance";
 import { OrdersService } from "../ui/OrderService";
 import type { CartItem, User } from "../types";
+import { parsePrice } from "../lib/utils";
 
 interface BasketPageProps {
   user: User | null;
@@ -140,7 +141,7 @@ export default function BasketPage({ user }: BasketPageProps) {
           })),
           total: cartItems.reduce(
             (sum, item) =>
-              sum + (item.price ? parseFloat(item.price) : 0) * item.quantity,
+              sum + (item.price ? parsePrice(item.price) : 0) * item.quantity,
             0
           ),
         };
@@ -163,15 +164,11 @@ export default function BasketPage({ user }: BasketPageProps) {
           })),
           total: cartItems.reduce(
             (sum, item) =>
-              sum + (item.price ? parseFloat(item.price) : 0) * item.quantity,
+              sum + (item.price ? parsePrice(item.price) : 0) * item.quantity,
             0
           ),
           email: user.email,
         };
-
-        await axiosInstance.delete("/basket/clear", {
-          data: { userId: user.id },
-        });
       }
 
       const orderResponse = await OrdersService.createOrder(orderData);
@@ -319,7 +316,7 @@ export default function BasketPage({ user }: BasketPageProps) {
                       </div>
                       <div className="text-right">
                         <p className="text-lg 2xl:text-xl font-semibold text-white mr-8">
-                          {isNaN(parseFloat(item.price))
+                          {isNaN(parsePrice(item.price))
                             ? "По запросу"
                             : `${item.price} ₽`}
                         </p>

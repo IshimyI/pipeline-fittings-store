@@ -99,8 +99,7 @@ export default function MainPage({ user, category }: MainPageProps) {
     try {
       setIsLoading(true);
       if (window.confirm("Вы уверены, что хотите удалить эту категорию?")) {
-        const userId = user?.id;
-        await axiosInstance.delete(`/deleteCategory/${categoryId}/${userId}`);
+        await axiosInstance.delete(`/deleteCategory/${categoryId}`);
         setCategories((prev) => prev.filter((c) => c.id !== categoryId));
       }
     } catch (error) {
@@ -137,7 +136,7 @@ export default function MainPage({ user, category }: MainPageProps) {
       }
 
       const response = await axiosInstance.put<CategoryType>(
-        `/updateCategory/${editingCategory!.id}/${user?.id}`,
+        `/updateCategory/${editingCategory!.id}`,
         formDataToSend,
         {
           headers: {

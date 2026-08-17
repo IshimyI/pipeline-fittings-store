@@ -3,9 +3,13 @@ import { useState, type FormEvent } from "react";
 const inputClass =
   "w-full px-4 py-3 bg-krio-foreground border border-krio-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-krio-primary transition-all text-white placeholder:text-gray-400";
 
+type AuthHandler = (
+  e: FormEvent<HTMLFormElement>
+) => Promise<string | undefined>;
+
 interface AuthPageProps {
-  handleLogin: (e: FormEvent<HTMLFormElement>) => void;
-  handleSignUp: (e: FormEvent<HTMLFormElement>) => void;
+  handleLogin: AuthHandler;
+  handleSignUp: AuthHandler;
 }
 
 export default function AuthPage({ handleLogin, handleSignUp }: AuthPageProps) {
@@ -14,13 +18,14 @@ export default function AuthPage({ handleLogin, handleSignUp }: AuthPageProps) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toggleForm = () => {
     setLog(!log);
     setError("");
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!log && password !== confirmPassword) {
       setError("Пароли не совпадают!");
@@ -30,7 +35,13 @@ export default function AuthPage({ handleLogin, handleSignUp }: AuthPageProps) {
       setError("Пароль должен содержать минимум 6 символов");
       return;
     }
-    log ? handleLogin(e) : handleSignUp(e);
+    setIsSubmitting(true);
+    setError("");
+    const errorMessage = log ? await handleLogin(e) : await handleSignUp(e);
+    setIsSubmitting(false);
+    if (errorMessage) {
+      setError(errorMessage);
+    }
   };
 
   return (
@@ -160,9 +171,14 @@ export default function AuthPage({ handleLogin, handleSignUp }: AuthPageProps) {
 
           <button
             type="submit"
-            className="w-full py-3.5 bg-krio-primary hover:bg-krio-primary/80 text-white font-semibold rounded-lg shadow-md transition-all duration-300 transform hover:scale-[1.01]"
+            disabled={isSubmitting}
+            className="w-full py-3.5 bg-krio-primary hover:bg-krio-primary/80 text-white font-semibold rounded-lg shadow-md transition-all duration-300 transform hover:scale-[1.01] disabled:opacity-50"
           >
-            {log ? "Войти →" : "Зарегистрироваться"}
+            {isSubmitting
+              ? "Подождите..."
+              : log
+              ? "Войти →"
+              : "Зарегистрироваться"}
           </button>
           <div className="text-sm 2xl:text-base mt-2 text-gray-400">
             Нажимая на кнопку, вы соглашаетесь с{" "}

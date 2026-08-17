@@ -9,8 +9,8 @@ declare global {
         cloudinaryPublicId?: string;
       }
     }
-    // The decoded JWT/User payload verifyRefreshToken and adminAccess attach
-    // to res.locals — same loosely-shaped object the app has always passed
+    // The decoded JWT/User payload verifyRefreshToken attaches to
+    // res.locals — same loosely-shaped object the app has always passed
     // around here, just given a name instead of leaving it implicit any.
     interface Locals {
       user?: Record<string, unknown>;

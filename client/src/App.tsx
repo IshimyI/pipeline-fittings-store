@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router";
+import axios from "axios";
 import Layout from "./ui/Layout";
 import axiosInstance, {
   setAccessToken,
@@ -95,11 +96,16 @@ function App() {
         localStorage.setItem("user", JSON.stringify(res.data.user));
         setAccessToken(res.data.accessToken);
         navigate("/");
-      } else {
-        console.error("Ошибка при регистрации:", res);
+        return undefined;
       }
+      console.error("Ошибка при регистрации:", res);
+      return "Не удалось зарегистрироваться";
     } catch (error) {
       console.error("Ошибка при запросе:", error);
+      if (axios.isAxiosError(error) && error.response?.status === 402) {
+        return "Пользователь с таким email уже зарегистрирован";
+      }
+      return "Не удалось зарегистрироваться. Попробуйте снова";
     }
   };
 
@@ -107,12 +113,19 @@ function App() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
-    const res = await axiosInstance.post<AuthResponse>("/auth/login", data);
-    if (res.status === 200) {
-      setUser(res.data.user);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      setAccessToken(res.data.accessToken);
-      navigate("/");
+    try {
+      const res = await axiosInstance.post<AuthResponse>("/auth/login", data);
+      if (res.status === 200) {
+        setUser(res.data.user);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        setAccessToken(res.data.accessToken);
+        navigate("/");
+        return undefined;
+      }
+      return "Неверный email или пароль";
+    } catch (error) {
+      console.error("Ошибка при входе:", error);
+      return "Неверный email или пароль";
     }
   };
 

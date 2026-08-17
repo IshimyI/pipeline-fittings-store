@@ -26,15 +26,6 @@ function errMsg(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-router.get("/users", async (_req: Request, res: Response) => {
-  try {
-    res.status(200).send(await User.findAll({}));
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(errMsg(error));
-  }
-});
-
 router.get("/listCategories", async (_req: Request, res: Response) => {
   try {
     const categories = await Category.findAll({});
@@ -104,15 +95,20 @@ router.post("/cta", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/changeProduct/:id", uploadProductImage, async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { categoryId, name, price, availability, params, user, imagePath } =
-    req.body;
+router.post(
+  "/changeProduct/:id",
+  verifyRefreshToken,
+  uploadProductImage,
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { categoryId, name, price, availability, params, imagePath } =
+      req.body;
 
-  try {
-    const userData = typeof user === "string" ? JSON.parse(user) : user;
+    try {
+      if (!(res.locals.user as any)?.isAdmin) {
+        return res.status(403).send({ message: "У вас нет прав" });
+      }
 
-    if (userData.isAdmin) {
       const product = await Product.findByPk(id);
 
       if (!product) {
@@ -134,12 +130,12 @@ router.post("/changeProduct/:id", uploadProductImage, async (req: Request, res: 
       await product.save();
 
       res.status(200).send({ message: "Изменение успешно", product });
-    } else return res.status(400).send({ message: "У вас нет прав" });
-  } catch (error) {
-    console.error("Ошибка при изменении продукта:", error);
-    res.status(500).send({ message: "Ошибка сервера", error: errMsg(error) });
+    } catch (error) {
+      console.error("Ошибка при изменении продукта:", error);
+      res.status(500).send({ message: "Ошибка сервера", error: errMsg(error) });
+    }
   }
-});
+);
 
 router.post(
   "/createProduct",
@@ -242,12 +238,11 @@ router.post(
   }
 );
 
-router.put("/updateCategory/:id/:userId", async (req: Request, res: Response) => {
-  const { id, userId } = req.params;
+router.put("/updateCategory/:id", verifyRefreshToken, async (req: Request, res: Response) => {
+  const { id } = req.params;
   const { name, img } = req.body;
   try {
-    const user = await User.findByPk(userId);
-    if (!user.isAdmin) {
+    if (!(res.locals.user as any)?.isAdmin) {
       return res.status(403).send({ message: "Доступ запрещен" });
     }
 
@@ -278,15 +273,13 @@ router.put("/updateCategory/:id/:userId", async (req: Request, res: Response) =>
 });
 
 router.delete(
-  "/deleteCategory/:id/:userId",
-
+  "/deleteCategory/:id",
+  verifyRefreshToken,
   async (req: Request, res: Response) => {
-    const { id, userId } = req.params;
+    const { id } = req.params;
 
     try {
-      const user = await User.findByPk(userId);
-
-      if (!user.isAdmin) {
+      if (!(res.locals.user as any)?.isAdmin) {
         return res.status(403).send({ message: "Доступ запрещен" });
       }
 
@@ -307,15 +300,13 @@ router.delete(
 );
 
 router.delete(
-  "/deleteProduct/:id/:userId",
-
+  "/deleteProduct/:id",
+  verifyRefreshToken,
   async (req: Request, res: Response) => {
-    const { id, userId } = req.params;
+    const { id } = req.params;
 
     try {
-      const user = await User.findByPk(userId);
-
-      if (!user.isAdmin) {
+      if (!(res.locals.user as any)?.isAdmin) {
         return res.status(403).send({ message: "Доступ запрещен" });
       }
 
@@ -360,19 +351,24 @@ router.post("/basket", async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Не указаны userId или productId" });
   }
 
+  const numericQuantity = Number(quantity);
+  if (!Number.isInteger(numericQuantity) || numericQuantity <= 0) {
+    return res.status(400).json({ message: "Некорректное количество" });
+  }
+
   try {
     let basketItem = await Basket.findOne({
       where: { userId, productId },
     });
 
     if (basketItem) {
-      basketItem.quantity += quantity;
+      basketItem.quantity += numericQuantity;
       await basketItem.save();
     } else {
       basketItem = await Basket.create({
         userId,
         productId,
-        quantity,
+        quantity: numericQuantity,
       });
     }
 
@@ -433,7 +429,7 @@ router.post("/callMe", async (req: Request, res: Response) => {
 Телефон: ${phone}
 `.trim();
 
-    await sendMsg({ body: { message: messageText } } as Request, {} as Response, () => {});
+    await sendMsg(messageText);
 
     await sendEmail({
       to: process.env.ADMIN_EMAIL as string,
@@ -450,7 +446,7 @@ router.post("/callMe", async (req: Request, res: Response) => {
 
 router.post("/createOrder", async (req: Request, res: Response) => {
   try {
-    const { userId, email, items, total } = req.body;
+    const { userId, email, items } = req.body;
 
     const enrichedItems = await Promise.all(
       items.map(async (item: any) => {
@@ -462,6 +458,19 @@ router.post("/createOrder", async (req: Request, res: Response) => {
         };
       })
     );
+
+    // Total is computed here from the authoritative per-item prices just
+    // fetched above, never trusted from the client — matches the "По
+    // запросу" (price-on-request) handling already used client-side, where
+    // a non-numeric price simply contributes 0 to the sum. Prices are
+    // stored as formatted strings like "12 900.00РУБ", so a bare
+    // parseFloat would silently truncate at the space (-> 12); strip
+    // everything but digits/decimal point first.
+    const total = enrichedItems.reduce((sum, item) => {
+      const price = parseFloat(String(item.price).replace(/[^0-9.]/g, ""));
+      const quantity = Number(item.quantity) || 0;
+      return sum + (isNaN(price) ? 0 : price * quantity);
+    }, 0);
 
     const order = await Order.create({
       userId,
@@ -495,9 +504,7 @@ router.post("/createOrder", async (req: Request, res: Response) => {
 ${itemDetails.join("")}
 Итого: ${total || "По запросу"} ₽
   `.trim();
-      await sendMsg({
-        body: { message: messageText },
-      } as Request, {} as Response, () => {});
+      await sendMsg(messageText);
       await sendEmail({
         to: process.env.ADMIN_EMAIL as string,
         subject: `Новый заказ #${order.id}`,
@@ -553,7 +560,7 @@ Email: ${email}
     Сообщение: ${message}
     `;
 
-    await sendMsg({ body: { message: telegramMessage } } as Request, {} as Response, () => {});
+    await sendMsg(telegramMessage);
 
     return res.status(201).json({
       message: "Сообщение успешно отправлено",
@@ -575,8 +582,12 @@ Email: ${email}
   }
 });
 
-router.get("/allOrders", async (_req: Request, res: Response) => {
+router.get("/allOrders", verifyRefreshToken, async (_req: Request, res: Response) => {
   try {
+    if (!(res.locals.user as any)?.isAdmin) {
+      return res.status(403).json({ message: "Доступ запрещен" });
+    }
+
     const orders = await Order.findAll({
       include: [
         {
@@ -614,8 +625,12 @@ router.get("/allOrders", async (_req: Request, res: Response) => {
   }
 });
 
-router.get("/feedback", async (_req: Request, res: Response) => {
+router.get("/feedback", verifyRefreshToken, async (_req: Request, res: Response) => {
   try {
+    if (!(res.locals.user as any)?.isAdmin) {
+      return res.status(403).send({ message: "Доступ запрещен" });
+    }
+
     const feedback = await Feedback.findAll({});
     res.status(200).send(feedback);
   } catch (error) {
@@ -707,11 +722,18 @@ router.get("/latestNews", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/feedback/:id", async (req: Request, res: Response) => {
+router.delete("/feedback/:id", verifyRefreshToken, async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
+    if (!(res.locals.user as any)?.isAdmin) {
+      return res.status(403).send({ message: "Доступ запрещен" });
+    }
+
     const feedback = await Feedback.findByPk(id);
-    feedback.destroy();
+    if (!feedback) {
+      return res.status(404).send({ message: "Сообщение не найдено" });
+    }
+    await feedback.destroy();
     res.status(200).send({ message: "Сообщение успешно удалено" });
   } catch (error) {
     console.log(error);
@@ -737,16 +759,15 @@ router.get("/news/:id", async (req: Request, res: Response) => {
 });
 
 router.post(
-  "/updateNews/:id/:userId",
-
+  "/updateNews/:id",
+  verifyRefreshToken,
   uploadNewsImage,
   async (req: Request, res: Response) => {
-    const { id, userId } = req.params;
+    const { id } = req.params;
     const { title, content } = req.body;
 
     try {
-      const user = await User.findByPk(userId);
-      if (!user.isAdmin) {
+      if (!(res.locals.user as any)?.isAdmin) {
         return res.status(403).send({ message: "Доступ запрещен" });
       }
 
@@ -774,15 +795,13 @@ router.post(
 );
 
 router.delete(
-  "/deleteNews/:id/:userId",
-
+  "/deleteNews/:id",
+  verifyRefreshToken,
   async (req: Request, res: Response) => {
-    const { id, userId } = req.params;
+    const { id } = req.params;
 
     try {
-      const user = await User.findByPk(userId);
-
-      if (!user.isAdmin) {
+      if (!(res.locals.user as any)?.isAdmin) {
         return res.status(403).send({ message: "Доступ запрещен" });
       }
 
@@ -906,9 +925,13 @@ router.delete("/companies/:id", verifyRefreshToken, async (req: Request, res: Re
   }
 });
 
-router.put("/orders/:id/status", async (req: Request, res: Response) => {
+router.put("/orders/:id/status", verifyRefreshToken, async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status } = req.body;
+
+  if (!(res.locals.user as any)?.isAdmin) {
+    return res.status(403).json({ error: "Доступ запрещен" });
+  }
 
   if (!["ожидает", "проведен", "отменен"].includes(status)) {
     return res.status(400).json({ error: "Неверный статус" });

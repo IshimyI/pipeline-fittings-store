@@ -6,6 +6,7 @@ import Dialog from "../ui/Dialog";
 import { OrdersService } from "../ui/OrderService";
 import Cart from "../ui/Cart";
 import type { User, Category, Product, CartItem, BasketEntry } from "../types";
+import { parsePrice } from "../lib/utils";
 
 interface ProductsPageProps {
   user: User | null;
@@ -269,8 +270,8 @@ export default function ProductsPage({ user, category }: ProductsPageProps) {
         case "name":
           return a.name.localeCompare(b.name);
         case "price":
-          const priceA = parseFloat(a.price) || 0;
-          const priceB = parseFloat(b.price) || 0;
+          const priceA = parsePrice(a.price) || 0;
+          const priceB = parsePrice(b.price) || 0;
           return priceA - priceB;
         case "availability":
           if (a.availability === b.availability) return 0;
@@ -401,11 +402,8 @@ export default function ProductsPage({ user, category }: ProductsPageProps) {
     try {
       if (!window.confirm("Вы уверены, что хотите удалить этот товар?")) return;
       if (!user) return;
-      const userId = user.id;
 
-      await axiosInstance.delete(`/deleteProduct/${productId}/${userId}`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      await axiosInstance.delete(`/deleteProduct/${productId}`);
 
       const response = await axiosInstance.get<Product[]>(
         categoryId ? `/listProducts/${categoryId}` : `/listProducts`
