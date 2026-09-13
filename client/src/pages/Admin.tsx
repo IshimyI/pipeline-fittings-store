@@ -31,7 +31,7 @@ export default function Admin({ user }: AdminProps) {
   };
 
   return (
-    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.jpg')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
+    <div className="flex items-center text-white justify-center min-h-screen p-8">
       <div className="w-full max-w-4xl space-y-6">
         <div className="flex flex-col md:flex-row justify-center gap-4 mb-8">
           <button

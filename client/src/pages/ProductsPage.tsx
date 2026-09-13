@@ -418,7 +418,7 @@ export default function ProductsPage({ user, category }: ProductsPageProps) {
   };
 
   return (
-    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.jpg')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-2 md:p-8">
+    <div className="flex items-center text-white justify-center min-h-screen p-2 md:p-8">
       <main className="w-full max-w-[90%] md:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[80%] 4k:max-w-[80%] p-0 md:p-6 mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl 4k:text-4xl font-bold text-white uppercase tracking-[0.15em]">

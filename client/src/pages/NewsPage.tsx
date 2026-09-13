@@ -252,7 +252,7 @@ export default function NewsPage({ user }: NewsPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[url('/uploads/BG-image.jpg')] bg-fixed bg-center bg-no-repeat bg-cover flex justify-center py-8 px-4">
+    <div className="min-h-screen flex justify-center py-8 px-4">
       <main className="w-full max-w-[90%] md:max-w-[60%] lg:max-w-[75%] p-6 space-y-8 bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 h-fit">
         <PageTitle>Новости</PageTitle>
 
