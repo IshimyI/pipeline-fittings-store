@@ -13,7 +13,7 @@ export default function ErrorPage({ user: _user }: ErrorPageProps) {
   };
 
   return (
-    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
+    <div className="flex items-center text-white justify-center min-h-screen bg-[url('/uploads/BG-image.jpg')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-8">
       <h2 className="text-3xl font-bold text-gray-300 mb-8">
         Ошибка! Страница не найдена
       </h2>

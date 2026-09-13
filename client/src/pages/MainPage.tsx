@@ -250,7 +250,7 @@ export default function MainPage({ user, category }: MainPageProps) {
 
   return (
     <div
-      className="flex items-center justify-center min-h-screen bg-[url('/uploads/BG-image.png')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-2 md:p-8"
+      className="flex items-center justify-center min-h-screen bg-[url('/uploads/BG-image.jpg')] bg-fixed bg-center bg-no-repeat bg-cover bg-opacity-10 p-2 md:p-8"
       role="main"
     >
       <main className="max-w-7xl  4k:max-w-[1800px] mx-auto">
