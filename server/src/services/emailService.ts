@@ -20,10 +20,6 @@ interface SendEmailArgs {
   text: string;
 }
 
-// `to` is accepted but not actually used below (mail always goes to
-// ADMIN_EMAIL) — that's how the original JS behaved too; every call site
-// already passes ADMIN_EMAIL as `to`, so this is dead-but-harmless, not a
-// live bug. Kept as-is rather than silently changing the send target.
 const sendEmail = async ({ to, subject, text }: SendEmailArgs) => {
   void to;
   try {

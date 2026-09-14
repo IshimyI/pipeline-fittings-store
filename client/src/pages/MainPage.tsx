@@ -156,10 +156,6 @@ export default function MainPage({ user, category }: MainPageProps) {
       const formDataToSend = new FormData();
       formDataToSend.append("name", formData.name.trim());
 
-      // `editingCategory.img` references a field that doesn't exist on the
-      // real Category shape (server sends `image`) — a pre-existing dead
-      // branch in the original JS, always undefined at runtime. Preserved
-      // as-is rather than "fixed" to stay a faithful mechanical port.
       const legacyImg = (
         editingCategory as unknown as { img?: string } | null
       )!.img;

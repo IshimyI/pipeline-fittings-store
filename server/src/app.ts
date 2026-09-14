@@ -38,11 +38,7 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-// process.cwd() (not __dirname) on purpose: compiling to dist/ nests this
-// file one level deeper than the original plain-JS src/app.js was, so a
-// __dirname-relative path here would land inside dist/ instead of at the
-// real server/public/dist. cwd is stable across dev (tsx, run from server/)
-// and prod (node dist/src/app.js, also launched from server/) either way.
+
 app.use(express.static(path.join(process.cwd(), "public/dist")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(

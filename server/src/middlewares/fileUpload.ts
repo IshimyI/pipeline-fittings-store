@@ -214,7 +214,7 @@ const uploadCompanyImage = async (req: Request, res: Response, next: NextFunctio
       const cloudinaryUpload = new Promise<UploadApiResponse | undefined>((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
-            folder: "companies", // Изменим папку для хранения
+            folder: "companies",
             resource_type: "image",
             transformation: [
               { width: 800, crop: "scale" },

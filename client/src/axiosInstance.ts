@@ -1,7 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 
-// `sent` is a custom flag stashed on the retried request config to avoid an
-// infinite refresh loop — not part of Axios's own config type.
 type RetriableRequestConfig = InternalAxiosRequestConfig & { sent?: boolean };
 
 const axiosInstance = axios.create({

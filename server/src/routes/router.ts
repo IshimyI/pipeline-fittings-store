@@ -459,13 +459,6 @@ router.post("/createOrder", async (req: Request, res: Response) => {
       })
     );
 
-    // Total is computed here from the authoritative per-item prices just
-    // fetched above, never trusted from the client — matches the "По
-    // запросу" (price-on-request) handling already used client-side, where
-    // a non-numeric price simply contributes 0 to the sum. Prices are
-    // stored as formatted strings like "12 900.00РУБ", so a bare
-    // parseFloat would silently truncate at the space (-> 12); strip
-    // everything but digits/decimal point first.
     const total = enrichedItems.reduce((sum, item) => {
       const price = parseFloat(String(item.price).replace(/[^0-9.]/g, ""));
       const quantity = Number(item.quantity) || 0;

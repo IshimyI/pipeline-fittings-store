@@ -1,6 +1,4 @@
-// Shared shapes mirroring the Sequelize models on the server
-// (server/db/models/*.ts) — kept minimal and matching what the client
-// actually reads/writes, not a full mirror of every server-side field.
+
 
 export interface User {
   id: number;
@@ -67,9 +65,7 @@ export interface Feedback {
   phone: string | null;
   message: string;
   createdAt: string;
-  // Not actually a column on the server's Feedback model — the admin UI
-  // filters/badges on it anyway, so it's always undefined in practice.
-  // Kept optional here rather than invented, to match real behavior.
+
   status?: string;
 }
 

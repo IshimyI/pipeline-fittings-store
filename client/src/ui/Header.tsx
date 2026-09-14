@@ -7,7 +7,6 @@ interface HeaderProps {
   handleLogout: () => void;
 }
 
-
 export default function Header({ user, handleLogout }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
 

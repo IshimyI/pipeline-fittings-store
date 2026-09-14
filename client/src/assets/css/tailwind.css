@@ -1,23 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  /* Цвета */
+
   --color-krio-background: #243a90;
   --color-krio-foreground: #4a49b5;
   --color-krio-primary: #9aa6eb;
   --color-krio-secondary: #d7d6f5;
 
-  --size-8xl: 90rem; /* 1440px */
-  --size-9xl: 100rem; /* 1600px */
-  --size-10xl: 112.5rem; /* 1800px */
+  --size-8xl: 90rem;
+  --size-9xl: 100rem;
+  --size-10xl: 112.5rem;
 
-  /* Брейкпоинты */
   --breakpoint-2xl: 1536px;
   --breakpoint-3xl: 1920px;
   --breakpoint-4k: 2560px;
 }
 
-/* Кастомные медиа-запросы */
 @media (min-width: 1536px) {
   .max-w-8xl {
     max-width: var(--size-8xl);
@@ -103,21 +101,18 @@ body {
   z-index: 0;
 }
 
-/* Звезды */
 .stars-layer {
   background: url(https://i.postimg.cc/hhFD7Nkf/apps-47636-13819498107583324-fb06b53a-4974-4acb-85e6-f6f363f85ab6-edec48d0-ec35-4a1f-8bf5-c455987b4a.png)
     repeat top center;
   z-index: 1;
 }
 
-/* Мерцание */
 .twinkling-layer {
   background-image: url(https://i.postimg.cc/CLpNr4PF/twinkling.png);
   animation: twinkle 3s linear infinite;
   z-index: 2;
 }
 
-/* Спутник */
 .sputnik-layer {
   background: url("/uploads/sputnik.png") no-repeat;
   background-size: contain;
@@ -130,7 +125,6 @@ body {
   z-index: 3;
 }
 
-/* Основной контент */
 .main-content {
   position: relative;
   z-index: 10;
