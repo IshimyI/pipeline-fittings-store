@@ -43,7 +43,7 @@ const emptyFormData: CategoryFormData = {
 
 export default function MainPage({ user, category }: MainPageProps) {
   const [categories, setCategories] = useState<CategoryType[]>(category);
-  const [, setError] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [editingCategory, setEditingCategory] = useState<CategoryType | null>(
     null
@@ -63,30 +63,65 @@ export default function MainPage({ user, category }: MainPageProps) {
   const [latestProduct, setLatestProduct] = useState<Product | null>(null);
 
   const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const [categoriesRes, productsRes, newsRes, latestProductRes] =
-        await Promise.all([
-          axiosInstance.get<CategoryType[]>("/ListCategories"),
-          axiosInstance.get<Product[]>("/ListProducts"),
-          axiosInstance.get<NewsItem[]>("/ListNews"),
-          axiosInstance.get<Product>("/latestProduct"),
-        ]);
+    setLoading(true);
+    const [categoriesRes, productsRes, newsRes, latestProductRes] =
+      await Promise.allSettled([
+        axiosInstance.get<CategoryType[]>("/ListCategories"),
+        axiosInstance.get<Product[]>("/ListProducts"),
+        axiosInstance.get<NewsItem[]>("/ListNews"),
+        axiosInstance.get<Product>("/latestProduct"),
+      ]);
 
-      setCategories(categoriesRes.data);
-      setProducts(productsRes.data);
-      setLatestNews(newsRes.data.slice(0, 3));
-      setLatestProduct(latestProductRes.data);
-    } catch {
-      setError("Ошибка при загрузке данных");
-    } finally {
-      setLoading(false);
+    if (categoriesRes.status === "fulfilled") {
+      setCategories(categoriesRes.value.data);
     }
+    if (productsRes.status === "fulfilled") {
+      setProducts(productsRes.value.data);
+    }
+    if (newsRes.status === "fulfilled") {
+      setLatestNews(newsRes.value.data.slice(0, 3));
+    }
+    if (latestProductRes.status === "fulfilled") {
+      setLatestProduct(latestProductRes.value.data);
+    }
+
+    const failedCount = [categoriesRes, productsRes, newsRes, latestProductRes].filter(
+      (r) => r.status === "rejected"
+    ).length;
+    setError(
+      failedCount > 0
+        ? "Не удалось загрузить часть данных страницы. Попробуйте обновить страницу."
+        : ""
+    );
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const isValidUrl = (str: string) => {
+    if (typeof str !== "string") return false;
+
+    try {
+      new URL(str);
+
+      const allowedProtocols = ["http:", "https:"];
+      const url = new URL(str);
+      return allowedProtocols.includes(url.protocol);
+    } catch {
+      return false;
+    }
+  };
+
+  const getImageUrl = (image: string | null | undefined) => {
+    if (!image) return "/uploads/no-photo.png";
+    if (isValidUrl(image)) return image;
+    if (image.startsWith("/uploads/")) return image;
+    if (image.startsWith("categories/")) return `/uploads/${image}`;
+    if (image === "no-photo.png") return `/uploads/${image}`;
+    return `/uploads/categories/${image}.jpg?v=${Date.now()}`;
+  };
 
   const navigate = useNavigate();
   const goToCategory = useCallback(
@@ -254,6 +289,11 @@ export default function MainPage({ user, category }: MainPageProps) {
       role="main"
     >
       <main className="max-w-7xl  4k:max-w-[1800px] mx-auto">
+        {error && (
+          <div className="mb-8 bg-red-500/10 border border-red-500/40 text-red-400 px-6 py-4 rounded-xl text-center">
+            {error}
+          </div>
+        )}
         {showForm && (
           <div className="mb-8 bg-krio-background p-6 rounded-xl shadow-lg border border-krio-primary/20">
             <h3 className="text-2xl font-semibold mb-6 text-white">
@@ -442,7 +482,7 @@ export default function MainPage({ user, category }: MainPageProps) {
                     <div className="flex flex-col gap-6">
                       <div className="relative overflow-hidden rounded-lg">
                         <img
-                          src={latestProduct.image || "/uploads/no-photo.png"}
+                          src={getImageUrl(latestProduct.image)}
                           alt={latestProduct.name}
                           className="w-full h-52 object-contain transform group-hover:scale-105 transition-transform duration-300"
                           onError={(e: SyntheticEvent<HTMLImageElement>) => {

@@ -196,7 +196,7 @@ export default function BasketPage({ user }: BasketPageProps) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <main
-          className="w-full max-w-[90%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6
+          className="w-full max-w-[90%] md:max-w-[60%] lg:max-w-[80%] p-6 space-y-6
                     bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
         >
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
@@ -210,7 +210,7 @@ export default function BasketPage({ user }: BasketPageProps) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <main
-          className="w-full max-w-[90%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6
+          className="w-full max-w-[90%] md:max-w-[60%] lg:max-w-[80%] p-6 space-y-6
                     bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
         >
           <p className="text-red-300 font-medium">{error}</p>
@@ -228,7 +228,7 @@ export default function BasketPage({ user }: BasketPageProps) {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <main
-        className="w-full max-w-[90%] md:max-w-[60%] lx:max-w-[80%] p-6 space-y-6
+        className="w-full max-w-[90%] md:max-w-[60%] lg:max-w-[80%] p-6 space-y-6
                   bg-krio-background rounded-lg shadow-lg border border-gray-700 my-8 mx-auto"
       >
         <h1 className="text-2xl md:text-3xl 2xl:text-4xl 4k:text-5xl font-bold text-white mb-6 2xl:mb-8">
