@@ -1,0 +1,14 @@
+[Unit]
+Description=krio-armatura backend
+After=network.target postgresql.service
+
+[Service]
+WorkingDirectory=/var/www/krioarmatura/server
+ExecStart=/usr/bin/node dist/src/app.js
+Restart=always
+RestartSec=5
+User=www-data
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
